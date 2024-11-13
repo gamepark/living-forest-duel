@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import { GameTemplateOptionsSpec } from '@gamepark/game-template/GameTemplateOptions'
-import { GameTemplateRules } from '@gamepark/game-template/GameTemplateRules'
-import { GameTemplateSetup } from '@gamepark/game-template/GameTemplateSetup'
+import { LivingForestDuelOptionsSpec } from '@gamepark/living-forest-duel/LivingForestDuelOptions'
+import { LivingForestDuelRules } from '@gamepark/living-forest-duel/LivingForestDuelRules'
+import { LivingForestDuelSetup } from '@gamepark/living-forest-duel/LivingForestDuelSetup'
 import { GameProvider, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
@@ -16,10 +16,10 @@ setupTranslation(translations, { debug: false })
 ReactDOM.render(
   <StrictMode>
     <GameProvider
-      game="game-template"
-      Rules={GameTemplateRules}
-      optionsSpec={GameTemplateOptionsSpec}
-      GameSetup={GameTemplateSetup}
+      game="living-forest-duel"
+      Rules={LivingForestDuelRules}
+      optionsSpec={LivingForestDuelOptionsSpec}
+      GameSetup={LivingForestDuelSetup}
       material={Material}
       locators={Locators}
       animations={gameAnimations}>

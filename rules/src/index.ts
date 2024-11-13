@@ -1,3 +1,3 @@
-export { GameTemplateRules } from './GameTemplateRules'
-export { GameTemplateOptionsSpec } from './GameTemplateOptions'
-export { GameTemplateSetup } from './GameTemplateSetup'
+export { LivingForestDuelRules } from './LivingForestDuelRules'
+export { LivingForestDuelOptionsSpec } from './LivingForestDuelOptions'
+export { LivingForestDuelSetup } from './LivingForestDuelSetup'
