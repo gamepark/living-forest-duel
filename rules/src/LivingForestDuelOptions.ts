@@ -1,11 +1,11 @@
 import { OptionsSpec } from '@gamepark/rules-api'
 import { TFunction } from 'i18next'
-import { PlayerColor, playerColors } from './PlayerColor'
+import { Season, seasons } from './Season'
 
 /**
  * This is the options for each player in the game.
  */
-type PlayerOptions = { id: PlayerColor }
+type PlayerOptions = { id: Season }
 
 /**
  * This is the type of object that the game receives when a new game is started.
@@ -22,22 +22,18 @@ export type LivingForestDuelOptions = {
 export const LivingForestDuelOptionsSpec: OptionsSpec<LivingForestDuelOptions> = {
   players: {
     id: {
-      label: (t: TFunction) => t('Player color'),
-      values: playerColors,
+      label: (t: TFunction) => t('Season'),
+      values: seasons,
       valueSpec: color => ({ label: t => getPlayerName(color, t) })
     }
   }
 }
 
-export function getPlayerName(playerId: PlayerColor, t: TFunction) {
+export function getPlayerName(playerId: Season, t: TFunction) {
   switch (playerId) {
-    case PlayerColor.Red:
-      return t('Red')
-    case PlayerColor.Blue:
-      return t('Blue')
-    case PlayerColor.Green:
-      return t('Green')
-    case PlayerColor.Yellow:
-      return t('Yellow')
+    case Season.Summer:
+      return t('Summer')
+    case Season.Winter:
+      return t('Winter')
   }
 }

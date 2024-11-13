@@ -1,6 +1,9 @@
 {
   "en": {
     "translation": {
+      "Name": "Living Forest Duel",
+      "Summer": "Summer",
+      "Winter": "Winter",
       "Menu": "Menu",
       "OK": "OK",
       "Validate": "Validate",
@@ -115,6 +118,9 @@
   },
   "fr": {
     "translation": {
+      "Name": "Living Forest Duel",
+      "Summer": "Été",
+      "Winter": "Hiver",
       "Menu": "Menu",
       "OK": "OK",
       "Validate": "Valider",

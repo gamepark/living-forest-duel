@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { PlayerColor } from '@gamepark/living-forest-duel/PlayerColor'
+import { Season } from '@gamepark/living-forest-duel/Season'
 import { StyledPlayerPanel, usePlayers } from '@gamepark/react-game'
 import { createPortal } from 'react-dom'
 
 export const PlayerPanels = () => {
-  const players = usePlayers<PlayerColor>({ sortFromMe: true })
+  const players = usePlayers<Season>({ sortFromMe: true })
   const root = document.getElementById('root')
   if (!root) {
     return null
@@ -27,9 +27,7 @@ const panelPosition = (index: number) => css`
   width: 28em;
 `
 
-export const playerColorCode: Record<PlayerColor, string> = {
-  [PlayerColor.Red]: 'red',
-  [PlayerColor.Blue]: 'blue',
-  [PlayerColor.Green]: 'green',
-  [PlayerColor.Yellow]: 'yellow'
+export const playerColorCode: Record<Season, string> = {
+  [Season.Summer]: '#D1B93D',
+  [Season.Winter]: '#64467A'
 }
