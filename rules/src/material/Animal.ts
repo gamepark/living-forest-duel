@@ -1,9 +1,10 @@
+import { getEnumValues } from "@gamepark/rules-api";
 import { Season } from "../Season";
 
 export enum AnimalType {
   Common = 0,
   Summer = Season.Summer,
-  Winter = Season.Winter
+  Winter = Season.Winter,
 }
 
 export enum Animal {
@@ -44,6 +45,8 @@ export enum Animal {
   Tanuki,
   Tiger,
   Toucan,
+  // Summer varan
+  SummerVaran = 199,
   // Winter animals
   Bison = 201,
   Crane,
@@ -59,7 +62,11 @@ export enum Animal {
   Raven,
   Salamander,
   Squirrel,
-  Wolf
+  Wolf,
+  // Winter varan
+  WinterVaran = 299
 }
 
 export const getAnimalSeason = (animal: Animal) => Math.floor(animal / 100)
+export const summerAnimals = getEnumValues(Animal).filter(animal => getAnimalSeason(animal) === Season.Summer && animal === Animal.SummerVaran)
+export const winterAnimals = getEnumValues(Animal).filter(animal => getAnimalSeason(animal) === Season.Winter && animal !== Animal.WinterVaran)

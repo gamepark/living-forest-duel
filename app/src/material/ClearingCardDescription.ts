@@ -7,6 +7,8 @@ import ClearingCenter from '../images/cards/clearing/ClearingCenter.jpg'
 import ClearingWinter2 from '../images/cards/clearing/ClearingWinter2.jpg'
 import ClearingWinter3 from '../images/cards/clearing/ClearingWinter3.jpg'
 import ClearingWinter4 from '../images/cards/clearing/ClearingWinter4.jpg'
+import { LocationType } from "@gamepark/living-forest-duel/material/LocationType";
+import { range } from "lodash";
 
 class ClearingCardDescription extends CardDescription {
   width = 6.3
@@ -22,6 +24,14 @@ class ClearingCardDescription extends CardDescription {
     [Clearing.Winter3]: ClearingWinter3,
     [Clearing.Winter4]: ClearingWinter4
   }
+
+  staticItems = range(-3,4).map(x => ({
+    id: x,
+    location: {
+      type: LocationType.ClearingLine,
+      x
+    }
+  }))
 }
 
 export const clearingCardDescription = new ClearingCardDescription()

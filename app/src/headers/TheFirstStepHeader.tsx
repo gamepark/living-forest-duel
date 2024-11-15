@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
 
 export const TheFirstStepHeader = () => {
-  return <>Hello world!</>
+  return <>Living Forest Duel</>
 }

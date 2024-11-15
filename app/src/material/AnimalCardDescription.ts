@@ -1,4 +1,5 @@
-import { CardDescription } from "@gamepark/react-game";
+import { CardDescription, MaterialContext } from "@gamepark/react-game";
+import { Animal } from '@gamepark/living-forest-duel/material/Animal'
 import AnimalCardBack from '../images/cards/animals/AnimalCardBack.jpg'
 import Anteater from '../images/cards/animals/Anteater.jpg'
 import Axolotl from '../images/cards/animals/Axolotl.jpg'
@@ -48,6 +49,10 @@ import Tapir from '../images/cards/animals/Tapir.jpg'
 import Tiger from '../images/cards/animals/Tiger.jpg'
 import Toucan from '../images/cards/animals/Toucan.jpg'
 import Weasel from '../images/cards/animals/Weasel.jpg'
+import SummerVaran from '../images/cards/animals/VaranSummer.jpg'
+import WinterVaran from '../images/cards/animals/VaranWinter.jpg'
+import { MaterialItem } from "@gamepark/rules-api";
+import { LocationType } from "@gamepark/living-forest-duel/material/LocationType";
 
 class AnimalCardDescription extends CardDescription {
   width = 6.3
@@ -56,54 +61,65 @@ class AnimalCardDescription extends CardDescription {
 
   backImage = AnimalCardBack
   images = {
-    [Anteater]: Anteater,
-    [Axolotl]: Axolotl,
-    [Bat]: Bat,
-    [Bear]: Bear,
-    [Bee]: Bee,
-    [Bison]: Bison,
-    [Chameleon]: Chameleon,
-    [Chimpanzee]: Chimpanzee,
-    [Coati]: Coati,
-    [Cobra]: Cobra,
-    [Cockatoo]: Cockatoo,
-    [Crane]: Crane,
-    [Crocodile]: Crocodile,
-    [Dolphin]: Dolphin,
-    [Eagle]: Eagle,
-    [Elephant]: Elephant,
-    [Flamingo]: Flamingo,
-    [Fox]: Fox,
-    [Frog]: Frog,
-    [Goat]: Goat,
-    [Goldfish]: Goldfish,
-    [Gorilla]: Gorilla,
-    [Hare]: Hare,
-    [Hippopotamus]: Hippopotamus,
-    [HornedOwl]: HornedOwl,
-    [Hummingbird]: Hummingbird,
-    [Lynx]: Lynx,
-    [Macaque]: Macaque,
-    [Mantis]: Mantis,
-    [Meerkat]: Meerkat,
-    [Owl]: Owl,
-    [Panda]: Panda,
-    [Panther]: Panther,
-    [Peacock]: Peacock,
-    [Platypus]: Platypus,
-    [Racoon]: Racoon,
-    [Ram]: Ram,
-    [Raven]: Raven,
-    [Rhinoceros]: Rhinoceros,
-    [Salamander]: Salamander,
-    [Spider]: Spider,
-    [Squirrel]: Squirrel,
-    [Stag]: Stag,
-    [Tanuki]: Tanuki,
-    [Tapir]: Tapir,
-    [Tiger]: Tiger,
-    [Toucan]: Toucan,
-    [Weasel]: Weasel
+    [Animal.Anteater]: Anteater,
+    [Animal.Axolotl]: Axolotl,
+    [Animal.Bat]: Bat,
+    [Animal.Bear]: Bear,
+    [Animal.Bee]: Bee,
+    [Animal.Bison]: Bison,
+    [Animal.Chameleon]: Chameleon,
+    [Animal.Chimpanzee]: Chimpanzee,
+    [Animal.Coati]: Coati,
+    [Animal.Cobra]: Cobra,
+    [Animal.Cockatoo]: Cockatoo,
+    [Animal.Crane]: Crane,
+    [Animal.Crocodile]: Crocodile,
+    [Animal.Dolphin]: Dolphin,
+    [Animal.Eagle]: Eagle,
+    [Animal.Elephant]: Elephant,
+    [Animal.Flamingo]: Flamingo,
+    [Animal.Fox]: Fox,
+    [Animal.Frog]: Frog,
+    [Animal.Goat]: Goat,
+    [Animal.Goldfish]: Goldfish,
+    [Animal.Gorilla]: Gorilla,
+    [Animal.Hare]: Hare,
+    [Animal.Hippopotamus]: Hippopotamus,
+    [Animal.HornedOwl]: HornedOwl,
+    [Animal.Hummingbird]: Hummingbird,
+    [Animal.Lynx]: Lynx,
+    [Animal.Macaque]: Macaque,
+    [Animal.Mantis]: Mantis,
+    [Animal.Meerkat]: Meerkat,
+    [Animal.Owl]: Owl,
+    [Animal.Panda]: Panda,
+    [Animal.Panther]: Panther,
+    [Animal.Peacock]: Peacock,
+    [Animal.Platypus]: Platypus,
+    [Animal.Racoon]: Racoon,
+    [Animal.Ram]: Ram,
+    [Animal.Raven]: Raven,
+    [Animal.Rhinoceros]: Rhinoceros,
+    [Animal.Salamander]: Salamander,
+    [Animal.Spider]: Spider,
+    [Animal.Squirrel]: Squirrel,
+    [Animal.Stag]: Stag,
+    [Animal.Tanuki]: Tanuki,
+    [Animal.Tapir]: Tapir,
+    [Animal.Tiger]: Tiger,
+    [Animal.Toucan]: Toucan,
+    [Animal.Weasel]: Weasel,
+    [Animal.SummerVaran]: SummerVaran,
+    [Animal.WinterVaran]: WinterVaran
+  }
+
+  // isFlipped(item: Partial<MaterialItem>, context: MaterialContext) {
+  //   // if (item.location?.type === LocationType.SeasonAnimalDeck) return true
+  //   return super.isFlipped(item, context)
+  // }
+
+  isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext) {
+    return item.location?.type === LocationType.SeasonAnimalDeck || super.isFlippedOnTable(item, context)
   }
 }
 
