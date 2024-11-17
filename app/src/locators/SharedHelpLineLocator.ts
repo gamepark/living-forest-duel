@@ -4,7 +4,8 @@ import { recruitmentLineLocator } from "./RecruitmentLineLocator";
 
 class SharedHelpLineLocator extends ListLocator {
   gap = { x: animalCardDescription.width + 1 }
-  coordinates = { y: recruitmentLineLocator.coordinates.y + 10 }
+  maxCount = 7
+  coordinates = { x: -animalCardDescription.width * 2 - 2, y: recruitmentLineLocator.coordinates.y + 11 }
 }
 
 export const sharedHelpLineLocator = new SharedHelpLineLocator()

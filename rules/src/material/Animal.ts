@@ -1,7 +1,7 @@
 import { getEnumValues } from "@gamepark/rules-api";
 import { Season } from "../Season";
 
-export enum AnimalType {
+export enum AnimalSeason {
   Common = 0,
   Summer = Season.Summer,
   Winter = Season.Winter,

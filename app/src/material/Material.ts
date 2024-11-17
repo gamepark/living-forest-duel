@@ -7,6 +7,7 @@ import { fireTokenDescription } from './FireTokenDescription'
 import { treeCardDescription } from './TreeCardDescription'
 import { actionTokenDescription } from './ActionTokenDescription'
 import { spiritCardDescription } from './SpiritCardDescription'
+import { treeTokenDescription } from './TreeTokenDescription'
 
 export const Material: Partial<Record<MaterialType, MaterialDescription>> = {
   [MaterialType.ClearingCard]: clearingCardDescription,
@@ -15,5 +16,6 @@ export const Material: Partial<Record<MaterialType, MaterialDescription>> = {
   [MaterialType.FireToken]: fireTokenDescription,
   [MaterialType.TreeCard]: treeCardDescription,
   [MaterialType.ActionToken]: actionTokenDescription,
-  [MaterialType.SpiritCard]: spiritCardDescription
+  [MaterialType.SpiritCard]: spiritCardDescription,
+  [MaterialType.TreeToken]: treeTokenDescription
 }

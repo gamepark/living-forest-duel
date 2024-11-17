@@ -5,6 +5,7 @@ export enum LocationType {
   TreeDecks,
   RecruitmentLine,
   SharedHelpLine,
+  PersonalHelpLine,
   VaranDeck,
   SeasonAnimalDeck,
   PlayerTreesArea,
@@ -12,5 +13,6 @@ export enum LocationType {
   OnibiCard,
   SankiDeck,
   SharedDeck,
-  SharedDiscardPile  
+  SharedDiscardPile,
+  TreeToken
 }

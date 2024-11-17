@@ -15,6 +15,8 @@ import { onibiCardLocator } from './OnibiCardLocator'
 import { sankiDeckLocator } from './SankiDeckLocator'
 import { sharedHelpLineLocator } from './SharedHelpLineLocator'
 import { sharedDeckLocator } from './SharedDeckLocator'
+import { treeTokenLocator } from './TreeTokenLocator'
+import { personalHelpLineLocator } from './PersonalHelpLineLocator'
 
 export const Locators: Partial<Record<LocationType, Locator<Season, MaterialType, LocationType>>> = {
   [LocationType.ClearingLine]: clearingLineLocator,
@@ -29,5 +31,7 @@ export const Locators: Partial<Record<LocationType, Locator<Season, MaterialType
   [LocationType.OnibiCard]: onibiCardLocator,
   [LocationType.SankiDeck]: sankiDeckLocator,
   [LocationType.SharedHelpLine]: sharedHelpLineLocator,
-  [LocationType.SharedDeck]: sharedDeckLocator
+  [LocationType.SharedDeck]: sharedDeckLocator,
+  [LocationType.TreeToken]: treeTokenLocator,
+  [LocationType.PersonalHelpLine]: personalHelpLineLocator
 }

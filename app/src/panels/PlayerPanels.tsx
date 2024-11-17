@@ -30,7 +30,7 @@ export const PlayerPanels = () => {
 // `
 const panelCss = css`
   position: absolute;
-  transform: translateY(50%) translateY(56em);
+  transform: translateY(50%) translateY(75em);
   width: 28em;
 `
 

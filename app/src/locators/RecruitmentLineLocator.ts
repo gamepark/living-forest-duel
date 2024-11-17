@@ -4,7 +4,7 @@ import { clearingLineLocator } from "./ClearingLineLocator";
 
 class RecruitmentLineLocator extends ListLocator {
   gap = { x: animalCardDescription.width + 1 }
-  coordinates = { y: clearingLineLocator.coordinates.y + 10 }
+  coordinates = { y: clearingLineLocator.coordinates.y + 11 }
 }
 
 export const recruitmentLineLocator = new RecruitmentLineLocator()

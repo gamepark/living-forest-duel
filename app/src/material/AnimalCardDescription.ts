@@ -113,10 +113,10 @@ class AnimalCardDescription extends CardDescription {
     [Animal.WinterVaran]: WinterVaran
   }
 
-  // isFlipped(item: Partial<MaterialItem>, context: MaterialContext) {
-  //   // if (item.location?.type === LocationType.SeasonAnimalDeck) return true
-  //   return super.isFlipped(item, context)
-  // }
+  isFlipped(item: Partial<MaterialItem>, context: MaterialContext) {
+    if (item.location?.type === LocationType.SharedDeck || item.location?.type === LocationType.SeasonAnimalDeck) return true
+    return super.isFlipped(item, context)
+  }
 
   isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext) {
     return item.location?.type === LocationType.SeasonAnimalDeck

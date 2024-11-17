@@ -101,23 +101,13 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
     }
     let filteredProperties = this.getInitialSeasonAnimalsProperties(season)
     let totalCost = this.getInitialSeasonCost(filteredProperties)
-    // TODO: Turn back the comparison to 12. 20 just for testing purposes.
-    while (totalCost <= 20) {
-      console.log("less than 12")
-      console.log(totalCost)
-      console.log(this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SeasonAnimalDeck && l.id === season).getItems())
+    while (totalCost <= 12) {
       const minCostElementId = Number(Object.keys(filteredProperties).find(key => filteredProperties[key].cost === minBy(Object.values(filteredProperties), 'cost').cost));
       const element = this.material(MaterialType.AnimalCard).id(minCostElementId).getItem()
       seasonDeck.dealOne({ type: LocationType.RecruitmentLine, x: element!.location.x })
-      // TODO: Fix this. The card needs to go to the bottom of the deck.
-      // It's working because I'm getting the card from the deck and moving to the material object, but that should not be the way to do it
-      // If this worked with the deck I'd get into an infinite loop if the first card also needs to be replaced
       this.material(MaterialType.AnimalCard).id(minCostElementId).moveItem({type: LocationType.SeasonAnimalDeck, id: season, x: 0})
-      console.log(this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SeasonAnimalDeck && l.id === season).getItems())
       filteredProperties = this.getInitialSeasonAnimalsProperties(season)
       totalCost = this.getInitialSeasonCost(filteredProperties)
-      console.log("after")
-      console.log(totalCost)
     }
 
     // Player tree area
@@ -188,9 +178,11 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
     this.material(MaterialType.AnimalCard).createItems(commonAnimals.map((animal) => ({
       id: animal, location: { type: LocationType.SharedDeck }
     })))
+
+    this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedDeck).shuffle()
   }
 
   start() {
-    this.startPlayerTurn(RuleId.TheFirstStep, this.players[0])
+    this.startPlayerTurn(RuleId.PlayerAction, this.players[0])
   }
 }
