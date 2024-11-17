@@ -3,7 +3,7 @@ import { Season } from "@gamepark/living-forest-duel/Season"
 import SummerArrow from '../images/tokens/SummerArrow.png'
 import WinterArrow from '../images/tokens/WinterArrow.png'
 
-class ActionArrowDescription extends TokenDescription {
+class ActionTokenDescription extends TokenDescription {
   width = 2.3
   height = 2.7
 
@@ -13,4 +13,4 @@ class ActionArrowDescription extends TokenDescription {
   }
 }
 
-export const actionArrowDescription = new ActionArrowDescription()
+export const actionTokenDescription = new ActionTokenDescription()

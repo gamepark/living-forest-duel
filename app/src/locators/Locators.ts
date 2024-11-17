@@ -9,6 +9,12 @@ import { treeDecksLocator } from './TreeDecksLocator'
 import { recruitmentLineLocator } from './RecruitmentLineLocator'
 import { varanDecksLocator } from './VaranDecksLocator'
 import { seasonAnimalDecksLocator } from './SeasonAnimalDecksLocator'
+import { playerTreesAreaLocator } from './PlayerTreesAreaLocator'
+import { playerActionSupplyLocator } from './PlayerActionSupplyLocator'
+import { onibiCardLocator } from './OnibiCardLocator'
+import { sankiDeckLocator } from './SankiDeckLocator'
+import { sharedHelpLineLocator } from './SharedHelpLineLocator'
+import { sharedDeckLocator } from './SharedDeckLocator'
 
 export const Locators: Partial<Record<LocationType, Locator<Season, MaterialType, LocationType>>> = {
   [LocationType.ClearingLine]: clearingLineLocator,
@@ -17,5 +23,11 @@ export const Locators: Partial<Record<LocationType, Locator<Season, MaterialType
   [LocationType.TreeDecks]: treeDecksLocator,
   [LocationType.RecruitmentLine]: recruitmentLineLocator,
   [LocationType.VaranDeck]: varanDecksLocator,
-  [LocationType.SeasonAnimalDeck]: seasonAnimalDecksLocator
+  [LocationType.SeasonAnimalDeck]: seasonAnimalDecksLocator,
+  [LocationType.PlayerTreesArea]: playerTreesAreaLocator,
+  [LocationType.PlayerActionSupply]: playerActionSupplyLocator,
+  [LocationType.OnibiCard]: onibiCardLocator,
+  [LocationType.SankiDeck]: sankiDeckLocator,
+  [LocationType.SharedHelpLine]: sharedHelpLineLocator,
+  [LocationType.SharedDeck]: sharedDeckLocator
 }

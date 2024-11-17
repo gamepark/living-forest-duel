@@ -12,27 +12,27 @@ export enum Tree {
   // 
   SummerStartingTree = 1,
   WinterStartingTree,
-  // Plant trees
-  PlantTree1 = 101,
-  PlantTree2,
-  PlantTree3,
-  PlantTree4,
-  PlantTree5,
-  PlantTree6,
   // Sun trees
-  SunTree1 = 201,
+  SunTree1 = 101,
   SunTree2,
   SunTree3,
   SunTree4,
   SunTree5,
   SunTree6,
   // Water trees
-  WaterTree1 = 301,
+  WaterTree1 = 201,
   WaterTree2,
   WaterTree3,
   WaterTree4,
   WaterTree5,
   WaterTree6,
+  // Plant trees
+  PlantTree1 = 301,
+  PlantTree2,
+  PlantTree3,
+  PlantTree4,
+  PlantTree5,
+  PlantTree6,
   // Wind trees
   WindTree1 = 401,
   WindTree2,

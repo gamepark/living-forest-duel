@@ -2,9 +2,10 @@ export enum MaterialType {
   ClearingCard = 1,
   AnimalCard,
   TreeCard,
-  SankiCard,
-  OnibiCard,
+  // SankiCard,
+  // OnibiCard,
   OnibiStandee,
   FireToken,
-  ActionToken
+  ActionToken,
+  SpiritCard
 }

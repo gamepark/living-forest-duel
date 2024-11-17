@@ -13,18 +13,33 @@ export const PlayerPanels = () => {
 
   return createPortal(
     <>
-      {players.map((player, index) =>
-        <StyledPlayerPanel key={player.id} player={player} color={playerColorCode[player.id]} css={panelPosition(index)}/>
+      {players.map((player) =>
+        <StyledPlayerPanel key={player.id} player={player} color={playerColorCode[player.id]} 
+                            css={[panelCss, player.id === Season.Summer ? left : right]}/>
+                            // css={panelPosition(index)}/>
       )}
     </>,
     root
   )
 }
-const panelPosition = (index: number) => css`
+// const panelPosition = (index: number) => css`
+//   position: absolute;
+//   right: 1em;
+//   top: ${8.5 + index * 16}em;
+//   width: 28em;
+// `
+const panelCss = css`
   position: absolute;
-  right: 1em;
-  top: ${8.5 + index * 16}em;
+  transform: translateY(50%) translateY(56em);
   width: 28em;
+`
+
+const left = css`
+  left: 0em
+`
+
+const right = css`
+  right: 0em
 `
 
 export const playerColorCode: Record<Season, string> = {

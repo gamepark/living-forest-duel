@@ -6,5 +6,11 @@ export enum LocationType {
   RecruitmentLine,
   SharedHelpLine,
   VaranDeck,
-  SeasonAnimalDeck
+  SeasonAnimalDeck,
+  PlayerTreesArea,
+  PlayerActionSupply,
+  OnibiCard,
+  SankiDeck,
+  SharedDeck,
+  SharedDiscardPile  
 }

@@ -1,4 +1,4 @@
-import { MaterialGame, MaterialMove, MaterialRules, TimeLimit } from '@gamepark/rules-api'
+import { FillGapStrategy, MaterialGame, MaterialMove, MaterialRules, TimeLimit } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Season } from './Season'
@@ -14,6 +14,12 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
   implements TimeLimit<MaterialGame<Season, MaterialType, LocationType>, MaterialMove<Season, MaterialType, LocationType>, Season> {
   rules = {
     [RuleId.TheFirstStep]: TheFirstStepRule
+  }
+
+  locationsStrategies = {
+    [MaterialType.ActionToken]: {
+      [LocationType.PlayerActionSupply]: new FillGapStrategy()
+    }
   }
 
   giveTime(): number {
