@@ -101,6 +101,7 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
     }
     let filteredProperties = this.getInitialSeasonAnimalsProperties(season)
     let totalCost = this.getInitialSeasonCost(filteredProperties)
+    // TODO: Turn back the comparison to 12. 20 just for testing purposes.
     while (totalCost <= 20) {
       console.log("less than 12")
       console.log(totalCost)
