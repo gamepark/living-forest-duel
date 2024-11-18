@@ -49,6 +49,7 @@ import Tapir from '../images/cards/animals/Tapir.jpg'
 import Tiger from '../images/cards/animals/Tiger.jpg'
 import Toucan from '../images/cards/animals/Toucan.jpg'
 import Weasel from '../images/cards/animals/Weasel.jpg'
+import Wolf from '../images/cards/animals/Wolf.jpg'
 import SummerVaran from '../images/cards/animals/VaranSummer.jpg'
 import WinterVaran from '../images/cards/animals/VaranWinter.jpg'
 import { MaterialItem } from "@gamepark/rules-api";
@@ -109,6 +110,7 @@ class AnimalCardDescription extends CardDescription {
     [Animal.Tiger]: Tiger,
     [Animal.Toucan]: Toucan,
     [Animal.Weasel]: Weasel,
+    [Animal.Wolf]: Wolf,
     [Animal.SummerVaran]: SummerVaran,
     [Animal.WinterVaran]: WinterVaran
   }
@@ -123,6 +125,11 @@ class AnimalCardDescription extends CardDescription {
       || item.location?.type === LocationType.SharedDeck
       || super.isFlippedOnTable(item, context)
   }
+
+  // getLocations(_item: MaterialItem<number, number>, _context: ItemContext<number, number, number>): Location<number, number>[] {
+  //   return elements.map(y => ({ type: LocationType.ActionToken, y: y }))
+  // }
+
 }
 
 export const animalCardDescription = new AnimalCardDescription()

@@ -9,8 +9,8 @@ class PlayerActionSupplyLocator extends ListLocator {
   
   getCoordinates(location: Location<number, number>, _context: MaterialContext<number, number, number>) {
     return {
-      x: location.id === Season.Summer ? -37 : 37,
-      y: sharedHelpLineLocator.coordinates.y
+      x: location.id === Season.Summer ? -30 : 30,
+      y: sharedHelpLineLocator.coordinates.y - 2.5
     }
   }
 }

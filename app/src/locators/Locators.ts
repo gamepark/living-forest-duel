@@ -17,6 +17,7 @@ import { sharedHelpLineLocator } from './SharedHelpLineLocator'
 import { sharedDeckLocator } from './SharedDeckLocator'
 import { treeTokenLocator } from './TreeTokenLocator'
 import { personalHelpLineLocator } from './PersonalHelpLineLocator'
+import { actionLocator } from './ActionLocator'
 
 export const Locators: Partial<Record<LocationType, Locator<Season, MaterialType, LocationType>>> = {
   [LocationType.ClearingLine]: clearingLineLocator,
@@ -33,5 +34,6 @@ export const Locators: Partial<Record<LocationType, Locator<Season, MaterialType
   [LocationType.SharedHelpLine]: sharedHelpLineLocator,
   [LocationType.SharedDeck]: sharedDeckLocator,
   [LocationType.TreeToken]: treeTokenLocator,
-  [LocationType.PersonalHelpLine]: personalHelpLineLocator
+  [LocationType.PersonalHelpLine]: personalHelpLineLocator,
+  [LocationType.ActionToken]: actionLocator
 }

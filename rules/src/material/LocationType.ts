@@ -14,5 +14,6 @@ export enum LocationType {
   SankiDeck,
   SharedDeck,
   SharedDiscardPile,
-  TreeToken
+  TreeToken,
+  ActionToken
 }

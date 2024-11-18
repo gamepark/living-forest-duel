@@ -6,9 +6,10 @@ import { MaterialType } from './material/MaterialType'
 import { Season, seasons } from './Season'
 import { RuleId } from './rules/RuleId'
 import { getTreeType, Tree, treeCards, treeTypes } from './material/Tree'
-import { Animal, animalProperties, commonAnimals, getAnimalSeason, summerAnimals, winterAnimals } from './material/Animal'
-import { minBy, sumBy } from 'lodash'
+import { Animal, commonAnimals, getAnimalSeason, summerAnimals, winterAnimals } from './material/Animal'
+import { minBy } from 'lodash'
 import { SpiritType } from './material/SpiritType'
+import { AnimalsHelper } from './rules/helpers/AnimalsHelper'
 // import { clearings } from './material/Clearing'
 
 /**
@@ -99,16 +100,20 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
       const x = season === Season.Summer ? -i : i
       seasonDeck.dealOne({ type: LocationType.RecruitmentLine, x })
     }
-    let filteredProperties = this.getInitialSeasonAnimalsProperties(season)
-    let totalCost = this.getInitialSeasonCost(filteredProperties)
+    // Check initial animals cost
+    const animalsHelper = new AnimalsHelper(this.game, season)
+    let filteredProperties = animalsHelper.getAnimalsProperties(this.getInitialSeasonAnimalsIds(season))
+    let totalCost = animalsHelper.getCostSum(filteredProperties)
     while (totalCost <= 12) {
-      const minCostElementId = Number(Object.keys(filteredProperties).find(key => filteredProperties[key].cost === minBy(Object.values(filteredProperties), 'cost').cost));
+      const minCostElementId = Number(Object.keys(filteredProperties).find(key => filteredProperties[key].cost === minBy(Object.values(filteredProperties), 'cost').cost))
       const element = this.material(MaterialType.AnimalCard).id(minCostElementId).getItem()
       seasonDeck.dealOne({ type: LocationType.RecruitmentLine, x: element!.location.x })
-      this.material(MaterialType.AnimalCard).id(minCostElementId).moveItem({type: LocationType.SeasonAnimalDeck, id: season, x: 0})
-      filteredProperties = this.getInitialSeasonAnimalsProperties(season)
-      totalCost = this.getInitialSeasonCost(filteredProperties)
+      this.material(MaterialType.AnimalCard).id(minCostElementId).moveItem({ type: LocationType.SeasonAnimalDeck, id: season, x: 0 })
+      filteredProperties = animalsHelper.getAnimalsProperties(this.getInitialSeasonAnimalsIds(season))
+      totalCost = animalsHelper.getCostSum(filteredProperties)
     }
+    // // TODO: Remove the line below. Using it just for testing purposes
+    // this.material(MaterialType.AnimalCard).location(LocationType.SeasonAnimalDeck).moveItems({type: LocationType.SharedDeck})
 
     // Player tree area
     this.material(MaterialType.TreeCard).createItem({
@@ -132,22 +137,9 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
     }
   }
 
-  getInitialSeasonAnimalsProperties(season: number) {
-    const dealtAnimalsIds = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.RecruitmentLine).getItems()
+  getInitialSeasonAnimalsIds(season: number) {
+    return this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.RecruitmentLine).getItems()
       .filter(animal => { return getAnimalSeason(animal.id) === season }).map(animal => animal.id)
-
-    const filteredProperties = Object.keys(animalProperties).reduce((acc, key) => {
-      if (dealtAnimalsIds.includes(Number(key))) {
-        acc[key] = animalProperties[Number(key) as Animal];
-      }
-      return acc;
-    }, {} as Record<string, any>);
-
-    return filteredProperties
-  }
-
-  getInitialSeasonCost(properties: Record<string, any> | ArrayLike<unknown>) {
-    return sumBy(Object.values(properties), 'cost')
   }
 
   setupSupply() {
