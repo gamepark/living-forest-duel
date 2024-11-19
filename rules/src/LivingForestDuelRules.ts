@@ -11,6 +11,7 @@ import { PlantingProtectiveTreeRule } from './rules/PlantingProtectiveTreeRule'
 import { AdvancingOnibiRule } from './rules/AdvancingOnibiRule'
 import { EndGameRule } from './rules/EndGameRule'
 import { RefillRecruitmentLineRule } from './rules/RefillRecruitmentLineRule'
+import { CustomNegativeFillGapStrategy } from './material/location/strategy/CustomNegativeFillGapStrategy'
 
 
 /**
@@ -39,7 +40,7 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
       [LocationType.SharedDeck]: new PositiveSequenceStrategy(),
       [LocationType.SharedHelpLine]: new PositiveSequenceStrategy(),
       [LocationType.PersonalHelpLine]: new PositiveSequenceStrategy(),
-      [LocationType.RecruitmentLine]: new FillGapStrategy()
+      [LocationType.RecruitmentLine]: new CustomNegativeFillGapStrategy()
     }
   }
 
