@@ -30,6 +30,15 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
     return x === 0 ? 2 : Math.abs(x) + 1
   }
 
+  beforeItemMove(move: ItemMove) {
+    const moves: MaterialMove[] = []
+    if (isMoveItemType(MaterialType.FireToken)(move)) {
+      const x = Number(this.material(move.itemType).getItem(move.itemIndex).location.x)
+      this.memorize(Memory.RemainingElementValue, this.remind(Memory.RemainingElementValue) - this.getClearingCardValue(x))
+    }
+    return moves
+  }
+
   afterItemMove(move: ItemMove) {
     const moves: MaterialMove[] = []
 
@@ -38,8 +47,6 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
       if (this.material(MaterialType.FireToken).location(l => l.type === LocationType.PlayerFireStock && l.id === this.player).getQuantity() === 8) {
         moves.push(this.startRule(RuleId.EndGame))
       } else {
-        // TODO: Fix this. The update must be the value of the previous clearing card and not -1
-        this.memorize(Memory.RemainingElementValue, this.remind(Memory.RemainingElementValue) - 1)
         moves.push(this.startRule(RuleId.ExtinguishingFire))
       }
     }
