@@ -1,3 +1,10 @@
 export enum RuleId {
-  PlayerAction = 1
+  PlayerAction = 1,
+  ExtinguishingFire,
+  RecruitingAnimals,
+  RefillRecruitmentLine,
+  PlantingProtectiveTree,
+  AdvancingOnibi,
+  CheckEndTurn,
+  EndGame
 }

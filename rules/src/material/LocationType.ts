@@ -10,6 +10,7 @@ export enum LocationType {
   SeasonAnimalDeck,
   PlayerTreesArea,
   PlayerActionSupply,
+  PlayerFireStock,
   OnibiCard,
   SankiDeck,
   SharedDeck,

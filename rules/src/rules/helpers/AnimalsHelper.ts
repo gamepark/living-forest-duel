@@ -1,10 +1,18 @@
 import { MaterialGame, MaterialRulesPart } from "@gamepark/rules-api";
 import { Animal, animalProperties, CardPattern } from "../../material/Animal";
-import { sumBy } from "lodash";
+import { minBy, sumBy } from "lodash";
 
 export class AnimalsHelper extends MaterialRulesPart {
   constructor(game: MaterialGame, readonly player?: number) {
     super(game)
+  }
+
+  getAnimalsCostSum(animalsIds: number[]) {
+    return this.getCostSum(this.getAnimalsProperties(animalsIds))
+  }
+
+  getAnimalsMinCost(animalsIds: number[]) {
+    return this.getMinCostElement(this.getAnimalsProperties(animalsIds))?.cost
   }
 
   getAnimalsProperties(animalsIds: number[]) {
@@ -18,19 +26,12 @@ export class AnimalsHelper extends MaterialRulesPart {
     return filteredProperties
   }
 
-  getAnimalsCostSum(animalsIds: number[]) {
-    return this.getCostSum(this.getAnimalsProperties(animalsIds))
-  }
-
-  // getAnimalsTypeCount(animalsIds: number[]) {
-  //   return this.getTypeCount(this.getAnimalsProperties(animalsIds))
-  // }
-
   getCostSum(properties: Partial<Record<Animal, CardPattern>>) {
     return sumBy(Object.values(properties), 'cost')
   }
 
-  // getTypeCount(properties: Partial<Record<Animal, CardPattern>>) {
-  //   return countBy(Object.values(properties), 'type')
-  // }
+  getMinCostElement(properties: Partial<Record<Animal, CardPattern>>) {
+    return minBy(Object.values(properties), 'cost')
+  }
+
 }

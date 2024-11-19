@@ -3,7 +3,14 @@ import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Season } from './Season'
 import { PlayerActionRule } from './rules/PlayerActionRule'
+import { EndTurnRule } from './rules/EndTurnRule'
 import { RuleId } from './rules/RuleId'
+import { ExtinguishingFireRule } from './rules/ExtinguishingFireRule'
+import { RecruitingAnimalsRule } from './rules/RecruitingAnimalsRule'
+import { PlantingProtectiveTreeRule } from './rules/PlantingProtectiveTreeRule'
+import { AdvancingOnibiRule } from './rules/AdvancingOnibiRule'
+import { EndGameRule } from './rules/EndGameRule'
+import { RefillRecruitmentLineRule } from './rules/RefillRecruitmentLineRule'
 
 
 /**
@@ -13,7 +20,14 @@ import { RuleId } from './rules/RuleId'
 export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, LocationType>
   implements TimeLimit<MaterialGame<Season, MaterialType, LocationType>, MaterialMove<Season, MaterialType, LocationType>, Season> {
   rules = {
-    [RuleId.PlayerAction]: PlayerActionRule
+    [RuleId.PlayerAction]: PlayerActionRule,
+    [RuleId.ExtinguishingFire]: ExtinguishingFireRule,
+    [RuleId.RecruitingAnimals]: RecruitingAnimalsRule,
+    [RuleId.RefillRecruitmentLine]: RefillRecruitmentLineRule,
+    [RuleId.PlantingProtectiveTree]: PlantingProtectiveTreeRule,
+    [RuleId.AdvancingOnibi]: AdvancingOnibiRule,
+    [RuleId.CheckEndTurn]: EndTurnRule,
+    [RuleId.EndGame]: EndGameRule
   }
 
   locationsStrategies = {
@@ -24,7 +38,8 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
       [LocationType.SeasonAnimalDeck]: new PositiveSequenceStrategy(),
       [LocationType.SharedDeck]: new PositiveSequenceStrategy(),
       [LocationType.SharedHelpLine]: new PositiveSequenceStrategy(),
-      [LocationType.PersonalHelpLine]: new PositiveSequenceStrategy
+      [LocationType.PersonalHelpLine]: new PositiveSequenceStrategy(),
+      [LocationType.RecruitmentLine]: new FillGapStrategy()
     }
   }
 
