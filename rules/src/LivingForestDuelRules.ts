@@ -40,7 +40,10 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
       [LocationType.SharedDeck]: new PositiveSequenceStrategy(),
       [LocationType.SharedHelpLine]: new PositiveSequenceStrategy(),
       [LocationType.PersonalHelpLine]: new PositiveSequenceStrategy(),
-      [LocationType.RecruitmentLine]: new CustomNegativeFillGapStrategy()
+      [LocationType.RecruitmentLine]: new CustomNegativeFillGapStrategy(),
+    },
+    [MaterialType.TreeCard]: {
+      [LocationType.TreeDeckSpot]: new PositiveSequenceStrategy()
     }
   }
 

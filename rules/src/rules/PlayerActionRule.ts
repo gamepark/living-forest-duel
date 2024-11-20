@@ -2,7 +2,7 @@ import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext
 import { MaterialType } from '../material/MaterialType'
 import { LocationType } from '../material/LocationType'
 import { Animal, animalProperties, AnimalSeason, AnimalType, CardElements, getAnimalSeason } from '../material/Animal'
-import { AnimalsHelper } from './helpers/AnimalsHelper'
+import { AnimalsHelper } from './helpers/CardsHelper'
 import { countBy } from 'lodash'
 import { Element, seasons } from '../Season'
 import { RuleId } from './RuleId'
@@ -98,6 +98,7 @@ export class PlayerActionRule extends PlayerTurnRule {
           moves.push(this.startRule(RuleId.ExtinguishingFire))
           break
         case Element.Plant:
+          this.setRemainingElementValue(Element.Plant)
           moves.push(this.startRule(RuleId.PlantingProtectiveTree))
           break
         case Element.Wind:

@@ -9,7 +9,7 @@ import { getTreeType, Tree, treeCards, treeTypes } from './material/Tree'
 import { Animal, commonAnimals, getAnimalSeason, summerAnimals, winterAnimals } from './material/Animal'
 import { minBy } from 'lodash'
 import { SpiritType } from './material/SpiritType'
-import { AnimalsHelper } from './rules/helpers/AnimalsHelper'
+import { AnimalsHelper } from './rules/helpers/CardsHelper'
 // import { clearings } from './material/Clearing'
 
 /**
@@ -24,7 +24,7 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
     this.setupRecruitment()
     this.setupPlayers()
     this.setupSupply()
-    this.setupCommonDeck()
+    this.setupSharedDeck()
   }
 
   setupClearing() {
@@ -51,16 +51,25 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
     const trees = treeCards.map(card => ({
       id: card,
       location: {
-        type: LocationType.TreeDecks,
-        id: getTreeType(card),
-        x: getTreeType(card) - 1
+        type: LocationType.TreeDeckSpot,
+        id: getTreeType(card)
       }
     }))
     this.material(MaterialType.TreeCard).createItems(trees)
+    // this.material(MaterialType.TreeCard).location(l => l.type === LocationType.TreeDeckSpot && l.id ).shuffle()
     for (const treeType of treeTypes) {
-      this.material(MaterialType.TreeCard).location(l => l.x === treeType).shuffle()
+      this.material(MaterialType.TreeCard).location(l => l.id === treeType).shuffle()
     }
   }
+
+  setupSharedDeck() {
+    this.material(MaterialType.AnimalCard).createItems(commonAnimals.map((animal) => ({
+      id: animal, location: { type: LocationType.SharedDeck }
+    })))
+
+    this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedDeck).shuffle()
+  }
+
 
   setupRecruitment() {
     this.material(MaterialType.AnimalCard).createItem({
@@ -119,7 +128,7 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
     this.material(MaterialType.TreeCard).createItem({
       id: season === Season.Summer ? Tree.SummerStartingTree : Tree.WinterStartingTree,
       location: {
-        type: LocationType.PlayerTreesArea,
+        type: LocationType.PlayerForest,
         id: season
       }
     })
@@ -164,14 +173,6 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
       },
       quantity: 3
     })
-  }
-
-  setupCommonDeck() {
-    this.material(MaterialType.AnimalCard).createItems(commonAnimals.map((animal) => ({
-      id: animal, location: { type: LocationType.SharedDeck }
-    })))
-
-    this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedDeck).shuffle()
   }
 
   start() {
