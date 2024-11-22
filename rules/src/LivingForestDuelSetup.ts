@@ -9,7 +9,7 @@ import { getTreeType, Tree, treeCards, treeTypes } from './material/Tree'
 import { Animal, commonAnimals, getAnimalSeason, summerAnimals, winterAnimals } from './material/Animal'
 import { minBy } from 'lodash'
 import { SpiritType } from './material/SpiritType'
-import { AnimalsHelper } from './rules/helpers/CardsHelper'
+import { AnimalsHelper } from './rules/helpers/AnimalsHelper'
 // import { clearings } from './material/Clearing'
 
 /**
@@ -129,7 +129,10 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
       id: season === Season.Summer ? Tree.SummerStartingTree : Tree.WinterStartingTree,
       location: {
         type: LocationType.PlayerForest,
-        id: season
+        id: season,
+        x: 0,
+        y: 0,
+        z: 0
       }
     })
 

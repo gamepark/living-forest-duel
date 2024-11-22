@@ -4,6 +4,8 @@ export enum RuleId {
   RecruitingAnimals,
   RefillRecruitmentLine,
   PlantingProtectiveTree,
+  CheckTreeBonusAction,
+  TreeBonusAction,
   AdvancingOnibi,
   CheckEndTurn,
   EndGame

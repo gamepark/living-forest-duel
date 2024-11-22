@@ -1,4 +1,4 @@
-import { getEnumValues } from "@gamepark/rules-api"
+import { Direction, getEnumValues } from "@gamepark/rules-api"
 import { Element } from "../Season"
 
 export enum TreeType {
@@ -43,11 +43,11 @@ export enum Tree {
   WindTree6
 }
 
-export type Directions = {
-  north: boolean,
-  east: boolean,
-  south: boolean,
-  west: boolean
+export type TreeDirections = {
+  [Direction.North]: boolean,
+  [Direction.East]: boolean,
+  [Direction.South]: boolean,
+  [Direction.West]: boolean
 }
 
 export type TreePattern = {
@@ -55,7 +55,7 @@ export type TreePattern = {
   cost: number,
   bonus: {
     element: Element,
-    river: Directions
+    river: TreeDirections
   }
 }
 
@@ -66,10 +66,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Water,
       river: {
-        north: false,
-        east: true,
-        south: false,
-        west: true
+        [Direction.North]: false,
+        [Direction.East]: true,
+        [Direction.South]: false,
+        [Direction.West]: true
       }
     }
   },
@@ -79,10 +79,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Wind,
       river: {
-        north: true,
-        east: false,
-        south: true,
-        west: false
+        [Direction.North]: true,
+        [Direction.East]: false,
+        [Direction.South]: true,
+        [Direction.West]: false
       }
     }
   },
@@ -92,10 +92,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Wind,
       river: {
-        north: true,
-        east: false,
-        south: true,
-        west: true
+        [Direction.North]: true,
+        [Direction.East]: false,
+        [Direction.South]: true,
+        [Direction.West]: true
       }
     }
   },
@@ -105,10 +105,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Water,
       river: {
-        north: true,
-        east: true,
-        south: true,
-        west: false
+        [Direction.North]: true,
+        [Direction.East]: true,
+        [Direction.South]: true,
+        [Direction.West]: false
       }
     }
   },
@@ -118,10 +118,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Water,
       river: {
-        north: false,
-        east: true,
-        south: true,
-        west: true
+        [Direction.North]: false,
+        [Direction.East]: true,
+        [Direction.South]: true,
+        [Direction.West]: true
       }
     }
   },
@@ -131,10 +131,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Wind,
       river: {
-        north: true,
-        east: true,
-        south: false,
-        west: true  
+        [Direction.North]: true,
+        [Direction.East]: true,
+        [Direction.South]: false,
+        [Direction.West]: true  
       }
     }
   },
@@ -144,10 +144,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Wind,
       river: {
-        north: false,
-        east: true,
-        south: false,
-        west: true
+        [Direction.North]: false,
+        [Direction.East]: true,
+        [Direction.South]: false,
+        [Direction.West]: true
       }
     }
   },
@@ -157,10 +157,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Wind,
       river: {
-        north: true,
-        east: false,
-        south: true,
-        west: false
+        [Direction.North]: true,
+        [Direction.East]: false,
+        [Direction.South]: true,
+        [Direction.West]: false
       }
     }
   },
@@ -170,10 +170,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Water,
       river: {
-        north: true,
-        east: true,
-        south: true,
-        west: false
+        [Direction.North]: true,
+        [Direction.East]: true,
+        [Direction.South]: true,
+        [Direction.West]: false
       }
     }
   },
@@ -183,10 +183,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Sun,
       river: {
-        north: true,
-        east: false,
-        south: true,
-        west: true
+        [Direction.North]: true,
+        [Direction.East]: false,
+        [Direction.South]: true,
+        [Direction.West]: true
       }
     }
   },
@@ -196,10 +196,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Wind,
       river: {
-        north: false,
-        east: true,
-        south: true,
-        west: true  
+        [Direction.North]: false,
+        [Direction.East]: true,
+        [Direction.South]: true,
+        [Direction.West]: true  
       }
     }
   },
@@ -209,10 +209,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Sun,
       river: {
-        north: true,
-        east: true,
-        south: false,
-        west: true  
+        [Direction.North]: true,
+        [Direction.East]: true,
+        [Direction.South]: false,
+        [Direction.West]: true  
       }
     }
   },
@@ -222,10 +222,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Wind,
       river: {
-        north: true,
-        east: false,
-        south: true,
-        west: false
+        [Direction.North]: true,
+        [Direction.East]: false,
+        [Direction.South]: true,
+        [Direction.West]: false
       }
     }
   },
@@ -235,10 +235,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Wind,
       river: {
-        north: false,
-        east: true,
-        south: false,
-        west: true
+        [Direction.North]: false,
+        [Direction.East]: true,
+        [Direction.South]: false,
+        [Direction.West]: true
       }
     }
   },
@@ -248,10 +248,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Sun,
       river: {
-        north: false,
-        east: false,
-        south: true,
-        west: true
+        [Direction.North]: false,
+        [Direction.East]: false,
+        [Direction.South]: true,
+        [Direction.West]: true
       }
     }
   },
@@ -261,10 +261,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Water,
       river: {
-        north: true,
-        east: true,
-        south: false,
-        west: false
+        [Direction.North]: true,
+        [Direction.East]: true,
+        [Direction.South]: false,
+        [Direction.West]: false
       }
     }
   },
@@ -274,10 +274,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Wind,
       river: {
-        north: false,
-        east: true,
-        south: true,
-        west: false  
+        [Direction.North]: false,
+        [Direction.East]: true,
+        [Direction.South]: true,
+        [Direction.West]: false  
       }
     }
   },
@@ -287,10 +287,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Wind,
       river: {
-        north: true,
-        east: false,
-        south: false,
-        west: true  
+        [Direction.North]: true,
+        [Direction.East]: false,
+        [Direction.South]: false,
+        [Direction.West]: true  
       }
     }
   },
@@ -300,10 +300,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Wind,
       river: {
-        north: true,
-        east: false,
-        south: true,
-        west: true
+        [Direction.North]: true,
+        [Direction.East]: false,
+        [Direction.South]: true,
+        [Direction.West]: true
       }
     }
   },
@@ -313,10 +313,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Wind,
       river: {
-        north: true,
-        east: true,
-        south: true,
-        west: false
+        [Direction.North]: true,
+        [Direction.East]: true,
+        [Direction.South]: true,
+        [Direction.West]: false
       }
     }
   },
@@ -326,10 +326,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Sun,
       river: {
-        north: true,
-        east: true,
-        south: false,
-        west: false
+        [Direction.North]: true,
+        [Direction.East]: true,
+        [Direction.South]: false,
+        [Direction.West]: false
       }
     }
   },
@@ -339,10 +339,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Sun,
       river: {
-        north: false,
-        east: false,
-        south: true,
-        west: true
+        [Direction.North]: false,
+        [Direction.East]: false,
+        [Direction.South]: true,
+        [Direction.West]: true
       }
     }
   },
@@ -352,10 +352,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Water,
       river: {
-        north: false,
-        east: true,
-        south: true,
-        west: false  
+        [Direction.North]: false,
+        [Direction.East]: true,
+        [Direction.South]: true,
+        [Direction.West]: false  
       }
     }
   },
@@ -365,10 +365,10 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     bonus: {
       element: Element.Water,
       river: {
-        north: false,
-        east: false,
-        south: true,
-        west: true  
+        [Direction.North]: false,
+        [Direction.East]: false,
+        [Direction.South]: true,
+        [Direction.West]: true  
       }
     }
   }

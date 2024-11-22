@@ -12,6 +12,8 @@ import { AdvancingOnibiRule } from './rules/AdvancingOnibiRule'
 import { EndGameRule } from './rules/EndGameRule'
 import { RefillRecruitmentLineRule } from './rules/RefillRecruitmentLineRule'
 import { CustomNegativeFillGapStrategy } from './material/location/strategy/CustomNegativeFillGapStrategy'
+import { TreeBonusActionRule } from './rules/TreeBonusActionRule'
+import { CheckTreeBonusActionRule } from './rules/CheckTreeBonusActionRule'
 
 
 /**
@@ -26,6 +28,8 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
     [RuleId.RecruitingAnimals]: RecruitingAnimalsRule,
     [RuleId.RefillRecruitmentLine]: RefillRecruitmentLineRule,
     [RuleId.PlantingProtectiveTree]: PlantingProtectiveTreeRule,
+    [RuleId.CheckTreeBonusAction]: CheckTreeBonusActionRule,
+    [RuleId.TreeBonusAction]: TreeBonusActionRule,
     [RuleId.AdvancingOnibi]: AdvancingOnibiRule,
     [RuleId.CheckEndTurn]: EndTurnRule,
     [RuleId.EndGame]: EndGameRule
@@ -44,6 +48,7 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
     },
     [MaterialType.TreeCard]: {
       [LocationType.TreeDeckSpot]: new PositiveSequenceStrategy()
+      // [LocationType.PlayerForest]: new PositiveSequenceStrategy()
     }
   }
 

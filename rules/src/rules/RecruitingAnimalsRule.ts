@@ -4,7 +4,7 @@ import { LocationType } from '../material/LocationType'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
-import { AnimalsHelper } from './helpers/CardsHelper'
+import { AnimalsHelper } from './helpers/AnimalsHelper'
 import { Animal, animalProperties, getAnimalSeason } from '../material/Animal'
 
 export class RecruitingAnimalsRule extends PlayerTurnRule {

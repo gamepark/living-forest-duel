@@ -2,7 +2,7 @@ import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext
 import { MaterialType } from '../material/MaterialType'
 import { LocationType } from '../material/LocationType'
 import { Animal, animalProperties, AnimalSeason, AnimalType, CardElements, getAnimalSeason } from '../material/Animal'
-import { AnimalsHelper } from './helpers/CardsHelper'
+import { AnimalsHelper } from './helpers/AnimalsHelper'
 import { countBy } from 'lodash'
 import { Element, seasons } from '../Season'
 import { RuleId } from './RuleId'
@@ -131,6 +131,7 @@ export class PlayerActionRule extends PlayerTurnRule {
 
     console.log("Computed element value: ", elementValue)
     this.memorize(Memory.RemainingElementValue, elementValue)
+    this.memorize(Memory.PlantedTrees, [])
   }
 
   drawCard(move: ItemMove<number, number, number>) {
