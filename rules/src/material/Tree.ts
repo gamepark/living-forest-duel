@@ -52,6 +52,7 @@ export type TreeDirections = {
 
 export type TreePattern = {
   element: Element,
+  elementValue: number,
   cost: number,
   bonus: {
     element: Element,
@@ -62,6 +63,7 @@ export type TreePattern = {
 export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   [Tree.SunTree1]: {
     element: Element.Sun,
+    elementValue: 1,
     cost: 1,
     bonus: {
       element: Element.Water,
@@ -75,6 +77,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.SunTree2]: {
     element: Element.Sun,
+    elementValue: 1,
     cost: 1,
     bonus: {
       element: Element.Wind,
@@ -88,6 +91,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.SunTree3]: {
     element: Element.Sun,
+    elementValue: 1,
     cost: 2,
     bonus: {
       element: Element.Wind,
@@ -101,6 +105,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.SunTree4]: {
     element: Element.Sun,
+    elementValue: 1,
     cost: 2,
     bonus: {
       element: Element.Water,
@@ -114,6 +119,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.SunTree5]: {
     element: Element.Sun,
+    elementValue: 1,
     cost: 2,
     bonus: {
       element: Element.Water,
@@ -127,6 +133,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.SunTree6]: {
     element: Element.Sun,
+    elementValue: 1,
     cost: 2,
     bonus: {
       element: Element.Wind,
@@ -140,6 +147,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WaterTree1]: {
     element: Element.Water,
+    elementValue: 1,
     cost: 2,
     bonus: {
       element: Element.Wind,
@@ -153,6 +161,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WaterTree2]: {
     element: Element.Water,
+    elementValue: 1,
     cost: 2,
     bonus: {
       element: Element.Wind,
@@ -166,6 +175,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WaterTree3]: {
     element: Element.Water,
+    elementValue: 1,
     cost: 3,
     bonus: {
       element: Element.Water,
@@ -179,6 +189,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WaterTree4]: {
     element: Element.Water,
+    elementValue: 1,
     cost: 3,
     bonus: {
       element: Element.Sun,
@@ -192,6 +203,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WaterTree5]: {
     element: Element.Water,
+    elementValue: 1,
     cost: 3,
     bonus: {
       element: Element.Wind,
@@ -205,6 +217,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WaterTree6]: {
     element: Element.Water,
+    elementValue: 1,
     cost: 3,
     bonus: {
       element: Element.Sun,
@@ -218,6 +231,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.PlantTree1]: {
     element: Element.Plant,
+    elementValue: 1,
     cost: 4,
     bonus: {
       element: Element.Wind,
@@ -231,6 +245,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.PlantTree2]: {
     element: Element.Plant,
+    elementValue: 1,
     cost: 4,
     bonus: {
       element: Element.Wind,
@@ -244,6 +259,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.PlantTree3]: {
     element: Element.Plant,
+    elementValue: 1,
     cost: 4,
     bonus: {
       element: Element.Sun,
@@ -257,6 +273,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.PlantTree4]: {
     element: Element.Plant,
+    elementValue: 1,
     cost: 4,
     bonus: {
       element: Element.Water,
@@ -270,6 +287,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.PlantTree5]: {
     element: Element.Plant,
+    elementValue: 1,
     cost: 5,
     bonus: {
       element: Element.Wind,
@@ -283,6 +301,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.PlantTree6]: {
     element: Element.Plant,
+    elementValue: 1,
     cost: 5,
     bonus: {
       element: Element.Wind,
@@ -296,6 +315,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WindTree1]: {
     element: Element.Wind,
+    elementValue: 1,
     cost: 4,
     bonus: {
       element: Element.Wind,
@@ -309,6 +329,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WindTree2]: {
     element: Element.Wind,
+    elementValue: 1,
     cost: 4,
     bonus: {
       element: Element.Wind,
@@ -322,6 +343,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WindTree3]: {
     element: Element.Wind,
+    elementValue: 1,
     cost: 3,
     bonus: {
       element: Element.Sun,
@@ -335,6 +357,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WindTree4]: {
     element: Element.Wind,
+    elementValue: 1,
     cost: 3,
     bonus: {
       element: Element.Sun,
@@ -348,6 +371,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WindTree5]: {
     element: Element.Wind,
+    elementValue: 1,
     cost: 3,
     bonus: {
       element: Element.Water,
@@ -361,6 +385,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WindTree6]: {
     element: Element.Wind,
+    elementValue: 1,
     cost: 3,
     bonus: {
       element: Element.Water,

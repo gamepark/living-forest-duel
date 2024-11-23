@@ -4,7 +4,7 @@ import { LocationType } from "../../material/LocationType";
 import { Animal, animalProperties, CardElements } from "../../material/Animal";
 import { Element } from "../../Season";
 import { Memory } from "../Memory";
-import { AnimalsHelper } from "./AnimalsHelper";
+import { Tree, treeProperties } from "../../material/Tree";
 
 export class ElementsHelper extends MaterialRulesPart {
   constructor(game: MaterialGame, readonly player?: number) {
@@ -67,9 +67,20 @@ export class ElementsHelper extends MaterialRulesPart {
       const cardProperties = animalProperties[card?.id as Animal]
       elementValue += cardProperties?.elements[Element[elementType].toLowerCase() as keyof CardElements]! ?? 0
     }
+
     // Add the personal value
-    const playerCardsids = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PersonalHelpLine && l.id === this.player).getItems().map(card => card.id)
-    elementValue += new AnimalsHelper(this.game, this.player).getAnimalsCostSum(playerCardsids)
+    const playerAnimals = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PersonalHelpLine && l.id === this.player).getItems()
+    for (const playerCard of playerAnimals) {
+      const cardProperties = animalProperties[playerCard?.id as Animal]
+      elementValue += cardProperties?.elements[Element[elementType].toLowerCase() as keyof CardElements]! ?? 0
+    }
+
+    // Add the player forest
+    const playerTrees = this.material(MaterialType.TreeCard).location(l => l.type === LocationType.PlayerForest && l.id === this.player).getItems()
+    for (const playerCard of playerTrees) {
+      const cardProperties = treeProperties[playerCard?.id as Tree]
+      elementValue += cardProperties?.element === elementType ? cardProperties?.elementValue : 0
+    }
 
     console.log("Computed element value: ", elementValue)
     return elementValue
