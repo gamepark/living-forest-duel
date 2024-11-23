@@ -25,11 +25,18 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
 
     const playerCards = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
-      .filter((animal) => getAnimalSeason(animal.id) === this.player && this.elementValue >= animalProperties[animal.id as Animal]?.cost!)
-    moves.push(...playerCards.moveItems({ type: LocationType.PersonalHelpLine, id: this.player }))
+      .filter((animal) => getAnimalSeason(animal.id) !== 0 && this.elementValue >= animalProperties[animal.id as Animal]?.cost!)
+    // moves.push(...playerCards.moveItems({ type: LocationType.PersonalHelpLine, id: this.player }))
+    moves.push(
+      ...playerCards.getItems().flatMap((card) => {
+        return [
+          ...playerCards.id(card.id).moveItems({ type: LocationType.PersonalHelpLine, id: getAnimalSeason(card.id) })
+        ]
+      })
+    )
 
     const restOfCards = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
-      .filter((animal) => getAnimalSeason(animal.id) !== this.player && this.elementValue >= animalProperties[animal.id as Animal]?.cost!)
+      .filter((animal) => getAnimalSeason(animal.id) === 0 && this.elementValue >= animalProperties[animal.id as Animal]?.cost!)
     moves.push(...restOfCards.moveItems({ type: LocationType.SharedDiscardPile }))
 
     return moves
@@ -46,7 +53,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
       } else {
         const movedCard = this.material(MaterialType.AnimalCard).index(move.itemIndex).getItem()
         this.memorize(!this.remind(Memory.BonusAction) ? Memory.RemainingElementValue : Memory.RemainingBonusElementValue, this.elementValue - animalProperties[movedCard!.id as Animal]!.cost)
-        
+
         moves.push(this.startRule(RuleId.RecruitingAnimals))
       }
     }
