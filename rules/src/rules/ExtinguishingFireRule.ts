@@ -5,22 +5,27 @@ import { Memory } from './Memory'
 import { LocationType } from '../material/LocationType'
 
 export class ExtinguishingFireRule extends PlayerTurnRule {
- 
+  elementValue = !this.remind(Memory.BonusAction) ? this.remind(Memory.RemainingElementValue) : this.remind(Memory.RemainingBonusElementValue)
+
   onRuleStart() {
     const totalAvailableFireTokens = this.material(MaterialType.FireToken).location(LocationType.ClearingCardSpot)
-      .filter((token) => this.remind(Memory.RemainingElementValue) >= this.getClearingCardValue(token.location.x!)).getQuantity()
+      .filter((token) => this.elementValue >= this.getClearingCardValue(token.location.x!)).getQuantity()
 
     if (totalAvailableFireTokens === 0) {
-      return [this.startPlayerTurn(RuleId.PlayerAction,this.nextPlayer)]
+      if (!this.remind(Memory.BonusAction)) {
+        return [this.startPlayerTurn(RuleId.PlayerAction,this.nextPlayer)]
+      } else {
+        return[this.startRule(RuleId.TreeBonusAction)]
+      }
     }
-    
+
     return []
   }
 
   getPlayerMoves() {
     const moves: MaterialMove[] = []
     const availableFireTokens = this.material(MaterialType.FireToken).location(LocationType.ClearingCardSpot)
-      .filter((token) => this.remind(Memory.RemainingElementValue) >= this.getClearingCardValue(token.location.x!))    
+      .filter((token) => this.elementValue >= this.getClearingCardValue(token.location.x!))    
     moves.push(...availableFireTokens.moveItems({type: LocationType.PlayerFireStock, id: this.player}))
 
     return moves
@@ -34,7 +39,8 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
     if (isMoveItemType(MaterialType.FireToken)(move)) {
       const x = Number(this.material(move.itemType).getItem(move.itemIndex).location.x)
-      this.memorize(Memory.RemainingElementValue, this.remind(Memory.RemainingElementValue) - this.getClearingCardValue(x))
+      this.memorize(!this.remind(Memory.BonusAction) ? Memory.RemainingElementValue : Memory.RemainingBonusElementValue, this.elementValue - this.getClearingCardValue(x))
+      // this.memorize(Memory.RemainingElementValue, )
     }
     return moves
   }

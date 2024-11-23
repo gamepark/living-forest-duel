@@ -16,7 +16,8 @@ export class TreeBonusActionRule extends PlayerTurnRule {
         case Element.Plant:
           return [this.startRule(RuleId.PlantingProtectiveTree)]
         case Element.Water:
-          return [this.startRule(RuleId.PlantingProtectiveTree)]
+          new ElementsHelper(this.game, this.player).setRemainingBonusElementValue(Element.Water)
+          return [this.startRule(RuleId.ExtinguishingFire)]
         case Element.Wind:
           return [this.startRule(RuleId.PlantingProtectiveTree)]
         default:
