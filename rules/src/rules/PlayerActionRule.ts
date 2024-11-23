@@ -7,6 +7,7 @@ import { countBy } from 'lodash'
 import { Element, seasons } from '../Season'
 import { RuleId } from './RuleId'
 import { Memory } from './Memory'
+import { ElementsHelper } from './helpers/ElementsHelper'
 
 export class PlayerActionRule extends PlayerTurnRule {
   onRuleStart() {
@@ -88,17 +89,19 @@ export class PlayerActionRule extends PlayerTurnRule {
       moves.push(...this.drawCard(move))
       moves.push(this.startRule(RuleId.CheckEndTurn))
     } else if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.ActionToken) {
+      this.memorize(Memory.PlantedTrees, [])
+      this.memorize(Memory.BonusAction, false)
       switch(move.location.y) {
         case Element.Sun:
-          this.setRemainingElementValue(Element.Sun)
+          new ElementsHelper(this.game, this.player).setRemainingElementValue(Element.Sun)
           moves.push(this.startRule(RuleId.RecruitingAnimals))
           break
         case Element.Water:
-          this.setRemainingElementValue(Element.Water)
+          new ElementsHelper(this.game, this.player).setRemainingElementValue(Element.Water)
           moves.push(this.startRule(RuleId.ExtinguishingFire))
           break
         case Element.Plant:
-          this.setRemainingElementValue(Element.Plant)
+          new ElementsHelper(this.game, this.player).setRemainingElementValue(Element.Plant)
           moves.push(this.startRule(RuleId.PlantingProtectiveTree))
           break
         case Element.Wind:
@@ -111,28 +114,28 @@ export class PlayerActionRule extends PlayerTurnRule {
     return moves
   }
 
-  setRemainingElementValue(elementType: Element) {
-    let elementValue = 0
+  // setRemainingElementValue(elementType: Element) {
+  //   let elementValue = 0
 
-    const tokensLocations = this.material(MaterialType.ActionToken)
-      .location(l => l.type === LocationType.ActionToken && l.y === elementType)
-      .getItems()
-      .sort((a,b) => b.location.x! - a.location.x!)
-    const tokenLocationX = tokensLocations[0].location.x
-    const previousTokenLocationX = tokensLocations[1]?.location.x ?? -1
-    for (let x = tokenLocationX!; x > previousTokenLocationX; x--) {
-      const card = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine && l.x === x).getItem()
-      const cardProperties = animalProperties[card?.id as Animal]
-      elementValue += cardProperties?.elements[Element[elementType].toLowerCase() as keyof CardElements]! ?? 0
-    }
-    // Add the personal value
-    const playerCardsids = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PersonalHelpLine && l.id === this.player).getItems().map(card => card.id)
-    elementValue += new AnimalsHelper(this.game, this.player).getAnimalsCostSum(playerCardsids)
+  //   const tokensLocations = this.material(MaterialType.ActionToken)
+  //     .location(l => l.type === LocationType.ActionToken && l.y === elementType)
+  //     .getItems()
+  //     .sort((a,b) => b.location.x! - a.location.x!)
+  //   const tokenLocationX = tokensLocations[0].location.x
+  //   const previousTokenLocationX = tokensLocations[1]?.location.x ?? -1
+  //   for (let x = tokenLocationX!; x > previousTokenLocationX; x--) {
+  //     const card = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine && l.x === x).getItem()
+  //     const cardProperties = animalProperties[card?.id as Animal]
+  //     elementValue += cardProperties?.elements[Element[elementType].toLowerCase() as keyof CardElements]! ?? 0
+  //   }
+  //   // Add the personal value
+  //   const playerCardsids = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PersonalHelpLine && l.id === this.player).getItems().map(card => card.id)
+  //   elementValue += new AnimalsHelper(this.game, this.player).getAnimalsCostSum(playerCardsids)
 
-    console.log("Computed element value: ", elementValue)
-    this.memorize(Memory.RemainingElementValue, elementValue)
-    this.memorize(Memory.PlantedTrees, [])
-  }
+  //   console.log("Computed element value: ", elementValue)
+  //   this.memorize(Memory.RemainingElementValue, elementValue)
+  //   this.memorize(Memory.PlantedTrees, [])
+  // }
 
   drawCard(move: ItemMove<number, number, number>) {
     const moves: MaterialMove[] = []

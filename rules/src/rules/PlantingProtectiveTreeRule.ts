@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { directions, isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { TreesHelper } from './helpers/TreesHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
@@ -47,7 +47,24 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
 
       // Update remaining value
       this.memorize(Memory.RemainingElementValue, this.remind(Memory.RemainingElementValue) - treeProperties[movedCard!.id as Tree]!.cost)
+
+      // Check possible bonuses
+      const treesHelper = new TreesHelper(this.game, this.player)      
+      const bonuses = []
+      for (const direction of directions) {
+        if (treesHelper.hasTreeBonusInDirection(movedCard, direction)) {
+          bonuses.push(treeProperties[movedCard.id as Tree]?.bonus.element)
+        }
+      }
+  
+      if (bonuses.length > 0) {
+        this.memorize(Memory.RemainingBonuses, bonuses)
+        return [this.startRule(RuleId.TreeBonusAction)]
+      } else {
+        return [this.startRule(RuleId.PlantingProtectiveTree)]
+      }  
     }
-    return [this.startRule(RuleId.CheckTreeBonusAction)]
+    
+    return []
   }
 }

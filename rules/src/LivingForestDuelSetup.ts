@@ -10,7 +10,6 @@ import { Animal, commonAnimals, getAnimalSeason, summerAnimals, winterAnimals } 
 import { minBy } from 'lodash'
 import { SpiritType } from './material/SpiritType'
 import { AnimalsHelper } from './rules/helpers/AnimalsHelper'
-// import { clearings } from './material/Clearing'
 
 /**
  * This class creates a new Game based on the game options
