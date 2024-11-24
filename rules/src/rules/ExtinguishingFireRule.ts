@@ -3,6 +3,7 @@ import { MaterialType } from '../material/MaterialType'
 import { RuleId } from './RuleId'
 import { Memory } from './Memory'
 import { LocationType } from '../material/LocationType'
+import { Element } from '../Season'
 
 export class ExtinguishingFireRule extends PlayerTurnRule {
   elementValue = !this.remind(Memory.BonusAction) ? this.remind(Memory.RemainingElementValue) : this.remind(Memory.RemainingBonusElementValue)
@@ -15,7 +16,7 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
       if (!this.remind(Memory.BonusAction)) {
         return [this.startPlayerTurn(RuleId.PlayerAction,this.nextPlayer)]
       } else {
-        return[this.startRule(RuleId.TreeBonusAction)]
+        return[this.startRule(this.remind(Memory.BonusAction) === Element.Plant ? RuleId.TreeBonusAction : RuleId.OnibiBonusAction)]
       }
     }
 

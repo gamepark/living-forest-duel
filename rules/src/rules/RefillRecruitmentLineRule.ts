@@ -3,6 +3,7 @@ import { RuleId } from './RuleId'
 import { MaterialType } from '../material/MaterialType'
 import { LocationType } from '../material/LocationType'
 import { Memory } from './Memory'
+import { Element } from '../Season'
 
 export class RefillRecruitmentLineRule extends PlayerTurnRule {
 
@@ -14,7 +15,7 @@ export class RefillRecruitmentLineRule extends PlayerTurnRule {
     if (!this.remind(Memory.BonusAction)) {
       moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
     } else {
-      moves.push(this.startRule(RuleId.TreeBonusAction))
+      moves.push(this.startRule(this.remind(Memory.BonusAction) === Element.Plant ? RuleId.TreeBonusAction : RuleId.OnibiBonusAction))
     }
 
     return moves

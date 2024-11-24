@@ -13,6 +13,7 @@ import { EndGameRule } from './rules/EndGameRule'
 import { RefillRecruitmentLineRule } from './rules/RefillRecruitmentLineRule'
 import { CustomNegativeFillGapStrategy } from './material/location/strategy/CustomNegativeFillGapStrategy'
 import { TreeBonusActionRule } from './rules/TreeBonusActionRule'
+import { OnibiBonusActionRule } from './rules/OnibiBonusActionRule'
 
 /**
  * This class implements the rules of the board game.
@@ -26,8 +27,9 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
     [RuleId.RecruitingAnimals]: RecruitingAnimalsRule,
     [RuleId.RefillRecruitmentLine]: RefillRecruitmentLineRule,
     [RuleId.PlantingProtectiveTree]: PlantingProtectiveTreeRule,
-    [RuleId.TreeBonusAction]: TreeBonusActionRule,
     [RuleId.AdvancingOnibi]: AdvancingOnibiRule,
+    [RuleId.TreeBonusAction]: TreeBonusActionRule,
+    [RuleId.OnibiBonusAction]: OnibiBonusActionRule,
     [RuleId.CheckEndTurn]: EndTurnRule,
     [RuleId.EndGame]: EndGameRule
   }

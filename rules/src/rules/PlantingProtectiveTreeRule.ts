@@ -52,7 +52,7 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
       const treesHelper = new TreesHelper(this.game, this.player)      
       const bonuses = []
       for (const direction of directions) {
-        if (treesHelper.hasTreeBonusInDirection(movedCard, direction)) {
+        if (treesHelper.hasBonusInDirection(movedCard, direction)) {
           bonuses.push(treeProperties[movedCard.id as Tree]?.bonus.element)
         }
       }

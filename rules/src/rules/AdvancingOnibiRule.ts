@@ -5,6 +5,7 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Season } from '../Season'
 import { SpiritType } from '../material/SpiritType'
+import { Clearing, clearingProperties } from '../material/Clearing'
 // import { Season } from '../Season'
 
 export class AdvancingOnibiRule extends PlayerTurnRule {
@@ -41,6 +42,7 @@ export class AdvancingOnibiRule extends PlayerTurnRule {
   beforeItemMove(move: ItemMove<number, number, number>) {
     const moves: MaterialMove[] = []
     if (isMoveItemType(MaterialType.OnibiStandee)(move)) {
+      let win = false
       if ((this.player === Season.Summer && move.location.x! <= this.material(MaterialType.OnibiStandee).getItem()?.location.x!)
         || (this.player === Season.Winter && move.location.x! >= this.material(MaterialType.OnibiStandee).getItem()?.location.x!) ) {
           const onibiCard = this.material(MaterialType.SpiritCard).id(SpiritType.Onibi)
@@ -48,12 +50,14 @@ export class AdvancingOnibiRule extends PlayerTurnRule {
           if (onibiLocation?.type === LocationType.OnibiCard) {
             moves.push(onibiCard.moveItem({type: LocationType.PlayerSpiritLine, id: this.player === Season.Summer ? Season.Winter : Season.Summer}))
           } else if (onibiLocation?.type === LocationType.PlayerSpiritLine && onibiLocation?.id === this.player) {
-            moves.push(onibiCard.moveItem({type: LocationType.OnibiCard}))
-          } else  if (onibiLocation?.type === LocationType.PlayerSpiritLine && onibiLocation?.id !== this.player) {
-            // Winning condition
-            moves.push(this.startRule(RuleId.EndGame))
+            moves.push(onibiCard.moveItem({type: LocationType.OnibiCard}))            
+          } else  if (onibiLocation?.type === LocationType.PlayerSpiritLine && onibiLocation?.id !== this.player) { // Winning condition
+            win = true
           }
       }
+
+      this.memorize(Memory.RemainingBonuses, [clearingProperties[move.location.x! as Clearing]])
+      moves.push(win ? this.startRule(RuleId.EndGame) : this.startRule(RuleId.OnibiBonusAction))
     }
     return moves
   }

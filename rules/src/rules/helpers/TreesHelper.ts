@@ -154,7 +154,7 @@ export class TreesHelper extends MaterialRulesPart {
     return false
   }
 
-  hasTreeBonusInDirection(tree: MaterialItem, direction: Direction) {
+  hasBonusInDirection(tree: MaterialItem, direction: Direction) {
     const neighborDelta = { x: CardinalLocations[direction].x, y: CardinalLocations[direction].y }
     const neighbor = this.material(MaterialType.TreeCard)
       .location(l => l.type === LocationType.PlayerForest && l.id === this.player && l.x === tree.location.x! + neighborDelta.x && l.y === tree.location.y! + neighborDelta.y )

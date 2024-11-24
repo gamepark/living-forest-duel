@@ -90,7 +90,7 @@ export class PlayerActionRule extends PlayerTurnRule {
       moves.push(this.startRule(RuleId.CheckEndTurn))
     } else if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.ActionToken) {
       this.memorize(Memory.PlantedTrees, [])
-      this.memorize(Memory.BonusAction, false)
+      this.memorize(Memory.BonusAction, 0)
       switch(move.location.y) {
         case Element.Sun:
           new ElementsHelper(this.game, this.player).setRemainingElementValue(Element.Sun)

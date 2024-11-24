@@ -1,32 +1,6 @@
-import { PlayerTurnRule } from '@gamepark/rules-api'
-import { Memory } from './Memory'
-import { RuleId } from './RuleId'
 import { Element } from '../Season'
-import { ElementsHelper } from './helpers/ElementsHelper'
+import { BonusActionRule } from './BonusActionRule'
 
-export class TreeBonusActionRule extends PlayerTurnRule {
-  onRuleStart() {
-    const bonus = this.remind(Memory.RemainingBonuses).pop()
-    if (bonus !== undefined) {
-      this.memorize(Memory.BonusAction, true)
-      switch (bonus) {
-        case Element.Sun:
-          new ElementsHelper(this.game, this.player).setRemainingBonusElementValue(Element.Sun)
-          return [this.startRule(RuleId.RecruitingAnimals)]
-        case Element.Plant:
-          return [this.startRule(RuleId.PlantingProtectiveTree)]
-        case Element.Water:
-          new ElementsHelper(this.game, this.player).setRemainingBonusElementValue(Element.Water)
-          return [this.startRule(RuleId.ExtinguishingFire)]
-        case Element.Wind:
-          return [this.startRule(RuleId.PlantingProtectiveTree)]
-        default:
-          return []
-      }
-      
-    } else {
-      this.memorize(Memory.BonusAction, false)
-      return [this.startRule(RuleId.PlantingProtectiveTree)]
-    }
-  }
+export class TreeBonusActionRule extends BonusActionRule {
+  bonusRule = Element.Plant
 }
