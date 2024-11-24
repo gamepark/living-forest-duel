@@ -26,11 +26,10 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
 
     const playerCards = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
       .filter((animal) => getAnimalSeason(animal.id) !== 0 && this.elementValue >= animalProperties[animal.id as Animal]?.cost!)
-    // moves.push(...playerCards.moveItems({ type: LocationType.PersonalHelpLine, id: this.player }))
     moves.push(
       ...playerCards.getItems().flatMap((card) => {
         return [
-          ...playerCards.id(card.id).moveItems({ type: LocationType.PersonalHelpLine, id: getAnimalSeason(card.id) })
+          ...playerCards.id(card.id).moveItems({ type: LocationType.PlayerHelpLine, id: getAnimalSeason(card.id) })
         ]
       })
     )
@@ -45,7 +44,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
   afterItemMove(move: ItemMove) {
     const moves: MaterialMove[] = []
 
-    if (isMoveItemType(MaterialType.AnimalCard)(move) && (move.location.type === LocationType.PersonalHelpLine || move.location.type === LocationType.SharedDiscardPile)) {
+    if (isMoveItemType(MaterialType.AnimalCard)(move) && (move.location.type === LocationType.PlayerHelpLine || move.location.type === LocationType.SharedDiscardPile)) {
       // Check winning condition
       if (this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine)
         .filter((animal) => getAnimalSeason(animal.id) !== this.player).getQuantity() === 0) {

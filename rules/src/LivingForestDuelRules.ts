@@ -40,12 +40,15 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
       [LocationType.SeasonAnimalDeck]: new PositiveSequenceStrategy(),
       [LocationType.SharedDeck]: new PositiveSequenceStrategy(),
       [LocationType.SharedHelpLine]: new PositiveSequenceStrategy(),
-      [LocationType.PersonalHelpLine]: new PositiveSequenceStrategy(),
+      [LocationType.PlayerHelpLine]: new PositiveSequenceStrategy(),
       [LocationType.RecruitmentLine]: new CustomNegativeFillGapStrategy(),
     },
     [MaterialType.TreeCard]: {
       [LocationType.TreeDeckSpot]: new PositiveSequenceStrategy()
       // [LocationType.PlayerForest]: new PositiveSequenceStrategy()
+    },
+    [MaterialType.SpiritCard]: {
+      [LocationType.SankiDeck]: new PositiveSequenceStrategy()
     }
   }
 

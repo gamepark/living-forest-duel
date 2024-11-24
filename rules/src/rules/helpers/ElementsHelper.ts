@@ -26,7 +26,7 @@ export class ElementsHelper extends MaterialRulesPart {
     //   elementValue += cardProperties?.elements[Element[elementType].toLowerCase() as keyof CardElements]! ?? 0
     // }
     // // Add the personal value
-    // const playerCardsids = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PersonalHelpLine && l.id === this.player).getItems().map(card => card.id)
+    // const playerCardsids = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PlayerHelpLine && l.id === this.player).getItems().map(card => card.id)
     // elementValue += new AnimalsHelper(this.game, this.player).getAnimalsCostSum(playerCardsids)
 
     this.memorize(Memory.RemainingElementValue, this.getElementValue(elementType))
@@ -47,7 +47,7 @@ export class ElementsHelper extends MaterialRulesPart {
     //   elementValue += cardProperties?.elements[Element[elementType].toLowerCase() as keyof CardElements]! ?? 0
     // }
     // // Add the personal value
-    // const playerCardsids = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PersonalHelpLine && l.id === this.player).getItems().map(card => card.id)
+    // const playerCardsids = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PlayerHelpLine && l.id === this.player).getItems().map(card => card.id)
     // elementValue += new AnimalsHelper(this.game, this.player).getAnimalsCostSum(playerCardsids)
 
     this.memorize(Memory.RemainingBonusElementValue, this.getElementValue(elementType))
@@ -69,7 +69,7 @@ export class ElementsHelper extends MaterialRulesPart {
     }
 
     // Add the personal value
-    const playerAnimals = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PersonalHelpLine && l.id === this.player).getItems()
+    const playerAnimals = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PlayerHelpLine && l.id === this.player).getItems()
     for (const playerCard of playerAnimals) {
       const cardProperties = animalProperties[playerCard?.id as Animal]
       elementValue += cardProperties?.elements[Element[elementType].toLowerCase() as keyof CardElements]! ?? 0

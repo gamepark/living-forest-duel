@@ -85,7 +85,7 @@ export class PlayerActionRule extends PlayerTurnRule {
 
   afterItemMove(move: ItemMove<number, number, number>, _context?: PlayMoveContext) {
     const moves: MaterialMove[] = []
-    if (isMoveItemType(MaterialType.AnimalCard)(move) && move.location.type !== LocationType.PersonalHelpLine) {
+    if (isMoveItemType(MaterialType.AnimalCard)(move) && move.location.type !== LocationType.PlayerHelpLine) {
       moves.push(...this.drawCard(move))
       moves.push(this.startRule(RuleId.CheckEndTurn))
     } else if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.ActionToken) {
@@ -105,6 +105,7 @@ export class PlayerActionRule extends PlayerTurnRule {
           moves.push(this.startRule(RuleId.PlantingProtectiveTree))
           break
         case Element.Wind:
+          new ElementsHelper(this.game, this.player).setRemainingElementValue(Element.Wind)
           moves.push(this.startRule(RuleId.AdvancingOnibi))
           break
       }
@@ -129,7 +130,7 @@ export class PlayerActionRule extends PlayerTurnRule {
   //     elementValue += cardProperties?.elements[Element[elementType].toLowerCase() as keyof CardElements]! ?? 0
   //   }
   //   // Add the personal value
-  //   const playerCardsids = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PersonalHelpLine && l.id === this.player).getItems().map(card => card.id)
+  //   const playerCardsids = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PlayerHelpLine && l.id === this.player).getItems().map(card => card.id)
   //   elementValue += new AnimalsHelper(this.game, this.player).getAnimalsCostSum(playerCardsids)
 
   //   console.log("Computed element value: ", elementValue)
@@ -143,7 +144,7 @@ export class PlayerActionRule extends PlayerTurnRule {
       const movedAnimal = this.material(MaterialType.AnimalCard).getItem(move.itemIndex)
       if (getAnimalSeason(movedAnimal.id) !== AnimalSeason.Common && movedAnimal.id !== Animal.Stag) {
         const animalSeason = getAnimalSeason(movedAnimal.id)
-        moves.push(this.material(MaterialType.AnimalCard).id(movedAnimal.id).moveItem({ type: LocationType.PersonalHelpLine, id: animalSeason }))
+        moves.push(this.material(MaterialType.AnimalCard).id(movedAnimal.id).moveItem({ type: LocationType.PlayerHelpLine, id: animalSeason }))
       }
       const movedAnimalProperties = animalProperties[movedAnimal.id as Animal]
       if (movedAnimalProperties?.type === AnimalType.Solitary) {
@@ -165,7 +166,7 @@ export class PlayerActionRule extends PlayerTurnRule {
 
   checkTooManySolitaryAnimals(season: number) {
     const animalsIds = this.material(MaterialType.AnimalCard)
-      .location(l => l.type === LocationType.SharedHelpLine || l.type === LocationType.PersonalHelpLine)
+      .location(l => l.type === LocationType.SharedHelpLine || l.type === LocationType.PlayerHelpLine)
       .filter(animal => [AnimalSeason.Common, season].includes(getAnimalSeason(animal.id)))
       .getItems().map(animal => animal.id)
     const animalsProperties = new AnimalsHelper(this.game, this.player).getAnimalsProperties(animalsIds)

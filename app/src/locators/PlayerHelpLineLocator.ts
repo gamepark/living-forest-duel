@@ -5,7 +5,7 @@ import { Season } from "@gamepark/living-forest-duel/Season"
 import { sharedDeckLocator } from "./SharedDeckLocator"
 import { sharedHelpLineLocator } from "./SharedHelpLineLocator"
 
-class PersonalHelpLineLocator extends ListLocator {
+class PlayerHelpLineLocator extends ListLocator {
   gap = { x: animalCardDescription.width + 1 }
   maxCount = 3
   
@@ -17,4 +17,4 @@ class PersonalHelpLineLocator extends ListLocator {
   }
 }
 
-export const personalHelpLineLocator = new PersonalHelpLineLocator()
+export const playerHelpLineLocator = new PlayerHelpLineLocator()
