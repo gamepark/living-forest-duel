@@ -5,13 +5,17 @@ import { RuleId } from './RuleId'
 import { MaterialType } from '../material/MaterialType'
 import { LocationType } from '../material/LocationType'
 import { Tree, treeProperties } from '../material/Tree'
+import { range } from 'lodash'
 
 export class PlantingProtectiveTreeRule extends PlayerTurnRule {
+  elementValue = !this.remind(Memory.BonusAction) ? this.remind(Memory.RemainingElementValue) : this.remind(Memory.RemainingBonusElementValue)
+
   onRuleStart() {
     if (this.getPlayerMoves().length === 0) {
-      return [this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer)]
+      return [this.startRule(RuleId.CheckEndTurn)]
+      // return [this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer)]
     }
-    
+
     this.memorize(Memory.RemainingBonuses, [])
     return []
   }
@@ -36,35 +40,103 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
     return moves
   }
 
-  beforeItemMove(move: ItemMove<number, number, number>) {
-    // Remember the types planted because we can only take one of each type
+  // beforeItemMove(move: ItemMove<number, number, number>) {
+  //   if (isMoveItemType(MaterialType.TreeCard)(move) && move.location.type === LocationType.PlayerForest) {
+  //     const movedCard = this.material(move.itemType).getItem(move.itemIndex)
+
+  //     // Remember the types planted because we can only take one of each type
+  //     const plantedTrees = this.remind(Memory.PlantedTrees)
+  //     plantedTrees.push(movedCard.id)
+  //     this.memorize(Memory.PlantedTrees, plantedTrees)
+
+  //     // Update remaining value
+  //     this.memorize(Memory.RemainingElementValue, this.elementValue - treeProperties[movedCard!.id as Tree]!.cost)
+
+  //     // Check possible bonuses
+  //     const treesHelper = new TreesHelper(this.game, this.player)      
+  //     const bonuses = []
+  //     for (const direction of directions) {
+  //       if (treesHelper.hasBonusInDirection(movedCard, direction)) {
+  //         bonuses.push(treeProperties[movedCard.id as Tree]?.bonus.element)
+  //       }
+  //     }
+
+  //     if (bonuses.length > 0) {
+  //       this.memorize(Memory.RemainingBonuses, bonuses)
+  //       return [this.startRule(RuleId.TreeBonusAction)]
+  //     } else {
+  //       return [this.startRule(RuleId.PlantingProtectiveTree)]
+  //     }  
+  //   }
+
+  //   return []
+  // }
+
+  afterItemMove(move: ItemMove<number, number, number>) {
     if (isMoveItemType(MaterialType.TreeCard)(move) && move.location.type === LocationType.PlayerForest) {
       const movedCard = this.material(move.itemType).getItem(move.itemIndex)
 
-      const plantedTrees = this.remind(Memory.PlantedTrees)
-      plantedTrees.push(movedCard.id)
-      this.memorize(Memory.PlantedTrees, plantedTrees)
+      // Check winning condition
+      if (this.isPlantWinningCondition()) {
+        return [this.startRule(RuleId.EndGame)]
+      } else {
+        // Remember the types planted because we can only take one of each type
+        const plantedTrees = this.remind(Memory.PlantedTrees)
+        plantedTrees.push(movedCard.id)
+        this.memorize(Memory.PlantedTrees, plantedTrees)
 
-      // Update remaining value
-      this.memorize(Memory.RemainingElementValue, this.remind(Memory.RemainingElementValue) - treeProperties[movedCard!.id as Tree]!.cost)
+        // Update remaining value
+        this.memorize(Memory.RemainingElementValue, this.elementValue - treeProperties[movedCard!.id as Tree]!.cost)
 
-      // Check possible bonuses
-      const treesHelper = new TreesHelper(this.game, this.player)      
-      const bonuses = []
-      for (const direction of directions) {
-        if (treesHelper.hasBonusInDirection(movedCard, direction)) {
-          bonuses.push(treeProperties[movedCard.id as Tree]?.bonus.element)
+        // Check possible bonuses
+        const treesHelper = new TreesHelper(this.game, this.player)
+        const bonuses = []
+        for (const direction of directions) {
+          if (treesHelper.hasBonusInDirection(movedCard, direction)) {
+            bonuses.push(treeProperties[movedCard.id as Tree]?.bonus.element)
+          }
+        }
+
+        if (bonuses.length > 0) {
+          this.memorize(Memory.RemainingBonuses, bonuses)
+          return [this.startRule(RuleId.TreeBonusAction)]
+        } else {
+          return [this.startRule(RuleId.PlantingProtectiveTree)]
         }
       }
-  
-      if (bonuses.length > 0) {
-        this.memorize(Memory.RemainingBonuses, bonuses)
-        return [this.startRule(RuleId.TreeBonusAction)]
-      } else {
-        return [this.startRule(RuleId.PlantingProtectiveTree)]
-      }  
     }
-    
+
     return []
   }
+
+  isPlantWinningCondition() {
+    const trees = this.material(MaterialType.TreeCard).location(LocationType.PlayerForest).id(this.player).getItems()
+    if (trees.length < 9) {  // Not enough for a 3x3 matrix
+      return false
+    }
+
+    // Matrix limits
+    const xMin = Math.min(...trees.map(x => x.location.x!))
+    const xMax = Math.max(...trees.map(x => x.location.x!))
+    const yMin = Math.min(...trees.map(y => y.location.y!))
+    const yMax = Math.max(...trees.map(y => y.location.y!))
+
+    // Container matrix
+    const rows = yMax - yMin + 1
+    const cols = xMax - xMin + 1
+    const matrix: boolean[][] = Array.from({ length: rows }, () => Array(cols).fill(false))
+
+    trees.forEach(({ location }) => {
+      matrix[location.y! - yMin][location.x! - xMin] = true
+    })
+
+    return matrix.some((_, row) =>
+      row <= rows - 3 && matrix[row].some((_, col) =>
+        col <= cols - 3 && range(0, 3).every(i =>
+          range(0, 3).every(j => matrix[row + i][col + j])
+        )
+      )
+    )
+  }
+
 }

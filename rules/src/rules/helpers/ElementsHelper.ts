@@ -12,14 +12,14 @@ export class ElementsHelper extends MaterialRulesPart {
   }
 
   setRemainingElementValue(elementType: Element) {
-    this.memorize(Memory.RemainingElementValue, this.getElementValue(elementType))
+    this.memorize(Memory.RemainingElementValue, this.getElementValue(elementType, this.player))
   }
 
   setRemainingBonusElementValue(elementType: Element) {
-    this.memorize(Memory.RemainingBonusElementValue, this.getElementValue(elementType))
+    this.memorize(Memory.RemainingBonusElementValue, this.getElementValue(elementType, this.player))
   }
 
-  getElementValue(elementType: Element) {
+  getElementValue(elementType: Element, player: number | undefined) {
     let elementValue = 0
 
     const tokensLocations = this.material(MaterialType.ActionToken)
@@ -35,14 +35,14 @@ export class ElementsHelper extends MaterialRulesPart {
     }
 
     // Add the personal value
-    const playerAnimals = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PlayerHelpLine && l.id === this.player).getItems()
+    const playerAnimals = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PlayerHelpLine && l.id === player).getItems()
     for (const playerCard of playerAnimals) {
       const cardProperties = animalProperties[playerCard?.id as Animal]
       elementValue += cardProperties?.elements[Element[elementType].toLowerCase() as keyof CardElements]! ?? 0
     }
 
     // Add the player forest
-    const playerTrees = this.material(MaterialType.TreeCard).location(l => l.type === LocationType.PlayerForest && l.id === this.player).getItems()
+    const playerTrees = this.material(MaterialType.TreeCard).location(l => l.type === LocationType.PlayerForest && l.id === player).getItems()
     for (const playerCard of playerTrees) {
       const cardProperties = treeProperties[playerCard?.id as Tree]
       elementValue += cardProperties?.element === elementType ? cardProperties?.elementValue : 0

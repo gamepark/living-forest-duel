@@ -13,7 +13,8 @@ export class RefillRecruitmentLineRule extends PlayerTurnRule {
     const totalCardsInRecruitmentLine = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine).getQuantity()
     moves.push(...playerDeck.deal({ type: LocationType.RecruitmentLine }, 7 - totalCardsInRecruitmentLine))
     if (!this.remind(Memory.BonusAction)) {
-      moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
+      // moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
+      moves.push(this.startRule(RuleId.CheckEndTurn))
     } else {
       moves.push(this.startRule(this.remind(Memory.BonusAction) === Element.Plant ? RuleId.TreeBonusAction : RuleId.OnibiBonusAction))
     }

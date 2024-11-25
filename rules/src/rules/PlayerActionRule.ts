@@ -8,6 +8,7 @@ import { Element, seasons } from '../Season'
 import { RuleId } from './RuleId'
 import { Memory } from './Memory'
 import { ElementsHelper } from './helpers/ElementsHelper'
+import { SpiritType } from '../material/SpiritType'
 
 export class PlayerActionRule extends PlayerTurnRule {
   onRuleStart() {
@@ -25,10 +26,13 @@ export class PlayerActionRule extends PlayerTurnRule {
     const sharedDeck = this.material(MaterialType.AnimalCard).location(LocationType.SharedDeck).deck()
     moves.push(sharedDeck.dealOne({ type: LocationType.SharedHelpLine }))
     // Or add one action token to one card in the shared help line
-    if (this.availableActionTokens.getQuantity() > 0
-        && this.getActivePlayer() === this.game.players[0]) { // TODO: Remove this. Just for testing purposes to avoid monkey opponent playing the action
+    if (this.availableActionTokens.getQuantity() > 0) {
       moves.push(...this.getAvailableActions())
     }
+    // if (this.availableActionTokens.getQuantity() > 0
+    //     && this.getActivePlayer() === this.game.players[0]) { // TODO: Remove this. Just for testing purposes to avoid monkey opponent playing the action
+    //   moves.push(...this.getAvailableActions())
+    // }
 
     return moves
   }
@@ -64,13 +68,32 @@ export class PlayerActionRule extends PlayerTurnRule {
       }
     }
 
+    // Validate the positions. At least 1 element between the action token and the previous one.
+    for (const element of Object.keys(maxElements) as (keyof CardElements)[]) {
+      const elementIndex = Object.keys(maxElements).indexOf(element) + 1
+      let cardsWithElement = 0
+      for (let x = this.material(MaterialType.AnimalCard).id(maxElements[element]).getItem()?.location.x; x! >= 0; x!--) {
+        const card = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine && l.x === x).getItem()
+        const cardProperties = animalProperties[card!.id as Animal]
+        if (cardProperties?.elements[element] !== undefined) {
+          if (this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.x === card?.location.x && l.y === elementIndex).getQuantity() > 0) {
+            maxElements[element] = -1
+            break
+          } else {
+            cardsWithElement++
+            if (cardsWithElement == 2) break
+          }
+        }
+      }
+    }
+
     // Create the moves
     for (const element of Object.keys(maxElements)) {
       const elementCard = maxElements[element as keyof CardElements]!
       if (elementCard > 0) {
         const card = this.material(MaterialType.AnimalCard).id(elementCard)
         moves.push(...this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(this.player)
-          .moveItems({ 
+          .moveItems({
             type: LocationType.ActionToken,
             x: card.getItem()?.location.x,
             y: Object.keys(maxElements).indexOf(element) + 1,
@@ -88,10 +111,11 @@ export class PlayerActionRule extends PlayerTurnRule {
     if (isMoveItemType(MaterialType.AnimalCard)(move) && move.location.type !== LocationType.PlayerHelpLine) {
       moves.push(...this.drawCard(move))
       moves.push(this.startRule(RuleId.CheckEndTurn))
+      // moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
     } else if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.ActionToken) {
       this.memorize(Memory.PlantedTrees, [])
       this.memorize(Memory.BonusAction, 0)
-      switch(move.location.y) {
+      switch (move.location.y) {
         case Element.Sun:
           new ElementsHelper(this.game, this.player).setRemainingElementValue(Element.Sun)
           moves.push(this.startRule(RuleId.RecruitingAnimals))
@@ -110,8 +134,8 @@ export class PlayerActionRule extends PlayerTurnRule {
           break
       }
     }
-    
-    
+
+
     return moves
   }
 
@@ -144,7 +168,13 @@ export class PlayerActionRule extends PlayerTurnRule {
       const movedAnimal = this.material(MaterialType.AnimalCard).getItem(move.itemIndex)
       if (getAnimalSeason(movedAnimal.id) !== AnimalSeason.Common && movedAnimal.id !== Animal.Stag) {
         const animalSeason = getAnimalSeason(movedAnimal.id)
-        moves.push(this.material(MaterialType.AnimalCard).id(movedAnimal.id).moveItem({ type: LocationType.PlayerHelpLine, id: animalSeason }))
+        if (this.material(MaterialType.SpiritCard).id(SpiritType.Onibi).location(l => l.type === LocationType.PlayerSpiritLine && l.id === animalSeason).getQuantity() === 0) {
+          moves.push(this.material(MaterialType.AnimalCard).id(movedAnimal.id).moveItem({ type: LocationType.PlayerHelpLine, id: animalSeason }))
+        } else {
+          // TODO: Include the Varan case
+          moves.push(this.material(MaterialType.AnimalCard).id(movedAnimal.id).moveItem({ type: LocationType.SharedHelpLine }))
+        }
+
       }
       const movedAnimalProperties = animalProperties[movedAnimal.id as Animal]
       if (movedAnimalProperties?.type === AnimalType.Solitary) {

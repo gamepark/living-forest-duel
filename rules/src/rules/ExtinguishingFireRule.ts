@@ -11,10 +11,10 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
   onRuleStart() {
     const totalAvailableFireTokens = this.material(MaterialType.FireToken).location(LocationType.ClearingCardSpot)
       .filter((token) => this.elementValue >= this.getClearingCardValue(token.location.x!)).getQuantity()
-
     if (totalAvailableFireTokens === 0) {
       if (!this.remind(Memory.BonusAction)) {
-        return [this.startPlayerTurn(RuleId.PlayerAction,this.nextPlayer)]
+        // return [this.startPlayerTurn(RuleId.PlayerAction,this.nextPlayer)]
+        return [this.startRule(RuleId.CheckEndTurn)]
       } else {
         return[this.startRule(this.remind(Memory.BonusAction) === Element.Plant ? RuleId.TreeBonusAction : RuleId.OnibiBonusAction)]
       }
@@ -37,13 +37,11 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
   }
 
   beforeItemMove(move: ItemMove) {
-    const moves: MaterialMove[] = []
     if (isMoveItemType(MaterialType.FireToken)(move)) {
       const x = Number(this.material(move.itemType).getItem(move.itemIndex).location.x)
       this.memorize(!this.remind(Memory.BonusAction) ? Memory.RemainingElementValue : Memory.RemainingBonusElementValue, this.elementValue - this.getClearingCardValue(x))
-      // this.memorize(Memory.RemainingElementValue, )
     }
-    return moves
+    return []
   }
 
   afterItemMove(move: ItemMove) {

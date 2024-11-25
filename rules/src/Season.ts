@@ -20,3 +20,4 @@ export const CardinalLocations: Record<Direction, { x: number; y: number }> = {
 
 export const seasons = getEnumValues(Season)
 export const elements = getEnumValues(Element)
+export const getOpponentSeason = (player: number) => player === Season.Summer ? Season.Winter : Season.Summer

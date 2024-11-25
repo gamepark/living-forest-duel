@@ -123,6 +123,7 @@ class AnimalCardDescription extends CardDescription {
   isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext) {
     return item.location?.type === LocationType.SeasonAnimalDeck
       || item.location?.type === LocationType.SharedDeck
+      || item.location?.type === LocationType.SharedDiscardPile
       || super.isFlippedOnTable(item, context)
   }
 

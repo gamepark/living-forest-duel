@@ -1,8 +1,11 @@
-import { PlayerTurnRule } from '@gamepark/rules-api'
+import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
-import { Element } from '../Season'
+import { Element, getOpponentSeason } from '../Season'
 import { ElementsHelper } from './helpers/ElementsHelper'
+import { MaterialType } from '../material/MaterialType'
+import { SpiritType } from '../material/SpiritType'
+import { LocationType } from '../material/LocationType'
 
 export abstract class BonusActionRule extends PlayerTurnRule {
   abstract bonusRule: number
@@ -10,26 +13,36 @@ export abstract class BonusActionRule extends PlayerTurnRule {
   onRuleStart() {
     const bonus = this.remind(Memory.RemainingBonuses).pop()
     if (bonus !== undefined) {
+      const moves: MaterialMove[] = []
       this.memorize(Memory.BonusAction, this.bonusRule)
       switch (bonus) {
         case Element.Sun:
           new ElementsHelper(this.game, this.player).setRemainingBonusElementValue(Element.Sun)
-          return [this.startRule(RuleId.RecruitingAnimals)]
+          moves.push(this.startRule(RuleId.RecruitingAnimals))
+          break
         case Element.Plant:
           new ElementsHelper(this.game, this.player).setRemainingBonusElementValue(Element.Plant)
-          return [this.startRule(RuleId.PlantingProtectiveTree)]
+          moves.push(this.startRule(RuleId.PlantingProtectiveTree))
+          break
         case Element.Water:
           new ElementsHelper(this.game, this.player).setRemainingBonusElementValue(Element.Water)
-          return [this.startRule(RuleId.ExtinguishingFire)]
+          moves.push(this.startRule(RuleId.ExtinguishingFire))
+          break
         case Element.Wind:
-          return [this.startRule(RuleId.PlantingProtectiveTree)]
-        default:
-          return []
-      }      
+          const sankiCards = this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(LocationType.SankiDeck).getQuantity() > 0 ? this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(LocationType.SankiDeck).deck() : this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(l => l.type === LocationType.SankiDeck && l.id === getOpponentSeason(this.player)).deck()
+          if (sankiCards.getQuantity() > 0) {
+            moves.push(sankiCards.dealOne({ type: LocationType.PlayerSpiritLine, id: this.player }))
+          }
+          // moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
+          moves.push(this.startRule(RuleId.CheckEndTurn))
+          break
+      }
+      return moves
     } else {
       this.memorize(Memory.BonusAction, 0)
-      // If it's an Onibi bonus action, go to next player, in other case continue the Plant trees in case there are other trees to take
-      return [this.bonusRule === Element.Wind ? this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer) : this.startRule(RuleId.PlantingProtectiveTree)]
+      // If it's an Onibi bonus action, check end turn, in other case continue the Plant trees in case there are other trees to take
+      return [this.bonusRule === Element.Wind ? this.startRule(RuleId.CheckEndTurn) : this.startRule(RuleId.PlantingProtectiveTree)]
+      // return [this.bonusRule === Element.Wind ? this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer) : this.startRule(RuleId.PlantingProtectiveTree)]
     }
   }
 }
