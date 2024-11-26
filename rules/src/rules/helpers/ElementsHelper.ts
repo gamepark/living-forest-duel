@@ -48,7 +48,6 @@ export class ElementsHelper extends MaterialRulesPart {
       elementValue += cardProperties?.element === elementType ? cardProperties?.elementValue : 0
     }
 
-    console.log("Computed element value: ", elementValue)
     return elementValue
   }
 

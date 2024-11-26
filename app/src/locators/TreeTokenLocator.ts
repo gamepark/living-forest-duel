@@ -7,7 +7,7 @@ import { animalCardDescription } from '../material/AnimalCardDescription'
 class TreeTokenLocator extends DeckLocator {
   getCoordinates(location: Location) {
     return {
-      x: location.id === Season.Summer ? -30 : 0,
+      x: location.id === Season.Summer ? -30 : -1,
       y: sharedHelpLineLocator.coordinates.y + animalCardDescription.height + 2
     }
   }

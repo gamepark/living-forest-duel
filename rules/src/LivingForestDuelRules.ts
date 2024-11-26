@@ -14,6 +14,7 @@ import { RefillRecruitmentLineRule } from './rules/RefillRecruitmentLineRule'
 import { CustomNegativeFillGapStrategy } from './material/location/strategy/CustomNegativeFillGapStrategy'
 import { TreeBonusActionRule } from './rules/TreeBonusActionRule'
 import { OnibiBonusActionRule } from './rules/OnibiBonusActionRule'
+import { UseSankiCardRule } from './rules/UseSankiCardRule'
 
 /**
  * This class implements the rules of the board game.
@@ -31,6 +32,7 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
     [RuleId.TreeBonusAction]: TreeBonusActionRule,
     [RuleId.OnibiBonusAction]: OnibiBonusActionRule,
     [RuleId.CheckEndTurn]: EndTurnRule,
+    [RuleId.UseSankiCard]: UseSankiCardRule,
     [RuleId.EndGame]: EndGameRule
   }
 
@@ -48,7 +50,6 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
     },
     [MaterialType.TreeCard]: {
       [LocationType.TreeDeckSpot]: new PositiveSequenceStrategy()
-      // [LocationType.PlayerForest]: new PositiveSequenceStrategy()
     },
     [MaterialType.SpiritCard]: {
       [LocationType.SankiDeck]: new PositiveSequenceStrategy(),

@@ -1,9 +1,9 @@
-import { ListLocator } from "@gamepark/react-game";
+import { Locator } from "@gamepark/react-game";
 import { treeDecksLocator } from "./TreeDecksLocator";
 import { spiritCardDescription } from "../material/SpiritCardDescription";
 import { treeCardDescription } from "../material/TreeCardDescription";
 
-class OnibiCardLocator extends ListLocator {
+class OnibiCardLocator extends Locator {
   gap = { x: spiritCardDescription.width + 1 }
   coordinates = { x: treeDecksLocator.coordinates.x + treeCardDescription.width * 5 + 5.75, y: treeDecksLocator.coordinates.y + 0.5}
 }

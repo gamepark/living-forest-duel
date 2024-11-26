@@ -35,9 +35,7 @@ export class EndTurnRule extends PlayerTurnRule {
 
       // New fires
       const onibiPos = this.material(MaterialType.OnibiStandee).getItem()?.location.x
-      console.log(onibiPos)
       for (let x of [onibiPos!-1, onibiPos!+1]) {
-        console.log("The x: " + x)
         if (x < -3 || x > 3) {
           x = x < -3 ? 3 : -3
         }
@@ -54,7 +52,6 @@ export class EndTurnRule extends PlayerTurnRule {
         }
         // Recreate removed tokens
         // TODO: Think if tokens should not be removed but just hidden. In any case, they need to appear again here
-        // debugger
         for (let y = actionTokens.getQuantity(); y < 2; y++) {
           moves.push(this.material(MaterialType.ActionToken).createItem({
             id: season,
@@ -89,7 +86,6 @@ export class EndTurnRule extends PlayerTurnRule {
       value += clearingProperties[onibi?.location.x! as Clearing]?.fireValue!
     }
 
-    console.log("la suma: " + value)
     return value
   }
 

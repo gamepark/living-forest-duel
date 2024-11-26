@@ -1,6 +1,8 @@
 import { MaterialGame, MaterialRulesPart } from "@gamepark/rules-api";
-import { Animal, animalProperties, CardPattern } from "../../material/Animal";
-import { minBy, sumBy } from "lodash";
+import { Animal, animalProperties, AnimalSeason, AnimalType, CardPattern, getAnimalSeason } from "../../material/Animal";
+import { countBy, minBy, sumBy } from "lodash";
+import { LocationType } from "../../material/LocationType";
+import { MaterialType } from "../../material/MaterialType";
 
 export class AnimalsHelper extends MaterialRulesPart {
   constructor(game: MaterialGame, readonly player?: number) {
@@ -32,6 +34,21 @@ export class AnimalsHelper extends MaterialRulesPart {
 
   getMinCostElement(properties: Partial<Record<Animal, CardPattern>>) {
     return minBy(Object.values(properties), 'cost')
+  }
+
+  checkTooManySolitaryAnimals(season: number) {
+    const animalsIds = this.material(MaterialType.AnimalCard)
+      .location(l => l.type === LocationType.SharedHelpLine || l.type === LocationType.PlayerHelpLine)
+      .filter(animal => [AnimalSeason.Common, season].includes(getAnimalSeason(animal.id)))
+      .getItems().map(animal => animal.id)
+    const animalsProperties = this.getAnimalsProperties(animalsIds)
+    const totalSolitary = countBy(animalsProperties, animal => animal.type === AnimalType.Solitary).true || 0
+    const totalGregarious = countBy(animalsProperties, animal => animal.type === AnimalType.Gregarius).true || 0
+    if (totalSolitary - totalGregarious >= 3) {
+      return true
+    }
+
+    return false
   }
 
 }

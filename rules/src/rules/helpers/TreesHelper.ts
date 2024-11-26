@@ -45,11 +45,6 @@ export class TreesHelper extends MaterialRulesPart {
     const boundaries = this.boundaries
     const playedCards = this.panorama.getItems()
 
-    // This can never happen as we start with a tree
-    // if (playedCards.length === 0) {
-    //   availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: 0, y: 0, z: 0 })
-    // }
-
     playedCards.forEach(playedCard => {
       const coordinates = { x: playedCard.location.x, y: playedCard.location.y }
       const left = { x: playedCard.location.x! - 1, y: playedCard.location.y! }

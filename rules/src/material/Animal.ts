@@ -92,6 +92,16 @@ export const animalProperties: Partial<Record<Animal, CardPattern>> = {
     elements: {},
     cost: 12
   },
+  [Animal.SummerVaran]: {
+    type: AnimalType.Solitary,
+    elements: {},
+    cost: 0
+  },
+  [Animal.WinterVaran]: {
+    type: AnimalType.Solitary,
+    elements: {},
+    cost: 0
+  },
   [Animal.Anteater]: {
     type: AnimalType.Neutral,
     elements: {
@@ -488,3 +498,4 @@ export const getAnimalSeason = (animal: Animal) => Math.floor(animal / 100)
 export const summerAnimals = getEnumValues(Animal).filter(animal => getAnimalSeason(animal) === Season.Summer && animal !== Animal.SummerVaran)
 export const winterAnimals = getEnumValues(Animal).filter(animal => getAnimalSeason(animal) === Season.Winter && animal !== Animal.WinterVaran)
 export const commonAnimals = getEnumValues(Animal).filter(animal => getAnimalSeason(animal) === 0 && animal !== Animal.Stag)
+export const isVaran = (animal: Animal) => animal === Animal.SummerVaran || animal === Animal.WinterVaran ? true : false
