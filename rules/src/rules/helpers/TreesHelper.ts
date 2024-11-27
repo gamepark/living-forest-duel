@@ -45,13 +45,15 @@ export class TreesHelper extends MaterialRulesPart {
     const boundaries = this.boundaries
     const playedCards = this.panorama.getItems()
 
-    playedCards.forEach(playedCard => {
+    for (const playedCard of playedCards) {
       const coordinates = { x: playedCard.location.x, y: playedCard.location.y }
+
+      // It's possible to put a card on top, excepting the starting tree
+      if (coordinates.x !== 0 || coordinates.y !== 0) {
+        availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: playedCard.location.x, y: playedCard.location.y })
+      }
+
       const left = { x: playedCard.location.x! - 1, y: playedCard.location.y! }
-
-      // It's possible to put a card on top
-      availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: playedCard.location.x, y: playedCard.location.y })
-
       if (!playedCards.find(item => isAnyCardToTheLeft(item, coordinates)) && (boundaries.xMax - left.x < 3)) {
         availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: left.x, y: left.y, z: 0 })
       }
@@ -70,8 +72,7 @@ export class TreesHelper extends MaterialRulesPart {
       if (!playedCards.find(item => isAnyCardAbove(item, coordinates)) && (boundaries.yMax - above.y < 3)) {
         availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: above.x, y: above.y, z: 0 })
       }
-    })
-
+    }
 
     return uniqBy(availableSpaces, (location) => JSON.stringify(location))
 
@@ -96,11 +97,11 @@ export class TreesHelper extends MaterialRulesPart {
   // TODO: Modify this to consider only the top card
   getAvailableSpacesForTree(tree: MaterialItem, spaces: Location[]) {
     const treeSpaces: Location[] = []
-    spaces.forEach(space => {
+    for (const space of spaces) {
       if (this.checkNeighbors(tree.id, space)) {
         treeSpaces.push(space)
       }
-    })
+    }
 
     return treeSpaces
   }
@@ -152,9 +153,9 @@ export class TreesHelper extends MaterialRulesPart {
   hasBonusInDirection(tree: MaterialItem, direction: Direction) {
     const neighborDelta = { x: CardinalLocations[direction].x, y: CardinalLocations[direction].y }
     const neighbor = this.material(MaterialType.TreeCard)
-      .location(l => l.type === LocationType.PlayerForest && l.id === this.player && l.x === tree.location.x! + neighborDelta.x && l.y === tree.location.y! + neighborDelta.y )
+      .location(l => l.type === LocationType.PlayerForest && l.id === this.player && l.x === tree.location.x! + neighborDelta.x && l.y === tree.location.y! + neighborDelta.y)
       .getItem()
-    
+
     return neighbor !== undefined && treeProperties[tree.id as Tree]?.bonus.element === treeProperties[neighbor.id as Tree]?.bonus.element
   }
 

@@ -26,7 +26,7 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
     const availableTrees = treesHelper.getVisibleTreesInStack()
     const availableSpaces: Location[] = treesHelper.availableSpaces
 
-    availableTrees.getItems().forEach(tree => {
+    for (const tree of availableTrees.getItems()) {
       const availableSpacesForTree = new TreesHelper(this.game, this.player).getAvailableSpacesForTree(tree, availableSpaces)
       moves.push(
         ...availableSpacesForTree.flatMap((space) => {
@@ -35,42 +35,10 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
           ]
         })
       )
-    })
+    }
 
     return moves
   }
-
-  // beforeItemMove(move: ItemMove<number, number, number>) {
-  //   if (isMoveItemType(MaterialType.TreeCard)(move) && move.location.type === LocationType.PlayerForest) {
-  //     const movedCard = this.material(move.itemType).getItem(move.itemIndex)
-
-  //     // Remember the types planted because we can only take one of each type
-  //     const plantedTrees = this.remind(Memory.PlantedTrees)
-  //     plantedTrees.push(movedCard.id)
-  //     this.memorize(Memory.PlantedTrees, plantedTrees)
-
-  //     // Update remaining value
-  //     this.memorize(Memory.RemainingElementValue, this.elementValue - treeProperties[movedCard!.id as Tree]!.cost)
-
-  //     // Check possible bonuses
-  //     const treesHelper = new TreesHelper(this.game, this.player)      
-  //     const bonuses = []
-  //     for (const direction of directions) {
-  //       if (treesHelper.hasBonusInDirection(movedCard, direction)) {
-  //         bonuses.push(treeProperties[movedCard.id as Tree]?.bonus.element)
-  //       }
-  //     }
-
-  //     if (bonuses.length > 0) {
-  //       this.memorize(Memory.RemainingBonuses, bonuses)
-  //       return [this.startRule(RuleId.TreeBonusAction)]
-  //     } else {
-  //       return [this.startRule(RuleId.PlantingProtectiveTree)]
-  //     }  
-  //   }
-
-  //   return []
-  // }
 
   afterItemMove(move: ItemMove<number, number, number>) {
     if (isMoveItemType(MaterialType.TreeCard)(move) && move.location.type === LocationType.PlayerForest) {

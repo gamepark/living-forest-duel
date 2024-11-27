@@ -34,7 +34,7 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
     })
 
     const firePositions = [-1, 1]
-    firePositions.forEach(x => {
+    for (const x of firePositions) {
       this.material(MaterialType.FireToken).createItem({
         id: MaterialType.FireToken,
         location: {
@@ -42,7 +42,7 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
           x
         }
       })
-    })
+    }
   }
 
   setupTreeDecks() {
@@ -171,6 +171,7 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
   }
 
   start() {
-    this.startPlayerTurn(RuleId.PlayerAction, this.players[0])
+    // Summer always starts
+    this.startPlayerTurn(RuleId.PlayerAction, Season.Summer)
   }
 }

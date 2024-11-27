@@ -20,7 +20,7 @@ export const UseSankiCardHeader = () => {
     return (
       <Trans defaults="header.use-sanki-card.you" components={{
         useSanki: <PlayMoveButton move={useSanki}/>,
-        undo: <PlayMoveButton move={pass}/>
+        pass: <PlayMoveButton move={pass}/>
       }}/>
     )
   } else {

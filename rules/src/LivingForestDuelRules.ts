@@ -52,7 +52,7 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
       [LocationType.TreeDeckSpot]: new PositiveSequenceStrategy()
     },
     [MaterialType.SpiritCard]: {
-      [LocationType.SankiDeck]: new PositiveSequenceStrategy(),
+      // [LocationType.SankiDeck]: new PositiveSequenceStrategy(),
       [LocationType.PlayerSpiritLine]: new PositiveSequenceStrategy()
     }
   }

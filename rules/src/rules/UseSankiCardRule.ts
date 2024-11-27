@@ -4,6 +4,7 @@ import { LocationType } from '../material/LocationType'
 import { SpiritType } from '../material/SpiritType'
 import { CustomMoveType } from './CustomMoveType'
 import { AnimalsHelper } from './helpers/AnimalsHelper'
+import { RuleId } from './RuleId'
 
 export class UseSankiCardRule extends PlayerTurnRule {
   getPlayerMoves() {
@@ -15,7 +16,6 @@ export class UseSankiCardRule extends PlayerTurnRule {
     return moves
   }
 
-
   onCustomMove(move: CustomMove) {
     const moves: MaterialMove[] = []
     // If the player could use here the Sanki card and passed it's because it was a Varan, so we need to check the amount of solitary animals for the player
@@ -24,6 +24,7 @@ export class UseSankiCardRule extends PlayerTurnRule {
       && new AnimalsHelper(this.game, this.player).checkTooManySolitaryAnimals(this.player)) {
       moves.push(this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(this.player).deleteItem())
     }
+    moves.push(this.startPlayerTurn(RuleId.PlayerAction,this.nextPlayer))
 
     return []
   }
@@ -36,6 +37,7 @@ export class UseSankiCardRule extends PlayerTurnRule {
       const items = fireVarans.getItems()
       const lastFireVaran = fireVarans.location(l => !items.some(item => item.location.id === l.id && item.location.x! > l.x!))
       moves.push(lastFireVaran.moveItem({ type: LocationType.VaranDeck, id: this.player }))
+      moves.push(this.startPlayerTurn(RuleId.PlayerAction,this.nextPlayer))
     }
 
     return moves

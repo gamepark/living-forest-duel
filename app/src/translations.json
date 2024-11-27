@@ -4,6 +4,8 @@
       "Name": "Living Forest Duel",
       "Summer": "Summer",
       "Winter": "Winter",
+      "header.use-sanki-card.you": "You must <useSanki>Use a Sanki card</useSanki> or <pass>Pass</pass>",
+      "header.use-sanki-card.player": "{player} can use a Sanki card or pass",
       "Menu": "Menu",
       "OK": "OK",
       "Validate": "Validate",

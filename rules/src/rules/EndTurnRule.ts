@@ -23,7 +23,7 @@ export class EndTurnRule extends PlayerTurnRule {
       moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
     } else {
       // Varan cards
-      seasons.forEach((season) => {
+      for (const season of seasons) {
         const waterValue = new ElementsHelper(this.game, this.player).getElementValue(Element.Water, season)
         if (this.fireValue > waterValue) {
           const varanDeck = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.VaranDeck && l.id === season)
@@ -31,7 +31,7 @@ export class EndTurnRule extends PlayerTurnRule {
             moves.push(varanDeck.moveItem({type: LocationType.SharedDiscardPile}))
           }
         }
-      })
+      }
 
       // New fires
       const onibiPos = this.material(MaterialType.OnibiStandee).getItem()?.location.x
@@ -45,7 +45,7 @@ export class EndTurnRule extends PlayerTurnRule {
       }
 
       // Recover action tokens
-      seasons.forEach((season) => {
+      for (const season of seasons) {
         const actionTokens = this.material(MaterialType.ActionToken).id(season).location(LocationType.ActionToken)
         if (actionTokens.getQuantity() > 0) {
           moves.push(actionTokens.moveItemsAtOnce({type: LocationType.PlayerActionSupply, id: season}))
@@ -62,13 +62,14 @@ export class EndTurnRule extends PlayerTurnRule {
             }
           }))
         }
-      })
+      }
       
       // Send cards to the discard pile
       const cardsPlayed = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine || l.type === LocationType.PlayerHelpLine)
       moves.push(cardsPlayed.moveItemsAtOnce({type: LocationType.SharedDiscardPile}))
 
-      moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
+      // According to the rules: "On future turns, the first player to end the previous turn starts"
+      moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.player))
     }
 
     return moves    
@@ -77,9 +78,9 @@ export class EndTurnRule extends PlayerTurnRule {
   get fireValue() {
     let value = 0
     const fireTokens = this.material(MaterialType.FireToken).location(LocationType.ClearingCardSpot)
-    fireTokens.getItems().forEach(element => {
+    for (const element of fireTokens.getItems()) {
       value += clearingProperties[element.location.x! as Clearing]?.fireValue!
-    });
+    }
 
     const onibi = this.material(MaterialType.OnibiStandee).getItem()
     if (!fireTokens.getItems().some(item => item.location.x === onibi?.location.x)) {

@@ -108,7 +108,7 @@ export class PlayerActionRule extends PlayerTurnRule {
   afterItemMove(move: ItemMove<number, number, number>, _context?: PlayMoveContext) {
     const moves: MaterialMove[] = []
     if (isMoveItemType(MaterialType.AnimalCard)(move) && move.location.type !== LocationType.PlayerHelpLine) {
-      moves.push(...this.drawCardActions(move))
+      // moves.push(...this.drawCardActions(move))
       // If there is a start rule it's the sanki card, so we still don't check the end of the turn
       if (moves.length === 0 || moves[moves.length - 1].type !== RuleMoveType.StartRule) {
         moves.push(this.startRule(RuleId.CheckEndTurn))
@@ -166,7 +166,7 @@ export class PlayerActionRule extends PlayerTurnRule {
 
       // A start rule in the moves means it's because the player drawed an own Varan and has a Sanki card
       // If the player has a Sanki card s/he can use it, so this should not happen unless s/he doesn't use it
-      if (moves.length === 0 || moves[moves.length - 1].type !== RuleMoveType.StartRule) {
+      // if (moves.length === 0 || moves[moves.length - 1].type !== RuleMoveType.StartRule) {
         const movedAnimalProperties = animalProperties[movedAnimal.id]
         if (movedAnimalProperties.type === AnimalType.Solitary) {
           // Check number of solitary symbols
@@ -178,25 +178,10 @@ export class PlayerActionRule extends PlayerTurnRule {
               moves.push(this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(season).deleteItem())
             }
           }
-        }
+        // }
       }
     }
 
     return moves
   }
-
-  // checkTooManySolitaryAnimals(season: number) {
-  //   const animalsIds = this.material(MaterialType.AnimalCard)
-  //     .location(l => l.type === LocationType.SharedHelpLine || l.type === LocationType.PlayerHelpLine)
-  //     .filter(animal => [AnimalSeason.Common, season].includes(getAnimalSeason(animal.id)))
-  //     .getItems().map(animal => animal.id)
-  //   const animalsProperties = new AnimalsHelper(this.game, this.player).getAnimalsProperties(animalsIds)
-  //   const totalSolitary = countBy(animalsProperties, animal => animal.type === AnimalType.Solitary).true || 0
-  //   const totalGregarious = countBy(animalsProperties, animal => animal.type === AnimalType.Gregarius).true || 0
-  //   if (totalSolitary - totalGregarious >= 3) {
-  //     return true
-  //   }
-
-  //   return false
-  // }
 }
