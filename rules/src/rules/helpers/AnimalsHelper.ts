@@ -1,5 +1,5 @@
 import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
-import { countBy, minBy, sumBy } from 'lodash'
+import { countBy, minBy } from 'lodash'
 import { Animal, animalProperties, AnimalType, CardPattern, isNotOpponentAnimal } from '../../material/Animal'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -7,10 +7,6 @@ import { MaterialType } from '../../material/MaterialType'
 export class AnimalsHelper extends MaterialRulesPart {
   constructor(game: MaterialGame, readonly player?: number) {
     super(game)
-  }
-
-  getAnimalsCostSum(animalsIds: number[]) {
-    return this.getCostSum(this.getAnimalsProperties(animalsIds))
   }
 
   getAnimalsMinCost(animalsIds: number[]) {
@@ -26,10 +22,6 @@ export class AnimalsHelper extends MaterialRulesPart {
     }, {} as Record<string, any>)
 
     return filteredProperties
-  }
-
-  getCostSum(properties: Partial<Record<Animal, CardPattern>>) {
-    return sumBy(Object.values(properties), 'cost')
   }
 
   getMinCostElement(properties: Partial<Record<Animal, CardPattern>>) {
