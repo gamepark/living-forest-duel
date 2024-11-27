@@ -52,12 +52,12 @@ export class PlayerActionRule extends PlayerTurnRule {
     }
 
     for (let x = sharedCards.getQuantity() - 1; x >= 0; x--) {
-      const card = sharedCards.location(l => l.x === x).getItem()
-      const cardProperties = animalProperties[card!.id as Animal]
+      const card = sharedCards.location(l => l.x === x).getItem<Animal>()!
+      const cardProperties = animalProperties[card.id]
       for (const element of Object.keys(maxElements)) {
         const elementKey = element as keyof CardElements
         if (maxElements[elementKey]! < 0 && cardProperties?.elements[elementKey] !== undefined) {
-          maxElements[elementKey] = card!.id
+          maxElements[elementKey] = card.id
         }
       }
 
@@ -72,10 +72,10 @@ export class PlayerActionRule extends PlayerTurnRule {
       const elementIndex = Object.keys(maxElements).indexOf(element) + 1
       let cardsWithElement = 0
       for (let x = this.material(MaterialType.AnimalCard).id(maxElements[element]).getItem()?.location.x; x! >= 0; x!--) {
-        const card = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine && l.x === x).getItem()
-        const cardProperties = animalProperties[card!.id as Animal]
+        const card = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine && l.x === x).getItem<Animal>()!
+        const cardProperties = animalProperties[card.id]
         if (cardProperties?.elements[element] !== undefined) {
-          if (this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.x === card?.location.x && l.y === elementIndex).getQuantity() > 0) {
+          if (this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.x === card.location.x && l.y === elementIndex).getQuantity() > 0) {
             maxElements[element] = -1
             break
           } else {
@@ -143,7 +143,7 @@ export class PlayerActionRule extends PlayerTurnRule {
   drawCardActions(move: ItemMove<number, number, number>) {
     const moves: MaterialMove[] = []
     if (isMoveItemType(MaterialType.AnimalCard)(move)) {
-      const movedAnimal = this.material(MaterialType.AnimalCard).getItem(move.itemIndex)
+      const movedAnimal = this.material(MaterialType.AnimalCard).getItem<Animal>(move.itemIndex)
       let checkSolitaryAnimals = true
 
       if (getAnimalSeason(movedAnimal.id) !== AnimalSeason.Common && movedAnimal.id !== Animal.Stag) {
@@ -167,7 +167,7 @@ export class PlayerActionRule extends PlayerTurnRule {
       // A start rule in the moves means it's because the player drawed an own Varan and has a Sanki card
       // If the player has a Sanki card s/he can use it, so this should not happen unless s/he doesn't use it
       if (moves.length === 0 || moves[moves.length - 1].type !== RuleMoveType.StartRule) {
-        const movedAnimalProperties = animalProperties[movedAnimal.id as Animal]
+        const movedAnimalProperties = animalProperties[movedAnimal.id]
         if (movedAnimalProperties?.type === AnimalType.Solitary) {
           // Check number of solitary symbols
           for (const season of seasons) {
