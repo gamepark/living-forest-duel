@@ -104,10 +104,7 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
     })))
     this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SeasonAnimalDeck && l.id === season).shuffle()
     const seasonDeck = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SeasonAnimalDeck && l.id === season).deck()
-    for (let i = 1; i <= 3; i++) {
-      const x = season === Season.Summer ? -i : i
-      seasonDeck.dealOne({ type: LocationType.RecruitmentLine, x })
-    }
+    seasonDeck.deal({ type: LocationType.RecruitmentLine }, 3)
     // Check initial animals cost
     const animalsHelper = new AnimalsHelper(this.game, season)
     let filteredProperties = animalsHelper.getAnimalsProperties(this.getInitialSeasonAnimalsIds(season))
