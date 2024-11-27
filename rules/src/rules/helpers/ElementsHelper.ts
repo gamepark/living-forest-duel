@@ -31,14 +31,14 @@ export class ElementsHelper extends MaterialRulesPart {
     for (let x = tokenLocationX!; x > previousTokenLocationX; x--) {
       const card = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine && l.x === x).getItem<Animal>()!
       const cardProperties = animalProperties[card.id]
-      elementValue += cardProperties?.elements[Element[elementType].toLowerCase() as keyof CardElements]! ?? 0
+      elementValue += cardProperties.elements[Element[elementType].toLowerCase() as keyof CardElements]! ?? 0
     }
 
     // Add the personal value
     const playerAnimals = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PlayerHelpLine && l.id === player).getItems<Animal>()
     for (const playerCard of playerAnimals) {
       const cardProperties = animalProperties[playerCard.id]
-      elementValue += cardProperties?.elements[Element[elementType].toLowerCase() as keyof CardElements]! ?? 0
+      elementValue += cardProperties.elements[Element[elementType].toLowerCase() as keyof CardElements]! ?? 0
     }
 
     // Add the player forest

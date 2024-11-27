@@ -86,7 +86,7 @@ export type CardPattern = {
   cost: number
 }
 
-export const animalProperties: Partial<Record<Animal, CardPattern>> = {
+export const animalProperties: Record<Animal, CardPattern> = {
   [Animal.Stag]: {
     type: AnimalType.Gregarius,
     elements: {},

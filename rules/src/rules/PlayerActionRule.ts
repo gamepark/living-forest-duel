@@ -56,7 +56,7 @@ export class PlayerActionRule extends PlayerTurnRule {
       const cardProperties = animalProperties[card.id]
       for (const element of Object.keys(maxElements)) {
         const elementKey = element as keyof CardElements
-        if (maxElements[elementKey]! < 0 && cardProperties?.elements[elementKey] !== undefined) {
+        if (maxElements[elementKey]! < 0 && cardProperties.elements[elementKey] !== undefined) {
           maxElements[elementKey] = card.id
         }
       }
@@ -74,7 +74,7 @@ export class PlayerActionRule extends PlayerTurnRule {
       for (let x = this.material(MaterialType.AnimalCard).id(maxElements[element]).getItem()?.location.x; x! >= 0; x!--) {
         const card = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine && l.x === x).getItem<Animal>()!
         const cardProperties = animalProperties[card.id]
-        if (cardProperties?.elements[element] !== undefined) {
+        if (cardProperties.elements[element] !== undefined) {
           if (this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.x === card.location.x && l.y === elementIndex).getQuantity() > 0) {
             maxElements[element] = -1
             break
@@ -168,7 +168,7 @@ export class PlayerActionRule extends PlayerTurnRule {
       // If the player has a Sanki card s/he can use it, so this should not happen unless s/he doesn't use it
       if (moves.length === 0 || moves[moves.length - 1].type !== RuleMoveType.StartRule) {
         const movedAnimalProperties = animalProperties[movedAnimal.id]
-        if (movedAnimalProperties?.type === AnimalType.Solitary) {
+        if (movedAnimalProperties.type === AnimalType.Solitary) {
           // Check number of solitary symbols
           for (const season of seasons) {
             if (checkSolitaryAnimals
