@@ -1,4 +1,4 @@
-import { FillGapStrategy, MaterialGame, MaterialMove, MaterialRules, PositiveSequenceStrategy, StakingStrategy, TimeLimit } from '@gamepark/rules-api'
+import { MaterialGame, MaterialMove, MaterialRules, PositiveSequenceStrategy, StakingStrategy, TimeLimit } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Season } from './Season'
@@ -38,7 +38,8 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
 
   locationsStrategies = {
     [MaterialType.ActionToken]: {
-      [LocationType.PlayerActionSupply]: new FillGapStrategy()
+      [LocationType.PlayerActionSupply]: new PositiveSequenceStrategy(),
+      [LocationType.PlayerActionLost]: new PositiveSequenceStrategy()
     },
     [MaterialType.AnimalCard]: {
       [LocationType.SeasonAnimalDeck]: new PositiveSequenceStrategy(),

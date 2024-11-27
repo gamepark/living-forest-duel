@@ -172,7 +172,6 @@ export class PlayerActionRule extends PlayerTurnRule {
           if (checkSolitaryAnimals
             && new AnimalsHelper(this.game, this.player).checkTooManySolitaryAnimals(season)
             && this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(season).getQuantity() > 0) {
-            // TODO: Implement this in other way (e.g. disabling or with a cross) or fade it out
             moves.push(this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(season).moveItem({type: LocationType.PlayerActionLost, id: season}))
           }
         }
