@@ -50,7 +50,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
         .filter((animal) => getAnimalSeason(animal.id) !== this.player).getQuantity() === 0) {
         moves.push(this.startRule(RuleId.EndGame))
       } else {
-        const movedCard = this.material(MaterialType.AnimalCard).index(move.itemIndex).getItem<Animal>()!
+        const movedCard = this.material(MaterialType.AnimalCard).getItem<Animal>(move.itemIndex)
         this.memorize(!this.remind(Memory.BonusAction) ? Memory.RemainingElementValue : Memory.RemainingBonusElementValue, this.elementValue - animalProperties[movedCard.id]!.cost)
 
         moves.push(this.startRule(RuleId.RecruitingAnimals))
