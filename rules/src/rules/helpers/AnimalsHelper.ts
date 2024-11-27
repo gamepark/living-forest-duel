@@ -1,8 +1,8 @@
-import { MaterialGame, MaterialRulesPart } from "@gamepark/rules-api";
-import { Animal, animalProperties, AnimalSeason, AnimalType, CardPattern, getAnimalSeason } from "../../material/Animal";
-import { countBy, minBy, sumBy } from "lodash";
-import { LocationType } from "../../material/LocationType";
-import { MaterialType } from "../../material/MaterialType";
+import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
+import { countBy, minBy, sumBy } from 'lodash'
+import { Animal, animalProperties, AnimalType, CardPattern, isNotOpponentAnimal } from '../../material/Animal'
+import { LocationType } from '../../material/LocationType'
+import { MaterialType } from '../../material/MaterialType'
 
 export class AnimalsHelper extends MaterialRulesPart {
   constructor(game: MaterialGame, readonly player?: number) {
@@ -39,7 +39,7 @@ export class AnimalsHelper extends MaterialRulesPart {
   checkTooManySolitaryAnimals(season: number) {
     const animalsIds = this.material(MaterialType.AnimalCard)
       .location(l => l.type === LocationType.SharedHelpLine || l.type === LocationType.PlayerHelpLine)
-      .filter(animal => [AnimalSeason.Common, season].includes(getAnimalSeason(animal.id)))
+      .id<Animal>(animal => isNotOpponentAnimal(animal, season))
       .getItems().map(animal => animal.id)
     const animalsProperties = this.getAnimalsProperties(animalsIds)
     const totalSolitary = countBy(animalsProperties, animal => animal.type === AnimalType.Solitary).true || 0

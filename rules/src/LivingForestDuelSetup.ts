@@ -147,7 +147,7 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
 
   getInitialSeasonAnimalsIds(season: number) {
     return this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.RecruitmentLine).getItems()
-      .filter(animal => { return getAnimalSeason(animal.id) === season }).map(animal => animal.id)
+      .filter(animal => getAnimalSeason(animal.id) === season).map(animal => animal.id)
   }
 
   setupSupply() {

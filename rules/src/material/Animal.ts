@@ -1,11 +1,5 @@
-import { getEnumValues } from "@gamepark/rules-api";
-import { Season } from "../Season";
-
-export enum AnimalSeason {
-  Common = 0,
-  Summer = Season.Summer,
-  Winter = Season.Winter,
-}
+import { getEnumValues } from '@gamepark/rules-api'
+import { Season } from '../Season'
 
 export enum Animal {
   // Stag
@@ -492,10 +486,15 @@ export const animalProperties: Record<Animal, CardPattern> = {
     },
     cost: 3
   }
-};
+}
 
-export const getAnimalSeason = (animal: Animal) => Math.floor(animal / 100)
+export const getAnimalSeason = (animal: Animal): Season | undefined => Math.floor(animal / 100) || undefined
 export const summerAnimals = getEnumValues(Animal).filter(animal => getAnimalSeason(animal) === Season.Summer && animal !== Animal.SummerVaran)
 export const winterAnimals = getEnumValues(Animal).filter(animal => getAnimalSeason(animal) === Season.Winter && animal !== Animal.WinterVaran)
-export const commonAnimals = getEnumValues(Animal).filter(animal => getAnimalSeason(animal) === 0 && animal !== Animal.Stag)
+export const commonAnimals = getEnumValues(Animal).filter(animal => getAnimalSeason(animal) === undefined && animal !== Animal.Stag)
 export const isVaran = (animal: Animal) => animal === Animal.SummerVaran || animal === Animal.WinterVaran
+
+export function isNotOpponentAnimal(animal: Animal, season: Season) {
+  const animalSeason = getAnimalSeason(animal)
+  return animalSeason === undefined || animalSeason === season
+}

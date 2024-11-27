@@ -25,7 +25,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
 
     const playerCards = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
-      .id<Animal>(animal => getAnimalSeason(animal) !== 0 && this.elementValue >= animalProperties[animal].cost!)
+      .id<Animal>(animal => getAnimalSeason(animal) !== undefined && this.elementValue >= animalProperties[animal].cost!)
     moves.push(
       ...playerCards.getItems().flatMap((card) => {
         return [
@@ -35,7 +35,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
     )
 
     const restOfCards = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
-      .id<Animal>(animal => getAnimalSeason(animal) === 0 && this.elementValue >= animalProperties[animal].cost!)
+      .id<Animal>(animal => getAnimalSeason(animal) === undefined && this.elementValue >= animalProperties[animal].cost!)
     moves.push(...restOfCards.moveItems({ type: LocationType.SharedDiscardPile }))
 
     return moves
@@ -47,7 +47,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
     if (isMoveItemType(MaterialType.AnimalCard)(move) && (move.location.type === LocationType.PlayerHelpLine || move.location.type === LocationType.SharedDiscardPile)) {
       // Check winning condition
       if (this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine)
-        .filter((animal) => getAnimalSeason(animal.id) !== this.player).getQuantity() === 0) {
+        .id<Animal>(animal => getAnimalSeason(animal) !== this.player).getQuantity() === 0) {
         moves.push(this.startRule(RuleId.EndGame))
       } else {
         const movedCard = this.material(MaterialType.AnimalCard).getItem<Animal>(move.itemIndex)

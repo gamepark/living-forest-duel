@@ -1,13 +1,13 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext, RuleMoveType } from '@gamepark/rules-api'
-import { MaterialType } from '../material/MaterialType'
+import { Animal, animalProperties, AnimalType, CardElements, getAnimalSeason, isVaran } from '../material/Animal'
 import { LocationType } from '../material/LocationType'
-import { Animal, animalProperties, AnimalSeason, AnimalType, CardElements, getAnimalSeason, isVaran } from '../material/Animal'
-import { Element, seasons } from '../Season'
-import { RuleId } from './RuleId'
-import { Memory } from './Memory'
-import { ElementsHelper } from './helpers/ElementsHelper'
+import { MaterialType } from '../material/MaterialType'
 import { SpiritType } from '../material/SpiritType'
+import { Element, seasons } from '../Season'
 import { AnimalsHelper } from './helpers/AnimalsHelper'
+import { ElementsHelper } from './helpers/ElementsHelper'
+import { Memory } from './Memory'
+import { RuleId } from './RuleId'
 
 export class PlayerActionRule extends PlayerTurnRule {
   onRuleStart() {
@@ -146,8 +146,8 @@ export class PlayerActionRule extends PlayerTurnRule {
       const movedAnimal = this.material(MaterialType.AnimalCard).getItem<Animal>(move.itemIndex)
       let checkSolitaryAnimals = true
 
-      if (getAnimalSeason(movedAnimal.id) !== AnimalSeason.Common && movedAnimal.id !== Animal.Stag) {
-        const animalSeason = getAnimalSeason(movedAnimal.id)
+      const animalSeason = getAnimalSeason(movedAnimal.id)
+      if (animalSeason !== undefined && movedAnimal.id !== Animal.Stag) {
         if (this.material(MaterialType.SpiritCard).id(SpiritType.Onibi).location(l => l.type === LocationType.PlayerSpiritLine && l.id === animalSeason).getQuantity() === 0
           || isVaran(movedAnimal.id)) {
           // I need the location for the Varan, as all Varan cards have the same id
