@@ -107,8 +107,9 @@ export class PlayerActionRule extends PlayerTurnRule {
 
   afterItemMove(move: ItemMove<number, number, number>, _context?: PlayMoveContext) {
     const moves: MaterialMove[] = []
+
     if (isMoveItemType(MaterialType.AnimalCard)(move) && move.location.type !== LocationType.PlayerHelpLine) {
-      // moves.push(...this.drawCardActions(move))
+      moves.push(...this.drawCardActions(move))
       // If there is a start rule it's the sanki card, so we still don't check the end of the turn
       if (moves.length === 0 || moves[moves.length - 1].type !== RuleMoveType.StartRule) {
         moves.push(this.startRule(RuleId.CheckEndTurn))
@@ -153,8 +154,8 @@ export class PlayerActionRule extends PlayerTurnRule {
           // I need the location for the Varan, as all Varan cards have the same id
           moves.push(this.material(MaterialType.AnimalCard).id(movedAnimal.id).location(l => l.type === movedAnimal.location.type && l.x === movedAnimal.location.x).moveItem({ type: LocationType.PlayerHelpLine, id: animalSeason }))
           // If the drawed card is a fire Varan of this player and they have Sanki cards they can use it
-          if (isVaran(movedAnimal.id) 
-            && animalSeason === this.player 
+          if (isVaran(movedAnimal.id)
+            && animalSeason === this.player
             && this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(l => l.type === LocationType.PlayerSpiritLine && l.id === this.player).getQuantity() > 0) {
             moves.push(this.startRule(RuleId.UseSankiCard))
             checkSolitaryAnimals = false
@@ -164,21 +165,17 @@ export class PlayerActionRule extends PlayerTurnRule {
         }
       }
 
-      // A start rule in the moves means it's because the player drawed an own Varan and has a Sanki card
-      // If the player has a Sanki card s/he can use it, so this should not happen unless s/he doesn't use it
-      // if (moves.length === 0 || moves[moves.length - 1].type !== RuleMoveType.StartRule) {
-        const movedAnimalProperties = animalProperties[movedAnimal.id]
-        if (movedAnimalProperties.type === AnimalType.Solitary) {
-          // Check number of solitary symbols
-          for (const season of seasons) {
-            if (checkSolitaryAnimals
-              && new AnimalsHelper(this.game, this.player).checkTooManySolitaryAnimals(season)
-              && this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(season).getQuantity() > 0) {
-              // TODO: Implement this in other way (e.g. disabling or with a cross) or fade it out
-              moves.push(this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(season).deleteItem())
-            }
+      const movedAnimalProperties = animalProperties[movedAnimal.id]
+      if (movedAnimalProperties.type === AnimalType.Solitary) {
+        // Check number of solitary symbols
+        for (const season of seasons) {
+          if (checkSolitaryAnimals
+            && new AnimalsHelper(this.game, this.player).checkTooManySolitaryAnimals(season)
+            && this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(season).getQuantity() > 0) {
+            // TODO: Implement this in other way (e.g. disabling or with a cross) or fade it out
+            moves.push(this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(season).moveItem({type: LocationType.PlayerActionLost, id: season}))
           }
-        // }
+        }
       }
     }
 

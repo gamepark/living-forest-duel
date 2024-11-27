@@ -22,6 +22,7 @@ import { playerFireStockLocator } from './PlayerFireStockLocator'
 import { sharedDiscardPileLocator } from './SharedDiscardPileLocator'
 import { treeDeckSpotLocator } from './TreeDeckSpotLocator'
 import { playerSpiritLineLocator } from './PlayerSpiritLineLocator'
+import { playerActionLostLocator } from './PlayerActionLostLocator'
 
 export const Locators: Partial<Record<LocationType, Locator<Season, MaterialType, LocationType>>> = {
   [LocationType.ClearingLine]: clearingLineLocator,
@@ -36,6 +37,7 @@ export const Locators: Partial<Record<LocationType, Locator<Season, MaterialType
   [LocationType.PlayerSpiritLine]: playerSpiritLineLocator,
   [LocationType.PlayerForest]: playerForestLocator,
   [LocationType.PlayerActionSupply]: playerActionSupplyLocator,
+  [LocationType.PlayerActionLost]: playerActionLostLocator,
   [LocationType.PlayerFireStock]: playerFireStockLocator,
   [LocationType.OnibiCard]: onibiCardLocator,
   [LocationType.SankiDeck]: sankiDeckLocator,

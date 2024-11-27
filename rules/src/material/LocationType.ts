@@ -12,6 +12,7 @@ export enum LocationType {
   PlayerSpiritLine,
   PlayerForest,
   PlayerActionSupply,
+  PlayerActionLost,
   PlayerFireStock,
   OnibiCard,
   SankiDeck,

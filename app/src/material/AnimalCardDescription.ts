@@ -127,10 +127,6 @@ class AnimalCardDescription extends CardDescription {
       || super.isFlippedOnTable(item, context)
   }
 
-  // getLocations(_item: MaterialItem<number, number>, _context: ItemContext<number, number, number>): Location<number, number>[] {
-  //   return elements.map(y => ({ type: LocationType.ActionToken, y: y }))
-  // }
-
 }
 
 export const animalCardDescription = new AnimalCardDescription()

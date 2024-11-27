@@ -47,20 +47,13 @@ export class EndTurnRule extends PlayerTurnRule {
       // Recover action tokens
       for (const season of seasons) {
         const actionTokens = this.material(MaterialType.ActionToken).id(season).location(LocationType.ActionToken)
-        if (actionTokens.getQuantity() > 0) {
+        if (actionTokens.getItems().length > 0) {
           moves.push(actionTokens.moveItemsAtOnce({type: LocationType.PlayerActionSupply, id: season}))
         }
-        // Recreate removed tokens
-        // TODO: Think if tokens should not be removed but just hidden. In any case, they need to appear again here
-        for (let y = actionTokens.getQuantity(); y < 2; y++) {
-          moves.push(this.material(MaterialType.ActionToken).createItem({
-            id: season,
-            location: {
-              type: LocationType.PlayerActionSupply,
-              id: season,
-              y
-            }
-          }))
+        // Move lost tokens to the supply
+        const lostTokens = this.material(MaterialType.ActionToken).location(l => l.type === LocationType.PlayerActionLost && l.id === season)
+        if (lostTokens.getItems().length > 0) {
+          moves.push(...lostTokens.moveItems({type: LocationType.PlayerActionSupply, id: season}))
         }
       }
       
