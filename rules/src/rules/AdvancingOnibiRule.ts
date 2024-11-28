@@ -13,7 +13,6 @@ export class AdvancingOnibiRule extends PlayerTurnRule {
 
   onRuleStart() {
     if (this.elementValue === 0) {
-      // return [this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer)]
       return [this.startRule(RuleId.CheckEndTurn)]
     }
 
@@ -25,7 +24,8 @@ export class AdvancingOnibiRule extends PlayerTurnRule {
     const onibi = this.material(MaterialType.OnibiStandee)
     const minPos = -3
     const maxPos = 3
-    for (let x = 0; x <= this.elementValue; x++) {
+    // Starting in 1 to avoid remaining in the same position (the Monkey Opponent can do it)
+    for (let x = 1; x <= this.elementValue; x++) {
       let xPos = onibi.getItem()?.location.x! + (this.player === Season.Summer ? x : -x) 
       // Update xPos for Round Robin
       // 7 is total cards in the clearing

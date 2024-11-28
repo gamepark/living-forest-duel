@@ -2,7 +2,6 @@ export enum LocationType {
   ClearingLine = 1,
   ClearingCardSpot,
   FireStock,
-  TreeDecks,
   TreeDeckSpot,
   RecruitmentLine,
   SharedHelpLine,

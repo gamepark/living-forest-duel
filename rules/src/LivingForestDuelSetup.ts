@@ -110,8 +110,6 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
       minCostCard.moveItem({ type: LocationType.SeasonAnimalDeck, id: season, x: 0 })
       seasonDeck.dealOne({ type: LocationType.RecruitmentLine })
     }
-    // // TODO: Remove the line below. Using it just for testing purposes
-    // this.material(MaterialType.AnimalCard).location(LocationType.SeasonAnimalDeck).moveItems({type: LocationType.SharedDeck})
 
     // Player tree area
     this.material(MaterialType.TreeCard).createItem({
@@ -126,16 +124,24 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
     })
 
     // Action tokens
-    for (let y = 0; y < 2; y++) {
-      this.material(MaterialType.ActionToken).createItem({
-        id: season,
-        location: {
-          type: LocationType.PlayerActionSupply,
-          id: season,
-          y
-        }
-      })
-    }
+    this.material(MaterialType.ActionToken).createItem({
+      id: season,
+      location: {
+        type: LocationType.PlayerActionSupply,
+        id: season
+      },
+      quantity: 2
+    })
+    // for (let y = 0; y < 2; y++) {
+    //   this.material(MaterialType.ActionToken).createItem({
+    //     id: season,
+    //     location: {
+    //       type: LocationType.PlayerActionSupply,
+    //       id: season,
+    //       y
+    //     }
+    //   })
+    // }
   }
 
   getInitialRecruitmentCost(season: Season) {

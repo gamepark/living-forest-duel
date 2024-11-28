@@ -4,16 +4,16 @@ import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 import { MaterialType } from '../material/MaterialType'
 import { LocationType } from '../material/LocationType'
-import { Tree, treeProperties } from '../material/Tree'
+import { getTreeType, Tree, treeProperties } from '../material/Tree'
 import { range } from 'lodash'
 
 export class PlantingProtectiveTreeRule extends PlayerTurnRule {
   elementValue = !this.remind(Memory.BonusAction) ? this.remind(Memory.RemainingElementValue) : this.remind(Memory.RemainingBonusElementValue)
 
   onRuleStart() {
-    if (this.getPlayerMoves().length === 0) {
+    // if (this.getPlayerMoves().length === 0) {
+    if (!new TreesHelper(this.game,this.player).canTreesBePlanted(this.elementValue)) {
       return [this.startRule(RuleId.CheckEndTurn)]
-      // return [this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer)]
     }
 
     this.memorize(Memory.RemainingBonuses, [])
@@ -23,7 +23,7 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
   getPlayerMoves() {
     const moves: MaterialMove[] = []
     const treesHelper = new TreesHelper(this.game, this.player)
-    const availableTrees = treesHelper.getVisibleTreesInStack()
+    const availableTrees = treesHelper.getVisibleTreesInStack(this.elementValue)
     const availableSpaces: Location[] = treesHelper.availableSpaces
 
     for (const tree of availableTrees.getItems()) {
@@ -49,9 +49,9 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
         return [this.startRule(RuleId.EndGame)]
       } else {
         // Remember the types planted because we can only take one of each type
-        const plantedTrees = this.remind(Memory.PlantedTrees)
-        plantedTrees.push(movedCard.id)
-        this.memorize(Memory.PlantedTrees, plantedTrees)
+        const plantedTreesTypes = this.remind(Memory.PlantedTreesTypes)
+        plantedTreesTypes.push(getTreeType(movedCard.id))
+        this.memorize(Memory.PlantedTreesTypes, plantedTreesTypes)
 
         // Update remaining value
         this.memorize(Memory.RemainingElementValue, this.elementValue - treeProperties[movedCard!.id as Tree]!.cost)

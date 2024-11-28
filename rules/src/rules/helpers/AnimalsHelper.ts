@@ -36,11 +36,23 @@ export class AnimalsHelper extends MaterialRulesPart {
     const animalsProperties = this.getAnimalsProperties(animalsIds)
     const totalSolitary = countBy(animalsProperties, animal => animal.type === AnimalType.Solitary).true || 0
     const totalGregarious = countBy(animalsProperties, animal => animal.type === AnimalType.Gregarius).true || 0
-    if (totalSolitary - totalGregarious >= 3) {
+    const difference = totalSolitary - totalGregarious
+    // To avoid losing another action after getting a grearious animal
+    if (difference > 3 || (difference === 3 && this.material(MaterialType.ActionToken).id(season).location(LocationType.PlayerActionLost).getItems().length === 0)) {
       return true
     }
 
     return false
   }
 
+  canAnimalsBeRecruited(sunValue: number) {
+    const animalsIds = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine).getItems().map(animal => animal.id)
+    const minCost = new AnimalsHelper(this.game, this.player).getAnimalsMinCost(animalsIds) || 0
+    // if (minCost > this.remind(Memory.RemainingElementValue)) {
+    if (minCost > sunValue) {
+      return false
+    }
+
+    return true
+  }
 }

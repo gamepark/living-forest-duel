@@ -5,6 +5,7 @@ import { SpiritType } from '../material/SpiritType'
 import { CustomMoveType } from './CustomMoveType'
 import { AnimalsHelper } from './helpers/AnimalsHelper'
 import { RuleId } from './RuleId'
+import { Animal, getAnimalSeason, isVaran } from '../material/Animal'
 
 export class UseSankiCardRule extends PlayerTurnRule {
   getPlayerMoves() {
@@ -18,28 +19,42 @@ export class UseSankiCardRule extends PlayerTurnRule {
 
   onCustomMove(move: CustomMove) {
     const moves: MaterialMove[] = []
-    // If the player could use here the Sanki card and passed it's because it was a Varan, so we need to check the amount of solitary animals for the player
-    if (move.type === CustomMoveType.SankiPass
-      // && this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(this.player).getQuantity() > 0 // This can't happen
-      && new AnimalsHelper(this.game, this.player).checkTooManySolitaryAnimals(this.player)) {
-      moves.push(this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(this.player).deleteItem())
+    // If pass and last card is a Varan, check solitary animals
+    const lastCardVaran = this.lastSharedCardVaran
+    if (move.type === CustomMoveType.SankiPass && lastCardVaran.getItem() !== undefined) {
+      moves.push(this.material(MaterialType.AnimalCard).index(lastCardVaran.getIndex()).moveItem({ type: LocationType.PlayerHelpLine, id: this.player }))
+      if (new AnimalsHelper(this.game, this.player).checkTooManySolitaryAnimals(this.player)) {
+        const actionToken = this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(this.player)
+        moves.push(actionToken.moveItem({ type: LocationType.PlayerActionLost, id: this.player }))
+      }
+      // TODO: Check if the player could still use the Sanki to execute the action token option if still having tokens available
     }
-    moves.push(this.startPlayerTurn(RuleId.PlayerAction,this.nextPlayer))
+    moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
 
-    return []
+    return moves
   }
 
   afterItemMove(move: ItemMove) {
     const moves: MaterialMove[] = []
 
     if (isMoveItemType(MaterialType.SpiritCard)(move)) {
-      const fireVarans = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PlayerHelpLine && l.id === this.player)
-      const items = fireVarans.getItems()
-      const lastFireVaran = fireVarans.location(l => !items.some(item => item.location.id === l.id && item.location.x! > l.x!))
-      moves.push(lastFireVaran.moveItem({ type: LocationType.VaranDeck, id: this.player }))
-      moves.push(this.startPlayerTurn(RuleId.PlayerAction,this.nextPlayer))
+      // Get the last card in the shared deck to see if it's a player's Varan
+      const lastCardVaran = this.lastSharedCardVaran
+      if (lastCardVaran.getItem() !== undefined) {
+        moves.push(lastCardVaran.moveItem({ type: LocationType.VaranDeck, id: this.player }))
+        // TODO: Check if the player could still use the Sanki to execute the action token option if still having tokens available
+        moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
+      } else {
+        moves.push(this.startRule(RuleId.PlayerUseActionToken))
+      }
     }
 
     return moves
+  }
+
+  get lastSharedCardVaran() {
+    const cardsInHelpLine = this.material(MaterialType.AnimalCard).location(LocationType.SharedHelpLine)
+    const cardsItems = cardsInHelpLine.getItems()
+    return cardsInHelpLine.location(l => !cardsItems.some(item => item.location.x! > l.x!)).id<Animal>(animal => getAnimalSeason(animal) === this.player && isVaran(animal))
   }
 }

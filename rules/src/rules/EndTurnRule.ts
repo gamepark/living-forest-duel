@@ -46,14 +46,16 @@ export class EndTurnRule extends PlayerTurnRule {
 
       // Recover action tokens
       for (const season of seasons) {
+        // const actionTokens = this.material(MaterialType.ActionToken).id(season)
+        // moves.push(...actionTokens.moveItems({type: LocationType.PlayerActionSupply, id: season}))
         const actionTokens = this.material(MaterialType.ActionToken).id(season).location(LocationType.ActionToken)
         if (actionTokens.getItems().length > 0) {
-          moves.push(actionTokens.moveItemsAtOnce({type: LocationType.PlayerActionSupply, id: season}))
+          moves.push(...actionTokens.moveItems({type: LocationType.PlayerActionSupply, id: season}))
         }
         // Move lost tokens to the supply
         const lostTokens = this.material(MaterialType.ActionToken).id(season).location(LocationType.PlayerActionLost)
         if (lostTokens.getItems().length > 0) {
-          moves.push(lostTokens.moveItemsAtOnce({type: LocationType.PlayerActionSupply, id: season}))
+          moves.push(...lostTokens.moveItems({type: LocationType.PlayerActionSupply, id: season}))
         }
       }
       

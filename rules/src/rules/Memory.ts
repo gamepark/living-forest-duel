@@ -1,6 +1,6 @@
 export enum Memory {
   RemainingElementValue = 1,
-  PlantedTrees,
+  PlantedTreesTypes,
   RemainingBonuses,
   BonusAction,
   RemainingBonusElementValue

@@ -1,5 +1,5 @@
 import { MaterialContext, PileLocator } from "@gamepark/react-game"
-import { Location, MaterialItem } from "@gamepark/rules-api"
+import { Location } from "@gamepark/rules-api"
 import { sharedHelpLineLocator } from "./SharedHelpLineLocator"
 import { treeTokenDescription } from "../material/TreeTokenDescription"
 import { treeTokenLocator } from "./TreeTokenLocator"
@@ -14,9 +14,6 @@ class PlayerFireStockLocator extends PileLocator {
     }
   }
 
-  getPileId(item: MaterialItem) {
-    return item.id
-  }
 }
 
 export const playerFireStockLocator = new PlayerFireStockLocator()

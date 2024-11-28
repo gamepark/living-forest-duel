@@ -11,13 +11,16 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
   elementValue = !this.remind(Memory.BonusAction) ? this.remind(Memory.RemainingElementValue) : this.remind(Memory.RemainingBonusElementValue)
 
   onRuleStart() {
-    const animalsIds = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine).getItems().map(animal => animal.id)
-    const minCost = new AnimalsHelper(this.game, this.player).getAnimalsMinCost(animalsIds) || 0
-    // if (minCost > this.remind(Memory.RemainingElementValue)) {
-    if (minCost > this.elementValue) {
+    // const animalsIds = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine).getItems().map(animal => animal.id)
+    // const minCost = new AnimalsHelper(this.game, this.player).getAnimalsMinCost(animalsIds) || 0
+    // // if (minCost > this.remind(Memory.RemainingElementValue)) {
+    // if (minCost > this.elementValue) {
+    //   return [this.startRule(RuleId.RefillRecruitmentLine)]
+    // }
+    if (!new AnimalsHelper(this.game,this.player).canAnimalsBeRecruited(this.elementValue)) {
       return [this.startRule(RuleId.RefillRecruitmentLine)]
     }
-
+  
     return []
   }
 
@@ -25,7 +28,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
 
     const playerCards = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
-      .id<Animal>(animal => getAnimalSeason(animal) !== undefined && this.elementValue >= animalProperties[animal].cost!)
+      .id<Animal>(animal => getAnimalSeason(animal) === this.player && this.elementValue >= animalProperties[animal].cost!)
     moves.push(
       ...playerCards.getItems().flatMap((card) => {
         return [
@@ -35,7 +38,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
     )
 
     const restOfCards = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
-      .id<Animal>(animal => getAnimalSeason(animal) === undefined && this.elementValue >= animalProperties[animal].cost!)
+      .id<Animal>(animal => getAnimalSeason(animal) !== this.player && this.elementValue >= animalProperties[animal].cost!)
     moves.push(...restOfCards.moveItems({ type: LocationType.SharedDiscardPile }))
 
     return moves

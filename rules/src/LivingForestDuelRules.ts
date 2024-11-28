@@ -15,6 +15,7 @@ import { CustomNegativeFillGapStrategy } from './material/location/strategy/Cust
 import { TreeBonusActionRule } from './rules/TreeBonusActionRule'
 import { OnibiBonusActionRule } from './rules/OnibiBonusActionRule'
 import { UseSankiCardRule } from './rules/UseSankiCardRule'
+import { PlayerUseActionTokenRule } from './rules/PlayerUseActionTokenRule'
 
 /**
  * This class implements the rules of the board game.
@@ -24,6 +25,7 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
   implements TimeLimit<MaterialGame<Season, MaterialType, LocationType>, MaterialMove<Season, MaterialType, LocationType>, Season> {
   rules = {
     [RuleId.PlayerAction]: PlayerActionRule,
+    [RuleId.PlayerUseActionToken]: PlayerUseActionTokenRule,
     [RuleId.ExtinguishingFire]: ExtinguishingFireRule,
     [RuleId.RecruitingAnimals]: RecruitingAnimalsRule,
     [RuleId.RefillRecruitmentLine]: RefillRecruitmentLineRule,
@@ -38,7 +40,7 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
 
   locationsStrategies = {
     [MaterialType.ActionToken]: {
-      [LocationType.PlayerActionSupply]: new PositiveSequenceStrategy(),
+      // [LocationType.PlayerActionSupply]: new PositiveSequenceStrategy(),
       [LocationType.PlayerActionLost]: new PositiveSequenceStrategy()
     },
     [MaterialType.AnimalCard]: {
@@ -54,7 +56,7 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
       [LocationType.PlayerForest]: new StakingStrategy()
     },
     [MaterialType.SpiritCard]: {
-      [LocationType.SankiDeck]: new PositiveSequenceStrategy(),
+    //   [LocationType.SankiDeck]: new PositiveSequenceStrategy(),
       [LocationType.PlayerSpiritLine]: new PositiveSequenceStrategy()
     }
   }

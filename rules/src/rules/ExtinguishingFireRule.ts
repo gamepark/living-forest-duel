@@ -4,14 +4,16 @@ import { RuleId } from './RuleId'
 import { Memory } from './Memory'
 import { LocationType } from '../material/LocationType'
 import { Element } from '../Season'
+import { FireHelper } from './helpers/FireHelper'
 
 export class ExtinguishingFireRule extends PlayerTurnRule {
   elementValue = !this.remind(Memory.BonusAction) ? this.remind(Memory.RemainingElementValue) : this.remind(Memory.RemainingBonusElementValue)
 
   onRuleStart() {
-    const totalAvailableFireTokens = this.material(MaterialType.FireToken).location(LocationType.ClearingCardSpot)
-      .filter((token) => this.elementValue >= this.getClearingCardValue(token.location.x!)).getQuantity()
-    if (totalAvailableFireTokens === 0) {
+    // const totalAvailableFireTokens = this.material(MaterialType.FireToken).location(LocationType.ClearingCardSpot)
+    //   .filter((token) => this.elementValue >= this.getClearingCardValue(token.location.x!)).getQuantity()
+    // if (totalAvailableFireTokens === 0) {
+    if (!new FireHelper(this.game,this.player).canFireBeExtinguished(this.elementValue)) {
       if (!this.remind(Memory.BonusAction)) {
         // return [this.startPlayerTurn(RuleId.PlayerAction,this.nextPlayer)]
         return [this.startRule(RuleId.CheckEndTurn)]
@@ -25,15 +27,14 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
 
   getPlayerMoves() {
     const moves: MaterialMove[] = []
-    const availableFireTokens = this.material(MaterialType.FireToken).location(LocationType.ClearingCardSpot)
-      .filter((token) => this.elementValue >= this.getClearingCardValue(token.location.x!))    
+    const availableFireTokens = new FireHelper(this.game,this.player).getAvailableFireTokens(this.elementValue)
     moves.push(...availableFireTokens.moveItems({type: LocationType.PlayerFireStock, id: this.player}))
 
     return moves
   }
 
   getClearingCardValue(x: number) {
-    return x === 0 ? 2 : Math.abs(x) + 1
+    return new FireHelper(this.game,this.player).getClearingCardValue(x)
   }
 
   beforeItemMove(move: ItemMove) {

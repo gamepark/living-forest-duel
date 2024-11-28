@@ -2,7 +2,7 @@ import { Direction, Location, Material, MaterialGame, MaterialItem, MaterialRule
 import { minBy, uniqBy } from "lodash";
 import { MaterialType } from "../../material/MaterialType";
 import { LocationType } from "../../material/LocationType";
-import { Tree, TreePattern, treeProperties } from "../../material/Tree";
+import { getTreeType, Tree, TreePattern, treeProperties } from "../../material/Tree";
 import { Memory } from "../Memory";
 import { CardinalLocations } from "../../Season";
 
@@ -11,13 +11,13 @@ export class TreesHelper extends MaterialRulesPart {
     super(game)
   }
 
-  getVisibleTreesInStack(): Material {
+  getVisibleTreesInStack(plantValue: number): Material {
     const treesInDecks = this.material(MaterialType.TreeCard).location(LocationType.TreeDeckSpot)
     const items = treesInDecks.getItems()
     return treesInDecks
       .location(l => !items.some(item => item.location.id === l.id && item.location.x! > l.x!))
-      // .location(l => !this.remind(Memory.PlantedTrees).includes(l.id))
-      .filter(tree => !this.remind(Memory.PlantedTrees).includes(tree.location.id) && treeProperties[tree.id as Tree]?.cost! <= this.remind(Memory.RemainingElementValue))
+      .filter(tree => !this.remind(Memory.PlantedTreesTypes).includes(getTreeType(tree.id)) && treeProperties[tree.id as Tree]?.cost! <= plantValue)
+      // .filter(tree => !this.remind(Memory.PlantedTreesTypes).includes(getTreeType(tree.id)) && treeProperties[tree.id as Tree]?.cost! <= this.remind(Memory.RemainingElementValue))
   }
 
   getTreesMinCost(treesIds: number[]) {
@@ -37,6 +37,22 @@ export class TreesHelper extends MaterialRulesPart {
 
   getMinCostElement(properties: Partial<Record<Tree, TreePattern>>) {
     return minBy(Object.values(properties), 'cost')
+  }
+
+  canTreesBePlanted(plantValue: number) {
+    let canPlant = false
+    const availableTrees = this.getVisibleTreesInStack(plantValue)
+    const availableSpaces: Location[] = this.availableSpaces
+
+    for (const tree of availableTrees.getItems()) {
+      const availableSpacesForTree = new TreesHelper(this.game, this.player).getAvailableSpacesForTree(tree, availableSpaces)
+      if (availableSpacesForTree.length > 0) {
+        canPlant = true
+        break
+      }
+    }
+
+    return canPlant
   }
 
   get availableSpaces() {
@@ -111,28 +127,30 @@ export class TreesHelper extends MaterialRulesPart {
 
     // North
     neighborSpace = { x: space.x, y: space.y! - 1 }
-    if (!this.hasValidNeighborCard(neighborSpace, treeProperties[treeId]?.bonus.river[Direction.North]!, Direction.South)) {
-      return false
+    if (this.hasValidNeighborCard(neighborSpace, treeProperties[treeId]?.bonus.river[Direction.North]!, Direction.South)) {
+      return true
     }
     // East
     neighborSpace = { x: space.x! + 1, y: space.y! }
-    if (!this.hasValidNeighborCard(neighborSpace, treeProperties[treeId]?.bonus.river[Direction.East]!, Direction.West)) {
-      return false
+    if (this.hasValidNeighborCard(neighborSpace, treeProperties[treeId]?.bonus.river[Direction.East]!, Direction.West)) {
+      return true
     }
     // South
     neighborSpace = { x: space.x, y: space.y! + 1 }
-    if (!this.hasValidNeighborCard(neighborSpace, treeProperties[treeId]?.bonus.river[Direction.South]!, Direction.North)) {
-      return false
+    if (this.hasValidNeighborCard(neighborSpace, treeProperties[treeId]?.bonus.river[Direction.South]!, Direction.North)) {
+      return true
     }
     // West
     neighborSpace = { x: space.x! - 1, y: space.y }
-    if (!this.hasValidNeighborCard(neighborSpace, treeProperties[treeId]?.bonus.river[Direction.West]!, Direction.East)) {
-      return false
+    if (this.hasValidNeighborCard(neighborSpace, treeProperties[treeId]?.bonus.river[Direction.West]!, Direction.East)) {
+      return true
     }
 
-    return true
+    return false
   }
 
+  // This algorithm only works while the river in the card is always conected.
+  // It would not work if we introduce a card that, for example, has a river connecting N-E and a separate one connecting S-W
   // TODO: Update this to consider only the top card of each neighbor
   hasValidNeighborCard(reference: { x?: number; y?: number }, treeHasRiver: boolean, direction: Direction) {
     const neighborTree = this.material(MaterialType.TreeCard)
@@ -141,9 +159,11 @@ export class TreesHelper extends MaterialRulesPart {
         && l.x === reference.x!
         && l.y === reference.y!)
 
-    // No neighbor
-    if (neighborTree.getQuantity() === 0
-      || (treeHasRiver && (neighborTree.id(this.player).getItem() !== undefined || treeProperties[neighborTree.getItem()!.id! as Tree]?.bonus.river[direction]))) {
+    // if (neighborTree.getItems().length === 0 // No neighbor
+    //   || (treeHasRiver && (neighborTree.id(this.player).getItem() !== undefined || treeProperties[neighborTree.getItem()!.id! as Tree]?.bonus.river[direction]))) {
+    if (neighborTree.getItems().length === 0) { // No neighbor
+      return false
+    }else if (treeHasRiver && (neighborTree.id(this.player).getItem() !== undefined || treeProperties[neighborTree.getItem()!.id! as Tree]?.bonus.river[direction])) {
       return true
     }
 

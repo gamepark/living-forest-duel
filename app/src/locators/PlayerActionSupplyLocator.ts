@@ -11,7 +11,8 @@ class PlayerActionSupplyLocator extends ListLocator {
   getCoordinates(location: Location<number, number>) {
     return {
       x: treeTokenLocator.getCoordinates({type: LocationType.TreeToken, id: location.id}).x - treeTokenDescription.width / 2,
-      y: treeTokenLocator.getCoordinates({type: LocationType.TreeToken, id: location.id}).y - treeTokenDescription.height / 2
+      y: treeTokenLocator.getCoordinates({type: LocationType.TreeToken, id: location.id}).y - treeTokenDescription.height / 2,
+      z: 0.1
     }
   }
 }
