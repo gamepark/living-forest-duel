@@ -71,22 +71,22 @@ export class TreesHelper extends MaterialRulesPart {
 
       const left = { x: playedCard.location.x! - 1, y: playedCard.location.y! }
       if (!playedCards.find(item => isAnyCardToTheLeft(item, coordinates)) && (boundaries.xMax - left.x < 3)) {
-        availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: left.x, y: left.y, z: 0 })
+        availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: left.x, y: left.y })
       }
 
       const right = { x: playedCard.location.x! + 1, y: playedCard.location.y! }
       if (!playedCards.find(item => isAnyCardToTheRight(item, coordinates)) && (right.x - boundaries.xMin < 3)) {
-        availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: right.x, y: right.y, z: 0 })
+        availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: right.x, y: right.y })
       }
 
       const below = { x: playedCard.location.x!, y: playedCard.location.y! + 1 }
       if (!playedCards.find(item => isAnyCardBelow(item, coordinates)) && (below.y - boundaries.yMin < 3)) {
-        availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: below.x, y: below.y, z: 0 })
+        availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: below.x, y: below.y })
       }
 
       const above = { x: playedCard.location.x!, y: playedCard.location.y! - 1 }
       if (!playedCards.find(item => isAnyCardAbove(item, coordinates)) && (boundaries.yMax - above.y < 3)) {
-        availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: above.x, y: above.y, z: 0 })
+        availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: above.x, y: above.y })
       }
     }
 

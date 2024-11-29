@@ -118,8 +118,7 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
         type: LocationType.PlayerForest,
         id: season,
         x: 0,
-        y: 0,
-        z: 0
+        y: 0
       }
     })
 
