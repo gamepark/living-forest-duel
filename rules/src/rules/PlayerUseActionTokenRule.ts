@@ -13,7 +13,7 @@ import { TreesHelper } from './helpers/TreesHelper'
 export class PlayerUseActionTokenRule extends PlayerTurnRule {
   onRuleStart() {
     if (this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(this.player).getQuantity() === 0) {
-      return [this.startRule(RuleId.CheckEndTurn)]
+      return [this.startRule(RuleId.EndTurn)]
     } else {
       this.memorize(Memory.PlantedTreesTypes, [])
       this.memorize(Memory.BonusAction, 0)

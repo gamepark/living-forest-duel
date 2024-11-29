@@ -16,7 +16,7 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
     if (!new FireHelper(this.game,this.player).canFireBeExtinguished(this.elementValue)) {
       if (!this.remind(Memory.BonusAction)) {
         // return [this.startPlayerTurn(RuleId.PlayerAction,this.nextPlayer)]
-        return [this.startRule(RuleId.CheckEndTurn)]
+        return [this.startRule(RuleId.EndTurn)]
       } else {
         return[this.startRule(this.remind(Memory.BonusAction) === Element.Plant ? RuleId.TreeBonusAction : RuleId.OnibiBonusAction)]
       }

@@ -33,7 +33,7 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
     [RuleId.AdvancingOnibi]: AdvancingOnibiRule,
     [RuleId.TreeBonusAction]: TreeBonusActionRule,
     [RuleId.OnibiBonusAction]: OnibiBonusActionRule,
-    [RuleId.CheckEndTurn]: EndTurnRule,
+    [RuleId.EndTurn]: EndTurnRule,
     [RuleId.UseSankiCard]: UseSankiCardRule,
     [RuleId.EndGame]: EndGameRule
   }

@@ -6,14 +6,13 @@ import { MaterialType } from '../material/MaterialType'
 import { getOpponentSeason, Season } from '../Season'
 import { SpiritType } from '../material/SpiritType'
 import { Clearing, clearingProperties } from '../material/Clearing'
-// import { Season } from '../Season'
 
 export class AdvancingOnibiRule extends PlayerTurnRule {
   elementValue = this.remind(Memory.RemainingElementValue)
 
   onRuleStart() {
     if (this.elementValue === 0) {
-      return [this.startRule(RuleId.CheckEndTurn)]
+      return [this.startRule(RuleId.EndTurn)]
     }
 
     return []
@@ -30,14 +29,18 @@ export class AdvancingOnibiRule extends PlayerTurnRule {
       // Update xPos for Round Robin
       // 7 is total cards in the clearing
       if (xPos < minPos) {
-        xPos = maxPos - ((minPos - xPos -1) % 7)
+        xPos = maxPos - this.positiveModulo((minPos - xPos - 1), 7)
       } else if (xPos > maxPos) {
-        xPos = minPos + ((x - maxPos -1) % 7)
+        xPos = minPos + this.positiveModulo((xPos - maxPos - 1), 7)
       }
       moves.push(onibi.moveItem({ type: LocationType.ClearingCardSpot, x: xPos }))
     }
 
     return moves
+  }
+
+  positiveModulo(n: number, m: number): number {
+    return ((n % m) + m) % m
   }
 
   beforeItemMove(move: ItemMove<number, number, number>) {

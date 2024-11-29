@@ -11,9 +11,8 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
   elementValue = !this.remind(Memory.BonusAction) ? this.remind(Memory.RemainingElementValue) : this.remind(Memory.RemainingBonusElementValue)
 
   onRuleStart() {
-    // if (this.getPlayerMoves().length === 0) {
     if (!new TreesHelper(this.game,this.player).canTreesBePlanted(this.elementValue)) {
-      return [this.startRule(RuleId.CheckEndTurn)]
+      return [this.startRule(RuleId.EndTurn)]
     }
 
     this.memorize(Memory.RemainingBonuses, [])

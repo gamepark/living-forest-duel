@@ -29,11 +29,14 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
       // If the player has enough action tokens and a Sanki card, offer using it
       // The action tokens have not moved here yet, that's why I need to check the last move
       const actionTokens = this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(this.player).getItems()
-      if ((actionTokens.length == 2 || (actionTokens.length == 1 && moves.length > 0 && !isMoveItemType(MaterialType.ActionToken)(moves[moves.length - 1])))
-        && this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(l => l.type === LocationType.PlayerSpiritLine && l.id === this.player).getQuantity() > 0) {
+      if ((moves.length == 0
+        || actionTokens.length == 2
+        || (actionTokens.length == 1 && moves.length > 0 && !isMoveItemType(MaterialType.ActionToken)(moves[moves.length - 1])))
+        && this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(l => l.type === LocationType.PlayerSpiritLine && l.id === this.player).getQuantity() > 0
+        && new PlayerUseActionTokenRule(this.game).getPlayerMoves().length > 0) {
         moves.push(this.startRule(RuleId.UseSankiCard))
       } else {
-        moves.push(this.startRule(RuleId.CheckEndTurn))
+        moves.push(this.startRule(RuleId.EndTurn))
       }
     } else if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.ActionToken) {
       moves.push(...super.afterItemMove(move))
@@ -60,7 +63,7 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
             // moves.push(this.startRule(RuleId.UseSankiCard))
             checkSolitaryAnimals = false
           } else {
-            moves.push(this.material(MaterialType.AnimalCard).id(movedAnimal.id).moveItem({ type: LocationType.PlayerHelpLine, id: animalSeason }))
+            moves.push(this.material(MaterialType.AnimalCard).index(move.itemIndex).moveItem({ type: LocationType.PlayerHelpLine, id: animalSeason }))
             // moves.push(this.material(MaterialType.AnimalCard).id(movedAnimal.id).location(l => l.type === movedAnimal.location.type && l.x === movedAnimal.location.x).moveItem({ type: LocationType.PlayerHelpLine, id: animalSeason }))
           }
         } else {
@@ -75,7 +78,7 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
           if (checkSolitaryAnimals
             && new AnimalsHelper(this.game, this.player).checkTooManySolitaryAnimals(season)
             && this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(season).getQuantity() > 0) {
-            moves.push(this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(season).moveItem({type: LocationType.PlayerActionLost, id: season}))
+            moves.push(this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(season).moveItem({ type: LocationType.PlayerActionLost, id: season }))
           }
         }
       }

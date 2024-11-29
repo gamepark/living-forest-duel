@@ -34,14 +34,14 @@ export abstract class BonusActionRule extends PlayerTurnRule {
             moves.push(sankiCards.dealOne({ type: LocationType.PlayerSpiritLine, id: this.player }))
           }
           // moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
-          moves.push(this.startRule(RuleId.CheckEndTurn))
+          moves.push(this.startRule(RuleId.EndTurn))
           break
       }
       return moves
     } else {
       this.memorize(Memory.BonusAction, 0)
       // If it's an Onibi bonus action, check end turn, in other case continue the Plant trees in case there are other trees to take
-      return [this.bonusRule === Element.Wind ? this.startRule(RuleId.CheckEndTurn) : this.startRule(RuleId.PlantingProtectiveTree)]
+      return [this.bonusRule === Element.Wind ? this.startRule(RuleId.EndTurn) : this.startRule(RuleId.PlantingProtectiveTree)]
       // return [this.bonusRule === Element.Wind ? this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer) : this.startRule(RuleId.PlantingProtectiveTree)]
     }
   }

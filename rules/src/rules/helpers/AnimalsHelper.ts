@@ -1,6 +1,6 @@
 import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
 import { countBy, minBy } from 'lodash'
-import { Animal, animalProperties, AnimalType, CardPattern, isNotOpponentAnimal } from '../../material/Animal'
+import { Animal, animalProperties, AnimalType, CardPattern, isNotOpponentAnimal, isVaran } from '../../material/Animal'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 
@@ -9,19 +9,19 @@ export class AnimalsHelper extends MaterialRulesPart {
     super(game)
   }
 
-  getAnimalsMinCost(animalsIds: number[]) {
+  getAnimalsMinCost(animalsIds: Animal[]) {
     return this.getMinCostElement(this.getAnimalsProperties(animalsIds))?.cost
   }
 
-  getAnimalsProperties(animalsIds: number[]) {
-    const filteredProperties = Object.keys(animalProperties).reduce((acc, key) => {
-      if (animalsIds.includes(Number(key))) {
-        acc[key] = animalProperties[Number(key) as Animal]
+  getAnimalsProperties(animalsIds: Animal[]): Record<Animal, CardPattern> {
+    const animalsProperties = animalsIds.reduce((acc, animalId) => {
+      if (animalProperties[animalId]) {
+        acc[animalId] = animalProperties[animalId]
       }
       return acc
-    }, {} as Record<string, any>)
+    }, {} as Record<Animal, CardPattern>)
 
-    return filteredProperties
+    return animalsProperties
   }
 
   getMinCostElement(properties: Partial<Record<Animal, CardPattern>>) {
@@ -34,7 +34,12 @@ export class AnimalsHelper extends MaterialRulesPart {
       .id<Animal>(animal => isNotOpponentAnimal(animal, season))
       .getItems().map(animal => animal.id)
     const animalsProperties = this.getAnimalsProperties(animalsIds)
-    const totalSolitary = countBy(animalsProperties, animal => animal.type === AnimalType.Solitary).true || 0
+    const totalVarans = countBy(animalsIds, id => isVaran(id)).true || 0
+    const solitary = countBy(Object.entries(animalsProperties), ([index, animal]) => {
+      return !isVaran(index as unknown as Animal) && animal.type === AnimalType.Solitary
+    }).true || 0
+    const totalSolitary = totalVarans + solitary
+
     const totalGregarious = countBy(animalsProperties, animal => animal.type === AnimalType.Gregarius).true || 0
     const difference = totalSolitary - totalGregarious
     // To avoid losing another action after getting a grearious animal

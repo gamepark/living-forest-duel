@@ -9,6 +9,6 @@ export enum RuleId {
   TreeBonusAction,
   OnibiBonusAction,
   UseSankiCard,
-  CheckEndTurn,
+  EndTurn,
   EndGame
 }

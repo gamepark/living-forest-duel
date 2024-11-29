@@ -11,15 +11,14 @@ export class EndTurnRule extends PlayerTurnRule {
   onRuleStart() {
     const moves: MaterialMove[] = []
 
-    // Shuffle discard pile if necessary
-    if (this.material(MaterialType.AnimalCard).location(LocationType.SharedDeck).getQuantity() === 0) {
-      const discardedDeck = this.material(MaterialType.AnimalCard).location(LocationType.SharedDiscardPile).deck()
+    if (this.material(MaterialType.AnimalCard).location(LocationType.SharedDeck).getItems().length === 0) {
       // TODO: Is there a shuffle effect?
-      discardedDeck.shuffle()
+      this.material(MaterialType.AnimalCard).location(LocationType.SharedDiscardPile).shuffle()
+      const discardedDeck = this.material(MaterialType.AnimalCard).location(LocationType.SharedDiscardPile).deck()
       moves.push(discardedDeck.moveItemsAtOnce({type: LocationType.SharedDeck}))
     }
 
-    if (this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).getQuantity() > 0) {
+    if (this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).getItems().length > 0) {
       moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
     } else {
       // Varan cards

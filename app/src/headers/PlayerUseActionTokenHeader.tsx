@@ -4,15 +4,15 @@ import { LivingForestDuelRules } from "@gamepark/living-forest-duel/LivingForest
 import { useRules, usePlayerId, usePlayerName } from "@gamepark/react-game"
 import { useTranslation } from "react-i18next"
 
-export const PlayerActionHeader = () => {
+export const PlayerUseActionTokenHeader = () => {
   const { t } = useTranslation()
   const rules = useRules<LivingForestDuelRules>()!
   const me = usePlayerId()
   const activePlayer = rules.getActivePlayer()
   const player = usePlayerName(activePlayer)
   if (activePlayer === me) {
-    return <>{t('header.player-action.you')}</>
+    return <>{t('header.use-action-token.you')}</>
   } else {
-    return <>{t('header.player-action.player', { player })}</>
+    return <>{t('header.use-action-token.player', { player })}</>
   }
 }

@@ -7,7 +7,7 @@ import { treeTokenLocator } from "./TreeTokenLocator"
 
 class PlayerHelpLineLocator extends ListLocator {
   gap = { x: animalCardDescription.width + 1 }
-  maxCount = 3
+  maxCount = 4
   
   getCoordinates(location: Location<number, number>) {
     return {

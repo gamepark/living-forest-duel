@@ -27,7 +27,6 @@ export class UseSankiCardRule extends PlayerTurnRule {
         const actionToken = this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(this.player)
         moves.push(actionToken.moveItem({ type: LocationType.PlayerActionLost, id: this.player }))
       }
-      // TODO: Check if the player could still use the Sanki to execute the action token option if still having tokens available
     }
     moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
 
@@ -42,7 +41,6 @@ export class UseSankiCardRule extends PlayerTurnRule {
       const lastCardVaran = this.lastSharedCardVaran
       if (lastCardVaran.getItem() !== undefined) {
         moves.push(lastCardVaran.moveItem({ type: LocationType.VaranDeck, id: this.player }))
-        // TODO: Check if the player could still use the Sanki to execute the action token option if still having tokens available
         moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
       } else {
         moves.push(this.startRule(RuleId.PlayerUseActionToken))

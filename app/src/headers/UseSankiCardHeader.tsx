@@ -24,6 +24,6 @@ export const UseSankiCardHeader = () => {
       }}/>
     )
   } else {
-    return <Trans defaults="header.use-sanki-card.player" values={{ player }}/>
+    return <Trans defaults="header.use-sanki-card.player" values={ player }/>
   }
 }
