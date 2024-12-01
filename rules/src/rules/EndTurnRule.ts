@@ -2,7 +2,7 @@ import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { RuleId } from './RuleId'
 import { MaterialType } from '../material/MaterialType'
 import { LocationType } from '../material/LocationType'
-import { Element, getOpponentSeason, seasons } from '../Season'
+import { Element, seasons } from '../Season'
 import { Clearing, clearingProperties } from '../material/Clearing'
 import { ElementsHelper } from './helpers/ElementsHelper'
 
@@ -25,9 +25,13 @@ export class EndTurnRule extends PlayerTurnRule {
       for (const season of seasons) {
         const waterValue = new ElementsHelper(this.game, this.player).getElementValue(Element.Water, season)
         if (this.fireValue > waterValue) {
-          const varanDeck = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.VaranDeck && l.id === season)
+          const varanDeck = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.VaranDeck && l.id === season).deck()
           for (let i=0; i < this.spotsOnFire; i++) {
-            moves.push(varanDeck.moveItem({type: LocationType.SharedDiscardPile}))
+            if (varanDeck.getItems().length > 0) {
+              moves.push(varanDeck.dealOne({type: LocationType.SharedDiscardPile}))
+            } else {
+              break
+            }
           }
         }
       }
@@ -63,7 +67,7 @@ export class EndTurnRule extends PlayerTurnRule {
       moves.push(cardsPlayed.moveItemsAtOnce({type: LocationType.SharedDiscardPile}))
 
       // According to the rules: "On future turns, the first player to end the previous turn starts"
-      moves.push(this.startPlayerTurn(RuleId.PlayerAction, getOpponentSeason(this.player)))
+      moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.player))
     }
 
     return moves    
