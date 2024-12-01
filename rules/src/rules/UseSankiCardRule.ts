@@ -6,8 +6,19 @@ import { CustomMoveType } from './CustomMoveType'
 import { AnimalsHelper } from './helpers/AnimalsHelper'
 import { RuleId } from './RuleId'
 import { Animal, getAnimalSeason, isVaran } from '../material/Animal'
+import { PlayerUseActionTokenRule } from './PlayerUseActionTokenRule'
 
 export class UseSankiCardRule extends PlayerTurnRule {
+  onRuleStart() {
+    // When offering a Sanki card there's still the case that it's considering if offering it or not with a player's card still in the shared line
+    // Double checking it here just for simplicity
+    // TODO: Improve this to only do it once if possible
+    if (this.lastSharedCardVaran.getItem() === undefined && new PlayerUseActionTokenRule(this.game).getPlayerMoves().length === 0) {
+      return [this.startRule(RuleId.EndTurn)]
+    }
+    return []
+  }
+
   getPlayerMoves() {
     const moves: MaterialMove[] = []
     const playerSankiCards = this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(l => l.type === LocationType.PlayerSpiritLine && l.id === this.player)
