@@ -19,11 +19,11 @@ export const UseSankiCardHeader = () => {
     if (!useSanki) return null
     return (
       <Trans defaults="header.use-sanki-card.you" components={{
-        useSanki: <PlayMoveButton move={useSanki}/>,
-        pass: <PlayMoveButton move={pass}/>
-      }}/>
+        useSanki: <PlayMoveButton move={useSanki} />,
+        pass: <PlayMoveButton move={pass} />
+      }} />
     )
   } else {
-    return <Trans defaults="header.use-sanki-card.player" values={ player }/>
+    return <Trans defaults="header.use-sanki-card.player" values={{ player }} />
   }
 }

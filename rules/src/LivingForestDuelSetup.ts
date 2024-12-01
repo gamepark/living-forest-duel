@@ -36,7 +36,6 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
     const firePositions = [-1, 1]
     for (const x of firePositions) {
       this.material(MaterialType.FireToken).createItem({
-        id: MaterialType.FireToken,
         location: {
           type: LocationType.ClearingCardSpot,
           x
