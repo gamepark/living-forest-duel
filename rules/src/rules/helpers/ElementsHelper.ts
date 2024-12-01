@@ -29,12 +29,12 @@ export class ElementsHelper extends MaterialRulesPart {
       .getItems()
       .sort((a,b) => b.location.x! - a.location.x!)
 
-    const tokenLocationX = cardPosX ?? (tokensLocations.length > 0 ? tokensLocations[0].location.x! : this.material(MaterialType.AnimalCard).location(LocationType.SharedHelpLine).getQuantity() - 1)
+    const tokenLocationX = cardPosX ?? this.material(MaterialType.AnimalCard).location(LocationType.SharedHelpLine).getQuantity() - 1
     let previousTokenLocationX = -1
     if (cardPosX !== undefined) {
-      previousTokenLocationX = tokensLocations.length > 0 ? tokensLocations[0].location.x! : -1
+      previousTokenLocationX = tokensLocations[1]?.location.x ?? -1
     } else {
-      previousTokenLocationX = tokensLocations[1]?.location.x ?? -1  
+      previousTokenLocationX = tokensLocations[0]?.location.x ?? -1  
     }
     for (let x = tokenLocationX!; x > previousTokenLocationX; x--) {
       const card = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine && l.x === x).getItem<Animal>()!

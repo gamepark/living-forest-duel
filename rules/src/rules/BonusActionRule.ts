@@ -20,13 +20,14 @@ export abstract class BonusActionRule extends PlayerTurnRule {
           new ElementsHelper(this.game, this.player).setRemainingBonusElementValue(Element.Sun)
           moves.push(this.startRule(RuleId.RecruitingAnimals))
           break
+        case Element.Water:
+          new ElementsHelper(this.game, this.player).setRemainingBonusElementValue(Element.Water)
+          console.log(this.remind(Memory.RemainingBonusElementValue))
+          moves.push(this.startRule(RuleId.ExtinguishingFire))
+          break
         case Element.Plant:
           new ElementsHelper(this.game, this.player).setRemainingBonusElementValue(Element.Plant)
           moves.push(this.startRule(RuleId.PlantingProtectiveTree))
-          break
-        case Element.Water:
-          new ElementsHelper(this.game, this.player).setRemainingBonusElementValue(Element.Water)
-          moves.push(this.startRule(RuleId.ExtinguishingFire))
           break
         case Element.Wind:
           const sankiCards = this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(LocationType.SankiDeck).getQuantity() > 0 ? this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(LocationType.SankiDeck).deck() : this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(l => l.type === LocationType.SankiDeck && l.id === getOpponentSeason(this.player)).deck()

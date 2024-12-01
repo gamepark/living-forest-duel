@@ -10,9 +10,6 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
   elementValue = !this.remind(Memory.BonusAction) ? this.remind(Memory.RemainingElementValue) : this.remind(Memory.RemainingBonusElementValue)
 
   onRuleStart() {
-    // const totalAvailableFireTokens = this.material(MaterialType.FireToken).location(LocationType.ClearingCardSpot)
-    //   .filter((token) => this.elementValue >= this.getClearingCardValue(token.location.x!)).getQuantity()
-    // if (totalAvailableFireTokens === 0) {
     if (!new FireHelper(this.game,this.player).canFireBeExtinguished(this.elementValue)) {
       if (!this.remind(Memory.BonusAction)) {
         // return [this.startPlayerTurn(RuleId.PlayerAction,this.nextPlayer)]

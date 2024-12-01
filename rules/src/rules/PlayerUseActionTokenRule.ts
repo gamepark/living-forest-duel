@@ -103,7 +103,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
     return moves
   }
 
-  afterItemMove(move: ItemMove<number, number, number>, _context?: PlayMoveContext) {
+  beforeItemMove(move: ItemMove<number, number, number>, _context?: PlayMoveContext) {
     const moves: MaterialMove[] = []
 
     if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.ActionToken) {
