@@ -156,7 +156,7 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
       location: {
         type: LocationType.FireStock
       },
-      quantity: 17
+      quantity: 19 // Max possible tokens needed in the game are 21
     })
 
     this.material(MaterialType.SpiritCard).createItem({

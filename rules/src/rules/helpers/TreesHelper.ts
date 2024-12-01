@@ -149,18 +149,21 @@ export class TreesHelper extends MaterialRulesPart {
     return false
   }
 
-  // This algorithm only works while the river in the card is always conected.
-  // It would not work if we introduce a card that, for example, has a river connecting N-E and a separate one connecting S-W
-  // TODO: Update this to consider only the top card of each neighbor
-  hasValidNeighborCard(reference: { x?: number; y?: number }, treeHasRiver: boolean, direction: Direction) {
-    const neighborTree = this.material(MaterialType.TreeCard)
+  showVisibleTree(reference: { x?: number; y?: number }) {
+    const treesInLocation = this.material(MaterialType.TreeCard)
       .location(l => l.type === LocationType.PlayerForest
         && l.id === this.player
         && l.x === reference.x!
         && l.y === reference.y!)
+    const items = treesInLocation.getItems()
+    return treesInLocation.location(l => !items.some(item => item.location.x === l.x && item.location.y === l.y && item.location.z! > l.z!))
+  }
 
-    // if (neighborTree.getItems().length === 0 // No neighbor
-    //   || (treeHasRiver && (neighborTree.id(this.player).getItem() !== undefined || treeProperties[neighborTree.getItem()!.id! as Tree]?.bonus.river[direction]))) {
+  // This algorithm only works while the river in the card is always connected.
+  // It would not work if we introduce a card that, for example, has a river connecting N-E and a separate one connecting S-W
+  hasValidNeighborCard(reference: { x?: number; y?: number }, treeHasRiver: boolean, direction: Direction) {
+    // There can be more than one neighbor tree as they could be piled. We need to consider only the top one
+    const neighborTree = this.showVisibleTree(reference)
     if (neighborTree.getItems().length === 0) { // No neighbor
       return false
     }else if (treeHasRiver && (neighborTree.id(this.player).getItem() !== undefined || treeProperties[neighborTree.getItem()!.id! as Tree]?.bonus.river[direction])) {
@@ -172,10 +175,8 @@ export class TreesHelper extends MaterialRulesPart {
 
   hasBonusInDirection(tree: MaterialItem, direction: Direction) {
     const neighborDelta = { x: CardinalLocations[direction].x, y: CardinalLocations[direction].y }
-    const neighbor = this.material(MaterialType.TreeCard)
-      .location(l => l.type === LocationType.PlayerForest && l.id === this.player && l.x === tree.location.x! + neighborDelta.x && l.y === tree.location.y! + neighborDelta.y)
-      .getItem()
-
+    // There can be more than one neighbor tree as they could be piled. We need to consider only the top one
+    const neighbor = this.showVisibleTree({x: tree.location.x! + neighborDelta.x, y: tree.location.y! + neighborDelta.y}).getItem()
     return neighbor !== undefined && treeProperties[tree.id as Tree]?.bonus.element === treeProperties[neighbor.id as Tree]?.bonus.element
   }
 
