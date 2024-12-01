@@ -35,9 +35,7 @@ export class AnimalsHelper extends MaterialRulesPart {
       .getItems().map(animal => animal.id)
     const animalsProperties = this.getAnimalsProperties(animalsIds)
     const totalVarans = countBy(animalsIds, id => isVaran(id)).true || 0
-    const solitary = countBy(Object.entries(animalsProperties), ([index, animal]) => {
-      return !isVaran(index as unknown as Animal) && animal.type === AnimalType.Solitary
-    }).true || 0
+    const solitary = Object.entries(animalsProperties).filter(([key, properties]) => !isVaran(Number(key) as Animal) && properties.type === AnimalType.Solitary).length    
     const totalSolitary = totalVarans + solitary
 
     const totalGregarious = countBy(animalsProperties, animal => animal.type === AnimalType.Gregarius).true || 0

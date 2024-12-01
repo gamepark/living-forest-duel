@@ -78,8 +78,8 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
       if (movedAnimalProperties.type === AnimalType.Solitary && !offerSankiCard) {
         // Check number of solitary symbols
         for (const season of seasons) {
-          if (new AnimalsHelper(this.game, this.player).checkTooManySolitaryAnimals(season)
-            && this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(season).getQuantity() > 0) {
+          if (this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(season).getQuantity() > 0
+            && new AnimalsHelper(this.game, this.player).checkTooManySolitaryAnimals(season)) {
             moves.push(this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(season).moveItem({ type: LocationType.PlayerActionLost, id: season }))
           }
         }
