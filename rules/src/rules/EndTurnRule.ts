@@ -2,7 +2,7 @@ import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { RuleId } from './RuleId'
 import { MaterialType } from '../material/MaterialType'
 import { LocationType } from '../material/LocationType'
-import { Element, seasons } from '../Season'
+import { Element, getOpponentSeason, seasons } from '../Season'
 import { Clearing, clearingProperties } from '../material/Clearing'
 import { ElementsHelper } from './helpers/ElementsHelper'
 
@@ -63,7 +63,7 @@ export class EndTurnRule extends PlayerTurnRule {
       moves.push(cardsPlayed.moveItemsAtOnce({type: LocationType.SharedDiscardPile}))
 
       // According to the rules: "On future turns, the first player to end the previous turn starts"
-      moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.player))
+      moves.push(this.startPlayerTurn(RuleId.PlayerAction, getOpponentSeason(this.player)))
     }
 
     return moves    

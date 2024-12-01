@@ -131,16 +131,6 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
       },
       quantity: 2
     })
-    // for (let y = 0; y < 2; y++) {
-    //   this.material(MaterialType.ActionToken).createItem({
-    //     id: season,
-    //     location: {
-    //       type: LocationType.PlayerActionSupply,
-    //       id: season,
-    //       y
-    //     }
-    //   })
-    // }
   }
 
   getInitialRecruitmentCost(season: Season) {
