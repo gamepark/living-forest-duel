@@ -1,4 +1,4 @@
-import { MaterialGame, MaterialMove, MaterialRules, PositiveSequenceStrategy, StakingStrategy, TimeLimit } from '@gamepark/rules-api'
+import { CompetitiveRank, MaterialGame, MaterialMove, MaterialRules, PositiveSequenceStrategy, StakingStrategy, TimeLimit } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Season } from './Season'
@@ -22,7 +22,9 @@ import { PlayerUseActionTokenRule } from './rules/PlayerUseActionTokenRule'
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
 export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, LocationType>
-  implements TimeLimit<MaterialGame<Season, MaterialType, LocationType>, MaterialMove<Season, MaterialType, LocationType>, Season> {
+  implements TimeLimit<MaterialGame<Season, MaterialType, LocationType>, MaterialMove<Season, MaterialType, LocationType>, Season>,
+  CompetitiveRank<MaterialGame<Season, MaterialType, LocationType>, MaterialMove<Season, MaterialType, LocationType>, Season> {
+
   rules = {
     [RuleId.PlayerAction]: PlayerActionRule,
     [RuleId.PlayerUseActionToken]: PlayerUseActionTokenRule,
@@ -56,12 +58,17 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
       [LocationType.PlayerForest]: new StakingStrategy()
     },
     [MaterialType.SpiritCard]: {
-    //   [LocationType.SankiDeck]: new PositiveSequenceStrategy(),
+      //   [LocationType.SankiDeck]: new PositiveSequenceStrategy(),
       [LocationType.PlayerSpiritLine]: new PositiveSequenceStrategy()
     }
   }
 
   giveTime(): number {
     return 60
+  }
+
+  rankPlayers(playerA: Season, _playerB: Season) {
+    // a positive number if B beats A, a negative number if A beats B, 0 in case of an equality
+    return playerA === this.getActivePlayer() ? -1 : 1
   }
 }

@@ -7,6 +7,7 @@ import { AnimalsHelper } from './helpers/AnimalsHelper'
 import { RuleId } from './RuleId'
 import { Animal, getAnimalSeason, isVaran } from '../material/Animal'
 import { PlayerUseActionTokenRule } from './PlayerUseActionTokenRule'
+import { Memory } from './Memory'
 
 export class UseSankiCardRule extends PlayerTurnRule {
   onRuleStart() {
@@ -40,7 +41,11 @@ export class UseSankiCardRule extends PlayerTurnRule {
       }
     }
     // moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
-    moves.push(this.startRule(RuleId.EndTurn))
+    if (!this.remind(Memory.UseSankiOnOtherPlayerTurn)) {
+      moves.push(this.startRule(RuleId.EndTurn))
+    } else {
+      moves.push(this.startPlayerTurn(RuleId.EndTurn, this.nextPlayer))
+    }
 
     return moves
   }

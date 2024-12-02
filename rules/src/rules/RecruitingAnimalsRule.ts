@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { CustomMove, isCustomMoveType, isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { MaterialType } from '../material/MaterialType'
 import { LocationType } from '../material/LocationType'
 import { Memory } from './Memory'
@@ -6,6 +6,9 @@ import { RuleId } from './RuleId'
 
 import { AnimalsHelper } from './helpers/AnimalsHelper'
 import { Animal, animalProperties, getAnimalSeason } from '../material/Animal'
+import { CustomMoveType } from './CustomMoveType'
+import { ElementsHelper } from './helpers/ElementsHelper'
+import { Element } from '../Season'
 
 export class RecruitingAnimalsRule extends PlayerTurnRule {
   elementValue = !this.remind(Memory.BonusAction) ? this.remind(Memory.RemainingElementValue) : this.remind(Memory.RemainingBonusElementValue)
@@ -30,6 +33,17 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
         ]
       })
     )
+    // Only can pass if at least one animal was taken
+    let lastPosX = undefined
+    if (!this.remind(Memory.BonusAction)) {
+      const playerActionTokens = this.material(MaterialType.ActionToken).id(this.player).location(l => l.type === LocationType.ActionToken && l.y === Element.Sun).getItems()
+      const lastActionToken = playerActionTokens.reduce((max, token) => token.location.x! > max.location.x! ? token : max, playerActionTokens[0])
+      lastPosX = lastActionToken.location.x!
+    }
+
+    if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Sun, this.player, lastPosX)) {
+      moves.push(this.customMove(CustomMoveType.ActionPass))
+    }  
 
     const restOfCards = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
       .id<Animal>(animal => getAnimalSeason(animal) !== this.player && this.elementValue >= animalProperties[animal].cost!)
@@ -38,12 +52,18 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
     return moves
   }
 
+  onCustomMove(move: CustomMove) {
+    if (isCustomMoveType(CustomMoveType.ActionPass)(move)) {
+      return [this.startRule(RuleId.RefillRecruitmentLine)]
+    }
+    return []
+  }
+
   afterItemMove(move: ItemMove) {
     const moves: MaterialMove[] = []
-
     if (isMoveItemType(MaterialType.AnimalCard)(move) && (move.location.type === LocationType.PlayerHelpLine || move.location.type === LocationType.SharedDiscardPile)) {
       // Check winning condition
-      if (this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine)
+      if (this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.RecruitmentLine)
         .id<Animal>(animal => getAnimalSeason(animal) !== this.player).getQuantity() === 0) {
         moves.push(this.startRule(RuleId.EndGame))
       } else {

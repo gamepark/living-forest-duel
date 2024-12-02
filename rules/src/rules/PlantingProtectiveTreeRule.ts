@@ -1,4 +1,4 @@
-import { directions, isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { CustomMove, directions, isCustomMoveType, isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { TreesHelper } from './helpers/TreesHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
@@ -6,6 +6,9 @@ import { MaterialType } from '../material/MaterialType'
 import { LocationType } from '../material/LocationType'
 import { getTreeType, Tree, treeProperties } from '../material/Tree'
 import { range } from 'lodash'
+import { Element } from '../Season'
+import { CustomMoveType } from './CustomMoveType'
+import { ElementsHelper } from './helpers/ElementsHelper'
 
 export class PlantingProtectiveTreeRule extends PlayerTurnRule {
   elementValue = !this.remind(Memory.BonusAction) ? this.remind(Memory.RemainingElementValue) : this.remind(Memory.RemainingBonusElementValue)
@@ -36,7 +39,21 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
       )
     }
 
+    // Only can pass if at least one tree was planted
+    const playerActionTokens = this.material(MaterialType.ActionToken).id(this.player).location(l => l.type === LocationType.ActionToken && l.y === Element.Plant).getItems()
+    const lastActionToken = playerActionTokens.reduce((max, token) => token.location.x! > max.location.x! ? token : max, playerActionTokens[0])
+    if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Plant, this.player, lastActionToken.location.x)) {
+      moves.push(this.customMove(CustomMoveType.ActionPass))
+    }
+    
     return moves
+  }
+
+  onCustomMove(move: CustomMove) {
+    if (isCustomMoveType(CustomMoveType.ActionPass)(move)) {
+      return [this.startRule(RuleId.EndTurn)]
+    }
+    return []
   }
 
   afterItemMove(move: ItemMove<number, number, number>) {
@@ -77,7 +94,7 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
   }
 
   isPlantWinningCondition() {
-    const trees = this.material(MaterialType.TreeCard).location(LocationType.PlayerForest).id(this.player).getItems()
+    const trees = this.material(MaterialType.TreeCard).location(l => l.type === LocationType.PlayerForest && l.id === this.player).getItems()
     if (trees.length < 9) {  // Not enough for a 3x3 matrix
       return false
     }

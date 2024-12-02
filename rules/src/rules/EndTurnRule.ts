@@ -25,10 +25,10 @@ export class EndTurnRule extends PlayerTurnRule {
       for (const season of seasons) {
         const waterValue = new ElementsHelper(this.game, this.player).getElementValue(Element.Water, season)
         if (this.fireValue > waterValue) {
-          const varanDeck = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.VaranDeck && l.id === season).deck()
+          const varanDeck = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.VaranDeck && l.id === season)
           for (let i=0; i < this.spotsOnFire; i++) {
-            if (varanDeck.getItems().length > 0) {
-              moves.push(varanDeck.dealOne({type: LocationType.SharedDiscardPile}))
+            if (varanDeck.getQuantity() > 0) {
+              moves.push(varanDeck.moveItem({type: LocationType.SharedDiscardPile}))
             } else {
               break
             }
