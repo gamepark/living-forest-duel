@@ -13,9 +13,9 @@ export class EndTurnRule extends PlayerTurnRule {
 
     if (this.material(MaterialType.AnimalCard).location(LocationType.SharedDeck).getItems().length === 0) {
       // TODO: Is there a shuffle effect?
-      this.material(MaterialType.AnimalCard).location(LocationType.SharedDiscardPile).shuffle()
-      const discardedDeck = this.material(MaterialType.AnimalCard).location(LocationType.SharedDiscardPile).deck()
+      const discardedDeck = this.material(MaterialType.AnimalCard).location(LocationType.SharedDiscardPile)
       moves.push(discardedDeck.moveItemsAtOnce({type: LocationType.SharedDeck}))
+      // moves.push(discardedDeck.shuffle())
     }
 
     if (this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).getItems().length > 0) {
@@ -72,6 +72,14 @@ export class EndTurnRule extends PlayerTurnRule {
 
     return moves    
   }
+
+  // afterItemMove(move: ItemMove) {
+  //   if (isMoveItemsAtOnce(move) && move.itemType === MaterialType.AnimalCard && move.location.type === LocationType.SharedDeck) {
+  //     const deck = this.material(MaterialType.AnimalCard).location(LocationType.SharedDeck)
+  //     return [deck.shuffle()]
+  //   } 
+  //   return []
+  // }
 
   get fireValue() {
     let value = 0

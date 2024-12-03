@@ -19,25 +19,17 @@ export class ElementsHelper extends MaterialRulesPart {
     this.memorize(Memory.RemainingBonusElementValue, this.getElementValue(elementType, this.player))
   }
 
-  // cardPosX indicates the position from where we want to start calculating
+  // lastTokenX indicates the position from where we want to start calculating
   // When playing the token we use the token position, but we don't have it before to check if there are enough points to play
-  getElementValue(elementType: Element, player: number | undefined, cardPosX?: number | undefined) {
+  getElementValue(elementType: Element, player: number | undefined, lastTokenX?: number | undefined) {
     let elementValue = 0
-    // const tokensLocations = this.material(MaterialType.ActionToken)
-    //   .location(l => l.type === LocationType.ActionToken && l.y === elementType)
-    //   .getItems()
-    //   .sort((a,b) => b.location.x! - a.location.x!)
-
-    const tokenLocationX = cardPosX ?? this.material(MaterialType.AnimalCard).location(LocationType.SharedHelpLine).getQuantity() - 1
-    // let previousTokenLocationX = -1
-    const previousToken = this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.y === elementType && l.x! < tokenLocationX)
-    const previousTokenLocationX = previousToken.getItem()?.location.x ?? -1
-    // if (cardPosX !== undefined) {
-    //   previousTokenLocationX = tokensLocations.length > 0 ? tokensLocations[tokensLocations.length - 1].location.x! : -1
-    // } else {
-    //   previousTokenLocationX = tokensLocations[0]?.location.x ?? -1  
-    // }
-    for (let x = tokenLocationX!; x > previousTokenLocationX; x--) {
+    const tokensLocations = this.material(MaterialType.ActionToken)
+      .location(l => l.type === LocationType.ActionToken && l.y === elementType && (lastTokenX !== undefined ? l.x! < lastTokenX : true))
+      .getItems()
+      .sort((a, b) => b.location.x! - a.location.x!)
+    const tokenLocationX = lastTokenX ?? this.material(MaterialType.AnimalCard).location(LocationType.SharedHelpLine).getQuantity() - 1
+    const previousTokenLocationX = tokensLocations.length > 0 ? tokensLocations[0].location.x! : -1
+    for (let x = tokenLocationX!; x > previousTokenLocationX!; x--) {
       const card = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine && l.x === x).getItem<Animal>()!
       const cardProperties = animalProperties[card.id]
       elementValue += cardProperties.elements[elementType]! ?? 0
