@@ -1,4 +1,4 @@
-import { CompetitiveRank, MaterialGame, MaterialMove, MaterialRules, PositiveSequenceStrategy, StakingStrategy, TimeLimit } from '@gamepark/rules-api'
+import { CompetitiveRank, hideItemId, MaterialGame, MaterialMove, MaterialRules, PositiveSequenceStrategy, StakingStrategy, TimeLimit } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Season } from './Season'
@@ -60,6 +60,14 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
     [MaterialType.SpiritCard]: {
       //   [LocationType.SankiDeck]: new PositiveSequenceStrategy(),
       [LocationType.PlayerSpiritLine]: new PositiveSequenceStrategy()
+    }
+  }
+
+  hidingStrategies = {
+    [MaterialType.AnimalCard]: {
+      [LocationType.SharedDeck]: hideItemId,
+      [LocationType.SharedDiscardPile]: hideItemId,
+      [LocationType.SeasonAnimalDeck]: hideItemId
     }
   }
 

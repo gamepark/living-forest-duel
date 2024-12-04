@@ -7,7 +7,7 @@ import { treeCardDescription } from "../material/TreeCardDescription"
 class PlayerForestLocator extends DeckLocator {
   getCoordinates(location: Location, context: MaterialContext) {
     const { xMax, xMin, yMax, yMin } = new TreesHelper(context.rules.game, location.player!).boundaries
-    const { x, y } = { x: location.id === Season.Summer ? -47 : 47, y: -5 }
+    const { x, y } = { x: location.id === Season.Summer ? -48 : 48, y: -10 }
     const deltaX = (xMin + xMax) / 2
     const deltaY = (yMin + yMax) / 2
     

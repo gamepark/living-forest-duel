@@ -7,7 +7,8 @@ import { clearingLineLocator } from "./ClearingLineLocator";
 class TreeDeckSpotLocator extends DeckLocator {
   getCoordinates(location: Location<number, number>): Partial<Coordinates> {
     return {
-      x: fireStockLocator.coordinates.x + (location.id - 1) * treeCardDescription.width + (2 * location.id) + 1,
+      // x: fireStockLocator.coordinates.x + (location.id - 1) * treeCardDescription.width + (2 * location.id) + 1,
+      x: fireStockLocator.coordinates.x + (location.id - 1) * treeCardDescription.width * 1.15 + 1,
       y: clearingLineLocator.coordinates.y - 10
     }
   }
