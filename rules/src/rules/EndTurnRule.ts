@@ -10,7 +10,6 @@ export class EndTurnRule extends PlayerTurnRule {
 
   onRuleStart() {
     const moves: MaterialMove[] = []
-
     if (this.material(MaterialType.AnimalCard).location(LocationType.SharedDeck).getItems().length === 0) {
       // TODO: Is there a shuffle effect?
       const discardedDeck = this.material(MaterialType.AnimalCard).location(LocationType.SharedDiscardPile)
@@ -67,7 +66,7 @@ export class EndTurnRule extends PlayerTurnRule {
       moves.push(cardsPlayed.moveItemsAtOnce({type: LocationType.SharedDiscardPile}))
 
       // According to the rules: "On future turns, the first player to end the previous turn starts"
-      moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.player))
+      moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
     }
 
     return moves    

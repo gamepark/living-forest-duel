@@ -87,6 +87,8 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
         } else {
           moves.push(this.startRule(RuleId.EndTurn))
         }
+      } else if (isVaran(movedAnimal.id) && animalSeason !== this.player && !this.remind(Memory.UseSankiOnOtherPlayerTurn)) {
+        moves.push(this.startRule(RuleId.EndTurn))
       }
     }
 

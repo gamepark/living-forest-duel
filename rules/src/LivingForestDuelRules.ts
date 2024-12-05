@@ -1,4 +1,4 @@
-import { CompetitiveRank, hideItemId, MaterialGame, MaterialMove, MaterialRules, PositiveSequenceStrategy, StakingStrategy, TimeLimit } from '@gamepark/rules-api'
+import { CompetitiveRank, HiddenMaterialRules, hideItemId, MaterialGame, MaterialMove, PositiveSequenceStrategy, StakingStrategy, TimeLimit } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Season } from './Season'
@@ -21,7 +21,7 @@ import { PlayerUseActionTokenRule } from './rules/PlayerUseActionTokenRule'
  * This class implements the rules of the board game.
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
-export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, LocationType>
+export class LivingForestDuelRules extends HiddenMaterialRules<Season, MaterialType, LocationType>
   implements TimeLimit<MaterialGame<Season, MaterialType, LocationType>, MaterialMove<Season, MaterialType, LocationType>, Season>,
   CompetitiveRank<MaterialGame<Season, MaterialType, LocationType>, MaterialMove<Season, MaterialType, LocationType>, Season> {
 
@@ -42,7 +42,6 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
 
   locationsStrategies = {
     [MaterialType.ActionToken]: {
-      // [LocationType.PlayerActionSupply]: new PositiveSequenceStrategy(),
       [LocationType.PlayerActionLost]: new PositiveSequenceStrategy()
     },
     [MaterialType.AnimalCard]: {
@@ -58,7 +57,6 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
       [LocationType.PlayerForest]: new StakingStrategy()
     },
     [MaterialType.SpiritCard]: {
-      //   [LocationType.SankiDeck]: new PositiveSequenceStrategy(),
       [LocationType.PlayerSpiritLine]: new PositiveSequenceStrategy()
     }
   }
@@ -76,7 +74,6 @@ export class LivingForestDuelRules extends MaterialRules<Season, MaterialType, L
   }
 
   rankPlayers(playerA: Season, _playerB: Season) {
-    // a positive number if B beats A, a negative number if A beats B, 0 in case of an equality
-    return playerA === this.getActivePlayer() ? -1 : 1
+    return playerA === this.getActivePlayer() ? 1 : -1
   }
 }

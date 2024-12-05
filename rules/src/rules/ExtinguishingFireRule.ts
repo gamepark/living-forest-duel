@@ -28,10 +28,11 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
     const availableFireTokens = new FireHelper(this.game,this.player).getAvailableFireTokens(this.elementValue)
     moves.push(...availableFireTokens.moveItems({type: LocationType.PlayerFireStock, id: this.player}))
 
+    // const playerActionTokens = this.material(MaterialType.ActionToken).id(this.player).location(l => l.type === LocationType.ActionToken && l.y === Element.Water).getItems()
+    // const lastActionToken = playerActionTokens.reduce((max, token) => token.location.x! > max.location.x! ? token : max, playerActionTokens[0])
     // Only can pass if at least one fire was taken
-    const playerActionTokens = this.material(MaterialType.ActionToken).id(this.player).location(l => l.type === LocationType.ActionToken && l.y === Element.Water).getItems()
-    const lastActionToken = playerActionTokens.reduce((max, token) => token.location.x! > max.location.x! ? token : max, playerActionTokens[0])
-    if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Water, this.player, lastActionToken.location.x)) {
+    // if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Water, this.player, lastActionToken.location.x)) {
+    if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Water, this.player)) {
       moves.push(this.customMove(CustomMoveType.ActionPass))
     }
 
