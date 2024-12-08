@@ -41,7 +41,8 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
     // }
     // if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Sun, this.player, lastPosX)) {
     // Only can pass if at least one animal was taken
-    if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Sun, this.player)) {
+    const lastTokenX = !this.remind(Memory.BonusAction) ? this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.y === Element.Sun).getItem()?.location.x : undefined
+    if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Sun, this.player, lastTokenX)) {
       moves.push(this.customMove(CustomMoveType.ActionPass))
     }  
 
