@@ -178,7 +178,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     elementValue: 1,
     cost: 3,
     bonus: {
-      element: Element.Water,
+      element: Element.Wind,
       river: {
         [Direction.North]: true,
         [Direction.East]: true,
