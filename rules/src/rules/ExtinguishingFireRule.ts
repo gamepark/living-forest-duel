@@ -69,7 +69,7 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
     if (isMoveItemType(MaterialType.FireToken)(move)) {
       // Check winning condition
       if (this.material(MaterialType.FireToken).location(l => l.type === LocationType.PlayerFireStock && l.id === this.player).getQuantity() === 8) {
-        moves.push(this.startRule(RuleId.EndGame))
+        moves.push(this.endGame())
       } else {
         moves.push(this.startRule(RuleId.ExtinguishingFire))
       }

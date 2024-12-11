@@ -64,7 +64,7 @@ export class AdvancingOnibiRule extends PlayerTurnRule {
       }
 
       this.memorize(Memory.RemainingBonuses, [clearingProperties[move.location.x! as Clearing]?.bonus])
-      moves.push(win ? this.startRule(RuleId.EndGame) : this.startRule(RuleId.OnibiBonusAction))
+      moves.push(win ? this.endGame() : this.startRule(RuleId.OnibiBonusAction))
     }
     return moves
   }

@@ -1,21 +1,29 @@
-import { CompetitiveRank, HiddenMaterialRules, hideItemId, MaterialGame, MaterialMove, PositiveSequenceStrategy, StakingStrategy, TimeLimit } from '@gamepark/rules-api'
+import {
+  CompetitiveRank,
+  HiddenMaterialRules,
+  hideItemId,
+  MaterialGame,
+  MaterialMove,
+  PositiveSequenceStrategy,
+  StakingStrategy,
+  TimeLimit
+} from '@gamepark/rules-api'
+import { CustomNegativeFillGapStrategy } from './material/location/strategy/CustomNegativeFillGapStrategy'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { Season } from './Season'
-import { PlayerActionRule } from './rules/PlayerActionRule'
-import { EndTurnRule } from './rules/EndTurnRule'
-import { RuleId } from './rules/RuleId'
-import { ExtinguishingFireRule } from './rules/ExtinguishingFireRule'
-import { RecruitingAnimalsRule } from './rules/RecruitingAnimalsRule'
-import { PlantingProtectiveTreeRule } from './rules/PlantingProtectiveTreeRule'
 import { AdvancingOnibiRule } from './rules/AdvancingOnibiRule'
-import { EndGameRule } from './rules/EndGameRule'
-import { RefillRecruitmentLineRule } from './rules/RefillRecruitmentLineRule'
-import { CustomNegativeFillGapStrategy } from './material/location/strategy/CustomNegativeFillGapStrategy'
-import { TreeBonusActionRule } from './rules/TreeBonusActionRule'
+import { EndTurnRule } from './rules/EndTurnRule'
+import { ExtinguishingFireRule } from './rules/ExtinguishingFireRule'
 import { OnibiBonusActionRule } from './rules/OnibiBonusActionRule'
-import { UseSankiCardRule } from './rules/UseSankiCardRule'
+import { PlantingProtectiveTreeRule } from './rules/PlantingProtectiveTreeRule'
+import { PlayerActionRule } from './rules/PlayerActionRule'
 import { PlayerUseActionTokenRule } from './rules/PlayerUseActionTokenRule'
+import { RecruitingAnimalsRule } from './rules/RecruitingAnimalsRule'
+import { RefillRecruitmentLineRule } from './rules/RefillRecruitmentLineRule'
+import { RuleId } from './rules/RuleId'
+import { TreeBonusActionRule } from './rules/TreeBonusActionRule'
+import { UseSankiCardRule } from './rules/UseSankiCardRule'
+import { Season } from './Season'
 
 /**
  * This class implements the rules of the board game.
@@ -23,7 +31,7 @@ import { PlayerUseActionTokenRule } from './rules/PlayerUseActionTokenRule'
  */
 export class LivingForestDuelRules extends HiddenMaterialRules<Season, MaterialType, LocationType>
   implements TimeLimit<MaterialGame<Season, MaterialType, LocationType>, MaterialMove<Season, MaterialType, LocationType>, Season>,
-  CompetitiveRank<MaterialGame<Season, MaterialType, LocationType>, MaterialMove<Season, MaterialType, LocationType>, Season> {
+    CompetitiveRank<MaterialGame<Season, MaterialType, LocationType>, MaterialMove<Season, MaterialType, LocationType>, Season> {
 
   rules = {
     [RuleId.PlayerAction]: PlayerActionRule,
@@ -36,8 +44,7 @@ export class LivingForestDuelRules extends HiddenMaterialRules<Season, MaterialT
     [RuleId.TreeBonusAction]: TreeBonusActionRule,
     [RuleId.OnibiBonusAction]: OnibiBonusActionRule,
     [RuleId.EndTurn]: EndTurnRule,
-    [RuleId.UseSankiCard]: UseSankiCardRule,
-    [RuleId.EndGame]: EndGameRule
+    [RuleId.UseSankiCard]: UseSankiCardRule
   }
 
   locationsStrategies = {
@@ -50,7 +57,7 @@ export class LivingForestDuelRules extends HiddenMaterialRules<Season, MaterialT
       [LocationType.SharedDiscardPile]: new PositiveSequenceStrategy(),
       [LocationType.SharedHelpLine]: new PositiveSequenceStrategy(),
       [LocationType.PlayerHelpLine]: new PositiveSequenceStrategy(),
-      [LocationType.RecruitmentLine]: new CustomNegativeFillGapStrategy(),
+      [LocationType.RecruitmentLine]: new CustomNegativeFillGapStrategy()
     },
     [MaterialType.TreeCard]: {
       [LocationType.TreeDeckSpot]: new PositiveSequenceStrategy(),

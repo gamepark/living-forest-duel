@@ -1,18 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import { RuleId } from '@gamepark/living-forest-duel/rules/RuleId'
 import { ComponentType } from 'react'
-import { PlayerActionHeader } from './PlayerActionHeader'
-import { UseSankiCardHeader } from './UseSankiCardHeader'
 import { AdvancingOnibiHeader } from './AdvancingOnibiHeader'
-import { EndGameHeader } from './EndGameHeader'
+import { EndTurnHeader } from './EndTurnHeader'
 import { ExtinguishingFireHeader } from './ExtinguishingFireHeader'
+import { OnibiBonusActionHeader } from './OnibiBonusActionHeader'
 import { PlantingProtectiveTreeHeader } from './PlantingProtectiveTreeHeader'
+import { PlayerActionHeader } from './PlayerActionHeader'
 import { PlayerUseActionTokenHeader } from './PlayerUseActionTokenHeader'
 import { RecruitingAnimalsHeader } from './RecruitingAnimalsHeader'
 import { RefillRecruitmentLineHeader } from './RefillRecruitmentLineHeader'
-import { EndTurnHeader } from './EndTurnHeader'
-import { OnibiBonusActionHeader } from './OnibiBonusActionHeader'
 import { TreeBonusActionHeader } from './TreeBonusActionHeader'
+import { UseSankiCardHeader } from './UseSankiCardHeader'
 
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.AdvancingOnibi]: AdvancingOnibiHeader,
@@ -25,6 +24,5 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.RefillRecruitmentLine]: RefillRecruitmentLineHeader,
   [RuleId.OnibiBonusAction]: OnibiBonusActionHeader,
   [RuleId.TreeBonusAction]: TreeBonusActionHeader,
-  [RuleId.EndTurn]: EndTurnHeader,
-  [RuleId.EndGame]: EndGameHeader
+  [RuleId.EndTurn]: EndTurnHeader
 }

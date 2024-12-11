@@ -64,7 +64,7 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
 
       // Check winning condition
       if (this.isPlantWinningCondition()) {
-        return [this.startRule(RuleId.EndGame)]
+        return [this.endGame()]
       } else {
         // Remember the types planted because we can only take one of each type
         const plantedTreesTypes = this.remind(Memory.PlantedTreesTypes)

@@ -6,7 +6,6 @@
       "Winter": "Winter",
       "header.advancing-onibi.you": "You must advance the Onibi up to {steps} steps",
       "header.advancing-onibi.player": "{player} must advance the Onibi up to {steps} steps",
-      "header.end-game": "Game End",
       "header.extinguishing-fire.you": "You must take up fires from the Clearing up to a cost of {cost} or <pass>Pass</pass>",
       "header.extinguishing-fire.player": "{player} must take up fires from the Clearing up to a cost of {cost} or Pass",
       "header.planting-protective-tree.you": "You must take trees up to a cost of {cost} or <pass>Pass</pass>",

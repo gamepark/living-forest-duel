@@ -66,7 +66,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
       // Check winning condition
       if (this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.RecruitmentLine)
         .id<Animal>(animal => getAnimalSeason(animal) !== this.player).getQuantity() === 0) {
-        moves.push(this.startRule(RuleId.EndGame))
+        moves.push(this.endGame())
       } else {
         const movedCard = this.material(MaterialType.AnimalCard).getItem<Animal>(move.itemIndex)
         this.memorize(!this.remind(Memory.BonusAction) ? Memory.RemainingElementValue : Memory.RemainingBonusElementValue, this.elementValue - animalProperties[movedCard.id].cost)
