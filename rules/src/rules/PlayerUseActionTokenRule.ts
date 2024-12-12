@@ -2,7 +2,7 @@ import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext
 import { Animal, animalProperties, CardElements } from '../material/Animal'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { Element, elements } from '../Season'
+import { Element, elements, Season } from '../Season'
 import { ElementsHelper } from './helpers/ElementsHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
@@ -72,8 +72,11 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
         const card = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine && l.x === x).getItem<Animal>()!
         const cardProperties = animalProperties[card.id]
         if (cardProperties.elements[element] !== undefined) {
-          if (this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.x === card.location.x && l.y === element).getQuantity() > 0) {
-            maxElements[element] = -1
+          const actionToken = this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.x === card.location.x && l.y === element).getItem<Season>()
+          if (actionToken) {
+            if (actionToken.id === this.player || cardsWithElement === 0) {
+              maxElements[element] = -1
+            }
             break
           } else {
             cardsWithElement++
