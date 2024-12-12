@@ -1,7 +1,7 @@
-import { MaterialType } from "@gamepark/living-forest-duel/material/MaterialType";
+import { MaterialType } from '@gamepark/living-forest-duel/material/MaterialType'
+import { Locator } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
-import { ItemContext, Locator } from "@gamepark/react-game";
-import { clearingCardDescription } from "../material/ClearingCardDescription";
+import { clearingCardDescription } from '../material/ClearingCardDescription'
 
 class ClearingCardSpotLocator extends Locator {
   parentItemType = MaterialType.ClearingCard
@@ -10,12 +10,11 @@ class ClearingCardSpotLocator extends Locator {
     return clearingCardDescription.staticItems.find(item => item.location.x === location.x)
   }
 
-  getItemCoordinates(item: MaterialItem, context: ItemContext) {
-    const { x, y } = super.getItemCoordinates(item, context)
+  getItemCoordinates(item: MaterialItem) {
     if (item.id === MaterialType.FireToken) {
-      return { y: y! + 0.6 }
+      return { x: 1.5 }
     } else {
-      return { x, y }
+      return { x: -2, y: -1 }
     }
   }
 }
