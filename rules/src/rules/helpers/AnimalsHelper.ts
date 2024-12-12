@@ -1,6 +1,6 @@
 import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
 import { countBy, minBy } from 'lodash'
-import { Animal, animalProperties, AnimalType, CardPattern, isNotOpponentAnimal, isVaran } from '../../material/Animal'
+import { Animal, animalProperties, AnimalType, CardPattern, isVaran } from '../../material/Animal'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 
@@ -30,8 +30,7 @@ export class AnimalsHelper extends MaterialRulesPart {
 
   checkTooManySolitaryAnimals(season: number) {
     const animalsIds = this.material(MaterialType.AnimalCard)
-      .location(l => l.type === LocationType.SharedHelpLine || l.type === LocationType.PlayerHelpLine)
-      .id<Animal>(animal => isNotOpponentAnimal(animal, season))
+      .location(l => l.type === LocationType.SharedHelpLine || (l.type === LocationType.PlayerHelpLine && l.player === season))
       .getItems().map(animal => animal.id)
     const animalsProperties = this.getAnimalsProperties(animalsIds)
     const totalVarans = countBy(animalsIds, id => isVaran(id)).true || 0
