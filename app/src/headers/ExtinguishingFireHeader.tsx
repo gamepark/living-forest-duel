@@ -15,7 +15,7 @@ export const ExtinguishingFireHeader = () => {
   const player = usePlayerName(activePlayer)
   const extinguishingFireRule = new ExtinguishingFireRule(rules.game)
   const cost = extinguishingFireRule.elementValue
-  const pass = useLegalMove(isCustomMoveType(CustomMoveType.ActionPass))
+  const pass = useLegalMove(isCustomMoveType(CustomMoveType.Pass))
 
   if (itsMe) {
     return <Trans defaults="header.extinguishing-fire.you" values={{ cost }} components={{ pass: <PlayMoveButton move={pass} /> }} />

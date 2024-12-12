@@ -24,7 +24,7 @@ export class UseSankiCardRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
     const playerSankiCards = this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(l => l.type === LocationType.PlayerSpiritLine && l.id === this.player)
     moves.push(...playerSankiCards.moveItems({ type: LocationType.SankiDeck }))
-    moves.push(this.customMove(CustomMoveType.SankiPass))
+    moves.push(this.customMove(CustomMoveType.Pass))
 
     return moves
   }
@@ -33,7 +33,7 @@ export class UseSankiCardRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
     // If pass and last card is a Varan, check solitary animals
     const lastCardVaran = this.lastSharedCardVaran
-    if (move.type === CustomMoveType.SankiPass && lastCardVaran.getItem() !== undefined) {
+    if (move.type === CustomMoveType.Pass && lastCardVaran.getItem() !== undefined) {
       moves.push(this.material(MaterialType.AnimalCard).index(lastCardVaran.getIndex()).moveItem({ type: LocationType.PlayerHelpLine, id: this.player }))
       if (new AnimalsHelper(this.game, this.player).checkTooManySolitaryAnimals(this.player)) {
         const actionToken = this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(this.player)

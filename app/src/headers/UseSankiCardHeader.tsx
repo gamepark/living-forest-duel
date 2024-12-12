@@ -14,7 +14,7 @@ export const UseSankiCardHeader = () => {
   const itsMe = activePlayer === me
   const player = usePlayerName(activePlayer)
   const useSanki = useLegalMove(isMoveItemType(MaterialType.SpiritCard))
-  const pass = useLegalMove(isCustomMoveType(CustomMoveType.SankiPass))
+  const pass = useLegalMove(isCustomMoveType(CustomMoveType.Pass))
   if (itsMe) {
     if (!useSanki) return null
     return (

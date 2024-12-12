@@ -15,7 +15,7 @@ export const RecruitingAnimalsHeader = () => {
   const player = usePlayerName(activePlayer)
   const recruitingAnimalsRule = new RecruitingAnimalsRule(rules.game)
   const cost = recruitingAnimalsRule.elementValue
-  const pass = useLegalMove(isCustomMoveType(CustomMoveType.ActionPass))
+  const pass = useLegalMove(isCustomMoveType(CustomMoveType.Pass))
   if (itsMe) {
     return <Trans defaults="header.recruiting-animals.you" values={{ cost }} components={{ pass: <PlayMoveButton move={pass} /> }} />
   } else {

@@ -1,14 +1,14 @@
-import { CustomMove, isCustomMoveType, isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { MaterialType } from '../material/MaterialType'
+import { CustomMove, isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { Animal, animalProperties, getAnimalSeason } from '../material/Animal'
 import { LocationType } from '../material/LocationType'
-import { Memory } from './Memory'
-import { RuleId } from './RuleId'
+import { MaterialType } from '../material/MaterialType'
+import { Element } from '../Season'
+import { CustomMoveType } from './CustomMoveType'
 
 import { AnimalsHelper } from './helpers/AnimalsHelper'
-import { Animal, animalProperties, getAnimalSeason } from '../material/Animal'
-import { CustomMoveType } from './CustomMoveType'
 import { ElementsHelper } from './helpers/ElementsHelper'
-import { Element } from '../Season'
+import { Memory } from './Memory'
+import { RuleId } from './RuleId'
 
 export class RecruitingAnimalsRule extends PlayerTurnRule {
   elementValue = !this.remind(Memory.BonusAction) ? this.remind(Memory.RemainingElementValue) : this.remind(Memory.RemainingBonusElementValue)
@@ -43,7 +43,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
     // Only can pass if at least one animal was taken
     const lastTokenX = !this.remind(Memory.BonusAction) ? this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.y === Element.Sun).getItem()?.location.x : undefined
     if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Sun, this.player, lastTokenX)) {
-      moves.push(this.customMove(CustomMoveType.ActionPass))
+      moves.push(this.customMove(CustomMoveType.Pass))
     }  
 
     const restOfCards = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
@@ -54,7 +54,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
   }
 
   onCustomMove(move: CustomMove) {
-    if (isCustomMoveType(CustomMoveType.ActionPass)(move)) {
+    if (move.type === CustomMoveType.Pass) {
       return [this.startRule(RuleId.RefillRecruitmentLine)]
     }
     return []

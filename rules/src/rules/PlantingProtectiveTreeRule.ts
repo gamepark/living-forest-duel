@@ -1,14 +1,14 @@
-import { CustomMove, directions, isCustomMoveType, isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { TreesHelper } from './helpers/TreesHelper'
-import { Memory } from './Memory'
-import { RuleId } from './RuleId'
-import { MaterialType } from '../material/MaterialType'
-import { LocationType } from '../material/LocationType'
-import { getTreeType, Tree, treeProperties } from '../material/Tree'
+import { CustomMove, directions, isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { range } from 'lodash'
+import { LocationType } from '../material/LocationType'
+import { MaterialType } from '../material/MaterialType'
+import { getTreeType, Tree, treeProperties } from '../material/Tree'
 import { Element } from '../Season'
 import { CustomMoveType } from './CustomMoveType'
 import { ElementsHelper } from './helpers/ElementsHelper'
+import { TreesHelper } from './helpers/TreesHelper'
+import { Memory } from './Memory'
+import { RuleId } from './RuleId'
 
 export class PlantingProtectiveTreeRule extends PlayerTurnRule {
   elementValue = !this.remind(Memory.BonusAction) ? this.remind(Memory.RemainingElementValue) : this.remind(Memory.RemainingBonusElementValue)
@@ -45,14 +45,14 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
     // Only can pass if at least one tree was planted
     const lastTokenX = !this.remind(Memory.BonusAction) ? this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.y === Element.Plant).getItem()?.location.x : undefined
     if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Plant, this.player, lastTokenX)) {
-      moves.push(this.customMove(CustomMoveType.ActionPass))
+      moves.push(this.customMove(CustomMoveType.Pass))
     }
     
     return moves
   }
 
   onCustomMove(move: CustomMove) {
-    if (isCustomMoveType(CustomMoveType.ActionPass)(move)) {
+    if (move.type === CustomMoveType.Pass) {
       return [this.startRule(RuleId.EndTurn)]
     }
     return []

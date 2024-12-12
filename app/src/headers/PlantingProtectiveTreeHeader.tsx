@@ -15,7 +15,7 @@ export const PlantingProtectiveTreeHeader = () => {
   const player = usePlayerName(activePlayer)
   const plantingProtectiveTreeRule = new PlantingProtectiveTreeRule(rules.game)
   const cost = plantingProtectiveTreeRule.elementValue
-  const pass = useLegalMove(isCustomMoveType(CustomMoveType.ActionPass))
+  const pass = useLegalMove(isCustomMoveType(CustomMoveType.Pass))
 
   if (itsMe) {
     return <Trans defaults="header.planting-protective-tree.you" values={{ cost }} components={{ pass: <PlayMoveButton move={pass} /> }} />
