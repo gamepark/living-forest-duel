@@ -96,7 +96,7 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
   }
 
   isPlantWinningCondition() {
-    const trees = this.material(MaterialType.TreeCard).location(l => l.type === LocationType.PlayerForest && l.id === this.player).getItems()
+    const trees = this.material(MaterialType.TreeCard).location(l => l.type === LocationType.PlayerForest && l.player === this.player).getItems()
     if (trees.length < 9) {  // Not enough for a 3x3 matrix
       return false
     }

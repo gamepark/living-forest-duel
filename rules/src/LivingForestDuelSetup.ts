@@ -91,7 +91,7 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
       id: season === Season.Summer ? Animal.SummerVaran : Animal.WinterVaran,
       location: {
         type: LocationType.VaranDeck,
-        id: season
+        player: season
       },
       quantity: 7
     })
@@ -99,15 +99,15 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
 
     // Player initial cards
     this.material(MaterialType.AnimalCard).createItems(seasonAnimals.map((animal) => ({
-      id: animal, location: { type: LocationType.SeasonAnimalDeck, id: season }
+      id: animal, location: { type: LocationType.SeasonAnimalDeck, player: season }
     })))
-    this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SeasonAnimalDeck && l.id === season).shuffle()
-    const seasonDeck = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SeasonAnimalDeck && l.id === season).deck()
+    this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SeasonAnimalDeck && l.player === season).shuffle()
+    const seasonDeck = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SeasonAnimalDeck && l.player === season).deck()
     seasonDeck.deal({ type: LocationType.RecruitmentLine }, 3)
     // Check initial animals cost
     while (this.getInitialRecruitmentCost(season) <= 12) {
       const minCostCard = this.getSeasonRecruitmentCards(season).minBy(item => animalProperties[item.id as Animal].cost)
-      minCostCard.moveItem({ type: LocationType.SeasonAnimalDeck, id: season, x: 0 })
+      minCostCard.moveItem({ type: LocationType.SeasonAnimalDeck, player: season, x: 0 })
       seasonDeck.dealOne({ type: LocationType.RecruitmentLine })
     }
 
@@ -116,7 +116,7 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
       id: season === Season.Summer ? Tree.SummerStartingTree : Tree.WinterStartingTree,
       location: {
         type: LocationType.PlayerForest,
-        id: season,
+        player: season,
         x: 0,
         y: 0
       }
@@ -127,7 +127,7 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
       id: season,
       location: {
         type: LocationType.PlayerActionSupply,
-        id: season
+        player: season
       },
       quantity: 2
     })

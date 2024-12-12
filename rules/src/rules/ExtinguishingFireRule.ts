@@ -26,7 +26,7 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
   getPlayerMoves() {
     const moves: MaterialMove[] = []
     const availableFireTokens = new FireHelper(this.game,this.player).getAvailableFireTokens(this.elementValue)
-    moves.push(...availableFireTokens.moveItems({type: LocationType.PlayerFireStock, id: this.player}))
+    moves.push(...availableFireTokens.moveItems({type: LocationType.PlayerFireStock, player: this.player}))
 
     // const playerActionTokens = this.material(MaterialType.ActionToken).id(this.player).location(l => l.type === LocationType.ActionToken && l.y === Element.Water).getItems()
     // const lastActionToken = playerActionTokens.reduce((max, token) => token.location.x! > max.location.x! ? token : max, playerActionTokens[0])
@@ -68,7 +68,7 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
 
     if (isMoveItemType(MaterialType.FireToken)(move)) {
       // Check winning condition
-      if (this.material(MaterialType.FireToken).location(l => l.type === LocationType.PlayerFireStock && l.id === this.player).getQuantity() === 8) {
+      if (this.material(MaterialType.FireToken).location(l => l.type === LocationType.PlayerFireStock && l.player === this.player).getQuantity() === 8) {
         moves.push(this.endGame())
       } else {
         moves.push(this.startRule(RuleId.ExtinguishingFire))

@@ -7,7 +7,7 @@ import { clearingCardSpotLocator } from './ClearingCardSpotLocator'
 import { fireStockLocator } from './FireStockLocator'
 import { recruitmentLineLocator } from './RecruitmentLineLocator'
 import { varanDecksLocator } from './VaranDecksLocator'
-import { seasonAnimalDecksLocator } from './SeasonAnimalDecksLocator'
+import { seasonAnimalDeckLocator } from './SeasonAnimalDeckLocator'
 import { playerForestLocator } from './PlayerForestLocator'
 import { playerActionSupplyLocator } from './PlayerActionSupplyLocator'
 import { onibiCardLocator } from './OnibiCardLocator'
@@ -30,7 +30,7 @@ export const Locators: Partial<Record<LocationType, Locator<Season, MaterialType
   [LocationType.TreeDeckSpot]: treeDeckSpotLocator,
   [LocationType.RecruitmentLine]: recruitmentLineLocator,
   [LocationType.VaranDeck]: varanDecksLocator,
-  [LocationType.SeasonAnimalDeck]: seasonAnimalDecksLocator,
+  [LocationType.SeasonAnimalDeck]: seasonAnimalDeckLocator,
   [LocationType.PlayerHelpLine]: playerHelpLineLocator,
   [LocationType.PlayerSpiritLine]: playerSpiritLineLocator,
   [LocationType.PlayerForest]: playerForestLocator,

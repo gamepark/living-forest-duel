@@ -31,9 +31,9 @@ export abstract class BonusActionRule extends PlayerTurnRule {
         case Element.Wind:
           const sankiCards = this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(LocationType.SankiDeck).getQuantity() > 0
             ? this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(LocationType.SankiDeck).deck()
-            : this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(l => l.type === LocationType.PlayerSpiritLine && l.id === getOpponentSeason(this.player)).deck()
+            : this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(l => l.type === LocationType.PlayerSpiritLine && l.player === getOpponentSeason(this.player)).deck()
           if (sankiCards.getQuantity() > 0) {
-            moves.push(sankiCards.dealOne({ type: LocationType.PlayerSpiritLine, id: this.player }))
+            moves.push(sankiCards.dealOne({ type: LocationType.PlayerSpiritLine, player: this.player }))
           }
           // If it's an Onibi bonus action, check end turn, in other case continue the Plant trees in case there are other trees to take
           moves.push(this.bonusRule === Element.Wind ? this.startRule(RuleId.EndTurn) : this.startRule(RuleId.PlantingProtectiveTree))

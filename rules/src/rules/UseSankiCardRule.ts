@@ -22,7 +22,7 @@ export class UseSankiCardRule extends PlayerTurnRule {
 
   getPlayerMoves() {
     const moves: MaterialMove[] = []
-    const playerSankiCards = this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(l => l.type === LocationType.PlayerSpiritLine && l.id === this.player)
+    const playerSankiCards = this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(l => l.type === LocationType.PlayerSpiritLine && l.player === this.player)
     moves.push(...playerSankiCards.moveItems({ type: LocationType.SankiDeck }))
     moves.push(this.customMove(CustomMoveType.Pass))
 
@@ -34,10 +34,10 @@ export class UseSankiCardRule extends PlayerTurnRule {
     // If pass and last card is a Varan, check solitary animals
     const lastCardVaran = this.lastSharedCardVaran
     if (move.type === CustomMoveType.Pass && lastCardVaran.getItem() !== undefined) {
-      moves.push(this.material(MaterialType.AnimalCard).index(lastCardVaran.getIndex()).moveItem({ type: LocationType.PlayerHelpLine, id: this.player }))
+      moves.push(this.material(MaterialType.AnimalCard).index(lastCardVaran.getIndex()).moveItem({ type: LocationType.PlayerHelpLine, player: this.player }))
       if (new AnimalsHelper(this.game, this.player).checkTooManySolitaryAnimals(this.player)) {
-        const actionToken = this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(this.player)
-        moves.push(actionToken.moveItem({ type: LocationType.PlayerActionLost, id: this.player }))
+        const actionToken = this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.player)
+        moves.push(actionToken.moveItem({ type: LocationType.PlayerActionLost, player: this.player }))
       }
     }
     // moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
@@ -57,7 +57,7 @@ export class UseSankiCardRule extends PlayerTurnRule {
       // Get the last card in the shared deck to see if it's a player's Varan
       const lastCardVaran = this.lastSharedCardVaran
       if (lastCardVaran.getItem() !== undefined) {
-        moves.push(lastCardVaran.moveItem({ type: LocationType.VaranDeck, id: this.player }))
+        moves.push(lastCardVaran.moveItem({ type: LocationType.VaranDeck, player: this.player }))
         moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
       } else {
         moves.push(this.startRule(RuleId.PlayerUseActionToken))

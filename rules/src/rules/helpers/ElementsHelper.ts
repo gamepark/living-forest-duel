@@ -36,14 +36,14 @@ export class ElementsHelper extends MaterialRulesPart {
     }
 
     // Add the personal value
-    const playerAnimals = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PlayerHelpLine && l.id === player).getItems<Animal>()
+    const playerAnimals = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.PlayerHelpLine && l.player === player).getItems<Animal>()
     for (const playerCard of playerAnimals) {
       const cardProperties = animalProperties[playerCard.id]
       elementValue += cardProperties.elements[elementType]! ?? 0
     }
 
     // Add the player forest
-    const playerTrees = this.material(MaterialType.TreeCard).location(l => l.type === LocationType.PlayerForest && l.id === player).getItems()
+    const playerTrees = this.material(MaterialType.TreeCard).location(l => l.type === LocationType.PlayerForest && l.player === player).getItems()
     for (const playerCard of playerTrees) {
       const cardProperties = treeProperties[playerCard?.id as Tree]
       elementValue += cardProperties?.element === elementType ? cardProperties?.elementValue : 0

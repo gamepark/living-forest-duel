@@ -12,7 +12,7 @@ import { TreesHelper } from './helpers/TreesHelper'
 
 export class PlayerUseActionTokenRule extends PlayerTurnRule {
   onRuleStart() {
-    if (this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(this.player).getQuantity() === 0) {
+    if (this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.player).getQuantity() === 0) {
       return [this.startRule(RuleId.EndTurn)]
     } else {
       this.memorize(Memory.PlantedTreesTypes, [])
@@ -34,7 +34,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
   }
 
   get availableActionTokens() {
-    return this.material(MaterialType.ActionToken).id(this.player).location(LocationType.PlayerActionSupply)
+    return this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.player)
   }
 
   getAvailableActions() {
@@ -92,7 +92,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
       if (elementCard > 0) {
         const card = this.material(MaterialType.AnimalCard).id(elementCard)
         if (this.elementCanBePlayed(element, card.getItem()?.location.x!)) {
-          moves.push(...this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).id(this.player)
+          moves.push(...this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.player)
             .moveItems({
               type: LocationType.ActionToken,
               x: card.getItem()?.location.x,

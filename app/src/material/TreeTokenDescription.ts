@@ -14,11 +14,11 @@ class TreeTokenDescription extends FlatMaterialDescription {
     [Season.Winter]: WinterTreeToken
   }
 
-  staticItems = seasons.map(x => ({
-    id: x,
+  staticItems = seasons.map(season => ({
+    id: season,
     location: {
       type: LocationType.TreeToken,
-      id: x
+      player: season
     }
   }))
 }

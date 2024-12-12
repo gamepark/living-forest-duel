@@ -6,7 +6,7 @@ import { clearingLineLocator } from './ClearingLineLocator'
 class VaranDecksLocator extends DeckLocator {
   getCoordinates(location: Location) {
     return {
-      x: location.id === Season.Summer ? -30 : 30,
+      x: location.player === Season.Summer ? -30 : 30,
       y: clearingLineLocator.coordinates.y
     }
   }

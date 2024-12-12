@@ -64,27 +64,27 @@ export class TreesHelper extends MaterialRulesPart {
 
       // It's possible to put a card on top, excepting the starting tree
       if (coordinates.x !== 0 || coordinates.y !== 0) {
-        availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: playedCard.location.x, y: playedCard.location.y })
+        availableSpaces.push({ type: LocationType.PlayerForest, player: this.player, x: playedCard.location.x, y: playedCard.location.y })
       }
 
       const left = { x: playedCard.location.x! - 1, y: playedCard.location.y! }
       if (!playedCards.find(item => isAnyCardToTheLeft(item, coordinates))) {
-        availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: left.x, y: left.y })
+        availableSpaces.push({ type: LocationType.PlayerForest, player: this.player, x: left.x, y: left.y })
       }
 
       const right = { x: playedCard.location.x! + 1, y: playedCard.location.y! }
       if (!playedCards.find(item => isAnyCardToTheRight(item, coordinates))) {
-        availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: right.x, y: right.y })
+        availableSpaces.push({ type: LocationType.PlayerForest, player: this.player, x: right.x, y: right.y })
       }
 
       const below = { x: playedCard.location.x!, y: playedCard.location.y! + 1 }
       if (!playedCards.find(item => isAnyCardBelow(item, coordinates))) {
-        availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: below.x, y: below.y })
+        availableSpaces.push({ type: LocationType.PlayerForest, player: this.player, x: below.x, y: below.y })
       }
 
       const above = { x: playedCard.location.x!, y: playedCard.location.y! - 1 }
       if (!playedCards.find(item => isAnyCardAbove(item, coordinates))) {
-        availableSpaces.push({ type: LocationType.PlayerForest, id: this.player, x: above.x, y: above.y })
+        availableSpaces.push({ type: LocationType.PlayerForest, player: this.player, x: above.x, y: above.y })
       }
     }
 
@@ -105,7 +105,7 @@ export class TreesHelper extends MaterialRulesPart {
   get panorama() {
     return this
       .material(MaterialType.TreeCard)
-      .location(l => l.type === LocationType.PlayerForest && l.id === this.player)
+      .location(l => l.type === LocationType.PlayerForest && l.player === this.player)
   }
 
   getAvailableSpacesForTree(tree: MaterialItem, spaces: Location[]) {
@@ -149,7 +149,7 @@ export class TreesHelper extends MaterialRulesPart {
   showVisibleTree(reference: { x?: number; y?: number }) {
     const treesInLocation = this.material(MaterialType.TreeCard)
       .location(l => l.type === LocationType.PlayerForest
-        && l.id === this.player
+        && l.player === this.player
         && l.x === reference.x!
         && l.y === reference.y!)
     const items = treesInLocation.getItems()

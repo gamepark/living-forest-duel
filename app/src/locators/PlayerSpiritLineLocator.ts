@@ -9,9 +9,10 @@ class PlayerSpiritLineLocator extends ListLocator {
   gap = { x: animalCardDescription.width + 1 }
   
   getCoordinates(location: Location) {
+    const { x, y } = treeTokenLocator.getCoordinates(location)
     return {
-      x: treeTokenLocator.getCoordinates(location).x + spiritCardDescription.width + 2,
-      y: treeTokenLocator.getCoordinates(location).y +  + treeTokenDescription.height + 0.5
+      x: x + spiritCardDescription.width + 2,
+      y: y +  + treeTokenDescription.height + 0.5
     }
   }
 

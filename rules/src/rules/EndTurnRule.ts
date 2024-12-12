@@ -24,7 +24,7 @@ export class EndTurnRule extends PlayerTurnRule {
       for (const season of seasons) {
         const waterValue = new ElementsHelper(this.game, this.player).getElementValue(Element.Water, season)
         if (this.fireValue > waterValue) {
-          const varanDeck = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.VaranDeck && l.id === season)
+          const varanDeck = this.material(MaterialType.AnimalCard).location(LocationType.VaranDeck).player(season)
           for (let i=0; i < this.spotsOnFire; i++) {
             if (varanDeck.getQuantity() > 0) {
               moves.push(varanDeck.moveItem({type: LocationType.SharedDiscardPile}))
@@ -52,12 +52,12 @@ export class EndTurnRule extends PlayerTurnRule {
         // moves.push(...actionTokens.moveItems({type: LocationType.PlayerActionSupply, id: season}))
         const actionTokens = this.material(MaterialType.ActionToken).id(season).location(LocationType.ActionToken)
         if (actionTokens.getItems().length > 0) {
-          moves.push(...actionTokens.moveItems({type: LocationType.PlayerActionSupply, id: season}))
+          moves.push(...actionTokens.moveItems({type: LocationType.PlayerActionSupply, player: season}))
         }
         // Move lost tokens to the supply
         const lostTokens = this.material(MaterialType.ActionToken).id(season).location(LocationType.PlayerActionLost)
         if (lostTokens.getItems().length > 0) {
-          moves.push(...lostTokens.moveItems({type: LocationType.PlayerActionSupply, id: season}))
+          moves.push(...lostTokens.moveItems({type: LocationType.PlayerActionSupply, player: season}))
         }
       }
       

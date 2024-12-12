@@ -29,7 +29,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
     moves.push(
       ...playerCards.getItems().flatMap((card) => {
         return [
-          ...playerCards.id(card.id).moveItems({ type: LocationType.PlayerHelpLine, id: getAnimalSeason(card.id) })
+          ...playerCards.id(card.id).moveItems({ type: LocationType.PlayerHelpLine, player: getAnimalSeason(card.id) })
         ]
       })
     )

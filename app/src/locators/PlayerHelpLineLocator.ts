@@ -9,7 +9,7 @@ class PlayerHelpLineLocator extends ListLocator {
   gap = { x: animalCardDescription.width + 1 }
   maxCount = 4
   
-  getCoordinates(location: Location<number, number>) {
+  getCoordinates(location: Location) {
     return {
       x: treeTokenLocator.getCoordinates(location).x + spiritCardDescription.width + 2,
       y: sharedHelpLineLocator.coordinates.y + animalCardDescription.height + 2

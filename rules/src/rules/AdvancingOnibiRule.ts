@@ -47,11 +47,11 @@ export class AdvancingOnibiRule extends PlayerTurnRule {
 
   moveOnibiCard() {
     const onibiCard = this.material(MaterialType.SpiritCard).id(SpiritType.Onibi)
-    const onibiCardOwner = onibiCard.getItem()!.location.id
+    const onibiCardOwner = onibiCard.getItem()!.location.player
     if (onibiCardOwner === this.player) {
       return onibiCard.moveItem({ type: LocationType.OnibiCard })
     } else if (onibiCardOwner === undefined) {
-      return onibiCard.moveItem({ type: LocationType.PlayerSpiritLine, id: getOpponentSeason(this.player) })
+      return onibiCard.moveItem({ type: LocationType.PlayerSpiritLine, player: getOpponentSeason(this.player) })
     } else {
       return this.endGame()
     }
