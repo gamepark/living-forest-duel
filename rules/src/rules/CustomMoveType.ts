@@ -1,4 +1,5 @@
 export enum CustomMoveType {
-  ActionPass = 1,
+  MoveOnibi = 1,
+  ActionPass,
   SankiPass
 }

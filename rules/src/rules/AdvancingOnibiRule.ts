@@ -1,64 +1,71 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { Memory } from './Memory'
-import { RuleId } from './RuleId'
+import { CustomMove, isMoveItemType, ItemMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { range } from 'lodash'
+import { Clearing, clearingProperties } from '../material/Clearing'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { getOpponentSeason, Season } from '../Season'
 import { SpiritType } from '../material/SpiritType'
-import { Clearing, clearingProperties } from '../material/Clearing'
+import { getOpponentSeason, Season } from '../Season'
+import { CustomMoveType } from './CustomMoveType'
+import { Memory } from './Memory'
+import { RuleId } from './RuleId'
 
 export class AdvancingOnibiRule extends PlayerTurnRule {
-  elementValue = this.remind(Memory.RemainingElementValue)
+  get elementValue() {
+    return this.remind(Memory.RemainingElementValue)
+  }
 
   getPlayerMoves() {
-    const moves: MaterialMove[] = []
+    return range(1, this.elementValue + 1).map(distance => this.customMove(CustomMoveType.MoveOnibi, distance))
+  }
+
+  onCustomMove(move: CustomMove) {
+    if (move.type !== CustomMoveType.MoveOnibi) return []
+    this.memorize(Memory.RemainingElementValue, move.data)
+    return [this.moveOnibiOnce()]
+  }
+
+  moveOnibiOnce() {
     const onibi = this.material(MaterialType.OnibiStandee)
-    const minPos = -3
-    const maxPos = 3
-    // Starting in 1 to avoid remaining in the same position (the Monkey Opponent can do it)
-    for (let x = 1; x <= this.elementValue; x++) {
-      let xPos = onibi.getItem()?.location.x! + (this.player === Season.Summer ? x : -x) 
-      // Update xPos for Round Robin
-      // 7 is total cards in the clearing
-      if (xPos < minPos) {
-        xPos = maxPos - this.positiveModulo((minPos - xPos - 1), 7)
-      } else if (xPos > maxPos) {
-        xPos = minPos + this.positiveModulo((xPos - maxPos - 1), 7)
-      }
-      moves.push(onibi.moveItem({ type: LocationType.ClearingCardSpot, x: xPos }))
+    const onibiX = onibi.getItem()!.location.x!
+    const nextX = this.player === Season.Summer ? onibiX + 1 : onibiX - 1
+    if (Math.abs(nextX) <= 3) {
+      return onibi.moveItem({ type: LocationType.ClearingCardSpot, x: nextX })
+    } else {
+      return onibi.moveItem({ type: LocationType.ClearingCardSpot, x: nextX === -4 ? 3 : -3 })
     }
-
-    return moves
   }
 
-  positiveModulo(n: number, m: number): number {
-    return ((n % m) + m) % m
+  beforeItemMove(move: ItemMove) {
+    if (!isMoveItemType(MaterialType.OnibiStandee)(move)) return []
+    const onibi = this.material(MaterialType.OnibiStandee)
+    const onibiX = onibi.getItem()!.location.x!
+    if (Math.abs(onibiX - move.location.x!) > 1) {
+      return [this.moveOnibiCard()]
+    }
+    return []
   }
 
-  beforeItemMove(move: ItemMove<number, number, number>) {
-    const moves: MaterialMove[] = []
-    if (isMoveItemType(MaterialType.OnibiStandee)(move)) {
-      let win = false
-      // TODO: Perform the full move step by step and not going directly to the position
-      // TODO: Check if it's possible to get more than 7 winds. In that case we need to offer move 1 or move more.
-      // TODO: Also check if it's possible to win going out the clearing two times (e.g. moving 8 being in the last card)
-      if ((this.player === Season.Summer && move.location.x! <= this.material(MaterialType.OnibiStandee).getItem()?.location.x!)
-        || (this.player === Season.Winter && move.location.x! >= this.material(MaterialType.OnibiStandee).getItem()?.location.x!) ) {
-          const onibiCard = this.material(MaterialType.SpiritCard).id(SpiritType.Onibi)
-          const onibiLocation = onibiCard.getItem()?.location
-          if (onibiLocation?.type === LocationType.OnibiCard) {
-            moves.push(onibiCard.moveItem({type: LocationType.PlayerSpiritLine, id: getOpponentSeason(this.player)}))
-          } else if (onibiLocation?.type === LocationType.PlayerSpiritLine && onibiLocation?.id === this.player) {
-            moves.push(onibiCard.moveItem({type: LocationType.OnibiCard}))            
-          } else  if (onibiLocation?.type === LocationType.PlayerSpiritLine && onibiLocation?.id !== this.player) { // Winning condition
-            win = true
-          }
-      }
+  moveOnibiCard() {
+    const onibiCard = this.material(MaterialType.SpiritCard).id(SpiritType.Onibi)
+    const onibiCardOwner = onibiCard.getItem()!.location.id
+    if (onibiCardOwner === this.player) {
+      return onibiCard.moveItem({ type: LocationType.OnibiCard })
+    } else if (onibiCardOwner === undefined) {
+      return onibiCard.moveItem({ type: LocationType.PlayerSpiritLine, id: getOpponentSeason(this.player) })
+    } else {
+      return this.endGame()
+    }
+  }
 
+  afterItemMove(move: ItemMove) {
+    if (!isMoveItemType(MaterialType.OnibiStandee)(move)) return []
+    this.memorize<number>(Memory.RemainingElementValue, value => value - 1)
+    if (this.elementValue > 0) {
+      return [this.moveOnibiOnce()]
+    } else {
       this.memorize(Memory.RemainingBonuses, [clearingProperties[move.location.x! as Clearing]?.bonus])
-      moves.push(win ? this.endGame() : this.startRule(RuleId.OnibiBonusAction))
+      return [this.startRule(RuleId.OnibiBonusAction)]
     }
-    return moves
   }
 
 }
