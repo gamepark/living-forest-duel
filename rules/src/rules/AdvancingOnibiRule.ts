@@ -10,14 +10,6 @@ import { Clearing, clearingProperties } from '../material/Clearing'
 export class AdvancingOnibiRule extends PlayerTurnRule {
   elementValue = this.remind(Memory.RemainingElementValue)
 
-  onRuleStart() {
-    if (this.elementValue === 0) {
-      return [this.startRule(RuleId.EndTurn)]
-    }
-
-    return []
-  }
-
   getPlayerMoves() {
     const moves: MaterialMove[] = []
     const onibi = this.material(MaterialType.OnibiStandee)
