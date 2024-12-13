@@ -53,6 +53,7 @@ export class LivingForestDuelRules extends HiddenMaterialRules<Season, MaterialT
     },
     [MaterialType.AnimalCard]: {
       [LocationType.SeasonAnimalDeck]: new PositiveSequenceStrategy(),
+      [LocationType.VaranDeck]: new PositiveSequenceStrategy(),
       [LocationType.SharedDeck]: new PositiveSequenceStrategy(),
       [LocationType.SharedDiscardPile]: new PositiveSequenceStrategy(),
       [LocationType.SharedHelpLine]: new PositiveSequenceStrategy(),

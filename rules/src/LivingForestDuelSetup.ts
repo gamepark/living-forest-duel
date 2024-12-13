@@ -86,15 +86,18 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
   }
 
   setupPlayer(season: Season) {
+    // Player Varan deck
+    for (let i = 0; i < 7; i++) {
+      this.material(MaterialType.AnimalCard).createItem({
+        id: season === Season.Summer ? Animal.SummerVaran : Animal.WinterVaran,
+        location: {
+          type: LocationType.VaranDeck,
+          player: season
+        }
+      })
+    }
+
     // Player season deck
-    this.material(MaterialType.AnimalCard).createItem({
-      id: season === Season.Summer ? Animal.SummerVaran : Animal.WinterVaran,
-      location: {
-        type: LocationType.VaranDeck,
-        player: season
-      },
-      quantity: 7
-    })
     const seasonAnimals = season === Season.Summer ? summerAnimals : winterAnimals
 
     // Player initial cards
