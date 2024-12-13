@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, MoveItem } from '@gamepark/rules-api'
 import { Animal, animalProperties, AnimalType, getAnimalSeason, isVaran } from '../material/Animal'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -23,73 +23,74 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
   }
 
   afterItemMove(move: ItemMove) {
-    const moves: MaterialMove[] = []
-
-    if (isMoveItemType(MaterialType.AnimalCard)(move) && move.location.type !== LocationType.PlayerHelpLine) {
-      moves.push(...this.drawCardActions(move))
-    } else if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.ActionToken) {
-      moves.push(...super.afterItemMove(move))
-    }
-
-    return moves
-  }
-
-  playerHasSankiCard(player: Season | undefined) {
-    return this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(l => l.type === LocationType.PlayerSpiritLine && l.player === player).getQuantity() > 0
-  }
-
-  drawCardActions(move: ItemMove) {
-    const moves: MaterialMove[] = []
     if (isMoveItemType(MaterialType.AnimalCard)(move)) {
-      const movedAnimal = this.material(MaterialType.AnimalCard).getItem<Animal>(move.itemIndex)
-      let offerSankiCard = false
+      if (move.location.type === LocationType.SharedHelpLine) {
+        return this.afterDrawCard(move)
+      } else if (move.location.type === LocationType.PlayerHelpLine) {
+        const animal = this.material(MaterialType.AnimalCard).getItem<Animal>(move.itemIndex).id
+        return this.afterAnimalMovedAtFinalDestination(animal)
+      }
+    } else if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.ActionToken) {
+      return super.afterItemMove(move)
+    }
+    return []
+  }
 
-      const animalSeason = getAnimalSeason(movedAnimal.id)
-      // Probably the Stag check is not needed
-      if (animalSeason !== undefined && movedAnimal.id !== Animal.Stag) {
-        if (this.material(MaterialType.SpiritCard).id(SpiritType.Onibi).location(l => l.type === LocationType.PlayerSpiritLine && l.player === animalSeason).getQuantity() === 0
-          || isVaran(movedAnimal.id)) {
-          // If the drawed card is a fire Varan of this player and they have Sanki cards they can use it
-          if (isVaran(movedAnimal.id) && animalSeason === this.player && this.playerHasSankiCard(this.player)) {
-              offerSankiCard = true
-              moves.push(this.startRule(RuleId.UseSankiCard))
-          } else if (isVaran(movedAnimal.id) && animalSeason === this.nextPlayer && this.playerHasSankiCard(this.nextPlayer)) {
-              offerSankiCard = true
-              this.memorize(Memory.UseSankiOnOtherPlayerTurn, true)
-              moves.push(this.startPlayerTurn(RuleId.UseSankiCard, this.nextPlayer))
-          } else {
-            moves.push(this.material(MaterialType.AnimalCard).index(move.itemIndex).moveItem({ type: LocationType.PlayerHelpLine, player: animalSeason }))
-          }
+  afterDrawCard(move: MoveItem) {
+    const animal = this.material(MaterialType.AnimalCard).getItem<Animal>(move.itemIndex).id
+    const animalSeason = getAnimalSeason(animal)
+    if (animalSeason !== undefined) {
+      if (isVaran(animal) && this.playerHasSankiCard(animalSeason)) {
+        return this.offerToUseSankiOnVaran(animalSeason)
+      } else if (isVaran(animal) || !this.playerHasOnibiCard(animalSeason)) {
+        return [this.material(MaterialType.AnimalCard).index(move.itemIndex).moveItem({ type: LocationType.PlayerHelpLine, player: animalSeason })]
+      }
+    }
+    return this.afterAnimalMovedAtFinalDestination(animal)
+  }
+
+  playerHasSankiCard(player: Season) {
+    return this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(LocationType.PlayerSpiritLine).player(player).length > 0
+  }
+
+  offerToUseSankiOnVaran(player: Season) {
+    if (player === this.player) {
+      return [this.startRule(RuleId.UseSankiCard)]
+    } else {
+      this.memorize(Memory.UseSankiOnOtherPlayerTurn, true)
+      return [this.startPlayerTurn(RuleId.UseSankiCard, this.nextPlayer)]
+    }
+  }
+
+  playerHasOnibiCard(player: Season) {
+    return this.material(MaterialType.SpiritCard).id(SpiritType.Onibi).location(LocationType.PlayerSpiritLine).player(player).length > 0
+  }
+
+  afterAnimalMovedAtFinalDestination(animal: Animal) {
+    const moves: MaterialMove[] = []
+    if (animalProperties[animal].type === AnimalType.Solitary) {
+      // Check number of solitary symbols
+      for (const season of seasons) {
+        if (this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(season).getQuantity() > 0
+          && new AnimalsHelper(this.game, this.player).checkTooManySolitaryAnimals(season)) {
+          moves.push(this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(season).moveItem({
+            type: LocationType.PlayerActionLost,
+            player: season
+          }))
         }
       }
-
-      const movedAnimalProperties = animalProperties[movedAnimal.id]
-      if (movedAnimalProperties.type === AnimalType.Solitary && !offerSankiCard) {
-        // Check number of solitary symbols
-        for (const season of seasons) {
-          if (this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(season).getQuantity() > 0
-            && new AnimalsHelper(this.game, this.player).checkTooManySolitaryAnimals(season)) {
-            moves.push(this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(season).moveItem({ type: LocationType.PlayerActionLost, player: season }))
-          }
-        }
-      }
-
-      if (!offerSankiCard && !isVaran(movedAnimal.id)) {
-        // If the player has enough action tokens and a Sanki card, offer using it if it's not already been offered because of a fire Varan
-        // The action tokens have not moved here yet, that's why I need to check the last move
-        // We don't offer it in case the other player doesn't have any action token, as it wouldn't have sense using the Sanki card
-        const actionTokens = this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.player)
-        if ((actionTokens.getQuantity() == 2 || (actionTokens.getQuantity() == 1 && moves.length > 0 && !isMoveItemType(MaterialType.ActionToken)(moves[moves.length - 1])))
-          && this.playerHasSankiCard(this.player)
-          && new PlayerUseActionTokenRule(this.game).getPlayerMoves().length > 0
-          && this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.nextPlayer).getItems().length > 0) {
-          moves.push(this.startRule(RuleId.UseSankiCard))
-        } else {
-          moves.push(this.startRule(RuleId.EndTurn))
-        }
-      } else if (isVaran(movedAnimal.id) && animalSeason !== this.player && !this.remind(Memory.UseSankiOnOtherPlayerTurn)) {
-        moves.push(this.startRule(RuleId.EndTurn))
-      }
+    }
+    // If the player has enough action tokens and a Sanki card, offer using it if it's not already been offered because of a fire Varan
+    // The action tokens have not moved here yet, that's why I need to check the last move
+    // We don't offer it in case the other player doesn't have any action token, as it wouldn't have sense using the Sanki card
+    const actionTokens = this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.player)
+    if ((actionTokens.getQuantity() == 2 || (actionTokens.getQuantity() == 1 && moves.length > 0 && !isMoveItemType(MaterialType.ActionToken)(moves[moves.length - 1])))
+      && this.playerHasSankiCard(this.player)
+      && new PlayerUseActionTokenRule(this.game).getPlayerMoves().length > 0
+      && this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.nextPlayer).getItems().length > 0) {
+      moves.push(this.startRule(RuleId.UseSankiCard))
+    } else {
+      moves.push(this.startRule(RuleId.EndTurn))
     }
 
     return moves
