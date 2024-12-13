@@ -1,10 +1,10 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { RuleId } from './RuleId'
-import { MaterialType } from '../material/MaterialType'
-import { LocationType } from '../material/LocationType'
-import { Element, seasons } from '../Season'
 import { Clearing, clearingProperties } from '../material/Clearing'
+import { LocationType } from '../material/LocationType'
+import { MaterialType } from '../material/MaterialType'
+import { Element, seasons } from '../Season'
 import { ElementsHelper } from './helpers/ElementsHelper'
+import { RuleId } from './RuleId'
 
 export class EndTurnRule extends PlayerTurnRule {
 
@@ -17,8 +17,10 @@ export class EndTurnRule extends PlayerTurnRule {
       moves.push(discardedDeck.shuffle())
     }
 
-    if (this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).getItems().length > 0) {
+    if (this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.nextPlayer).length > 0) {
       moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
+    } else if (this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.player).length > 0) {
+      moves.push(this.startRule(RuleId.PlayerAction))
     } else {
       // Varan cards
       for (const season of seasons) {
@@ -60,7 +62,7 @@ export class EndTurnRule extends PlayerTurnRule {
           moves.push(...lostTokens.moveItems({type: LocationType.PlayerActionSupply, player: season}))
         }
       }
-      
+
       // Send cards to the discard pile
       const cardsPlayed = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine || l.type === LocationType.PlayerHelpLine)
       moves.push(cardsPlayed.moveItemsAtOnce({type: LocationType.SharedDiscardPile}))
@@ -69,7 +71,7 @@ export class EndTurnRule extends PlayerTurnRule {
       moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
     }
 
-    return moves    
+    return moves
   }
 
   // afterItemMove(move: ItemMove) {
