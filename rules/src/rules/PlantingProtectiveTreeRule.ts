@@ -58,7 +58,7 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
     return []
   }
 
-  afterItemMove(move: ItemMove<number, number, number>) {
+  afterItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.TreeCard)(move) && move.location.type === LocationType.PlayerForest) {
       const movedCard = this.material(move.itemType).getItem(move.itemIndex)
 

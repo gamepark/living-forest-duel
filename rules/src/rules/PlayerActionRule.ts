@@ -1,13 +1,13 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
 import { Animal, animalProperties, AnimalType, getAnimalSeason, isVaran } from '../material/Animal'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { SpiritType } from '../material/SpiritType'
 import { Season, seasons } from '../Season'
 import { AnimalsHelper } from './helpers/AnimalsHelper'
-import { RuleId } from './RuleId'
-import { PlayerUseActionTokenRule } from './PlayerUseActionTokenRule'
 import { Memory } from './Memory'
+import { PlayerUseActionTokenRule } from './PlayerUseActionTokenRule'
+import { RuleId } from './RuleId'
 
 // export class PlayerActionRule extends PlayerTurnRule {
 export class PlayerActionRule extends PlayerUseActionTokenRule {
@@ -22,7 +22,7 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
     return moves
   }
 
-  afterItemMove(move: ItemMove<number, number, number>, _context?: PlayMoveContext) {
+  afterItemMove(move: ItemMove) {
     const moves: MaterialMove[] = []
 
     if (isMoveItemType(MaterialType.AnimalCard)(move) && move.location.type !== LocationType.PlayerHelpLine) {
@@ -38,7 +38,7 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
     return this.material(MaterialType.SpiritCard).id(SpiritType.Sanki).location(l => l.type === LocationType.PlayerSpiritLine && l.player === player).getQuantity() > 0
   }
 
-  drawCardActions(move: ItemMove<number, number, number>) {
+  drawCardActions(move: ItemMove) {
     const moves: MaterialMove[] = []
     if (isMoveItemType(MaterialType.AnimalCard)(move)) {
       const movedAnimal = this.material(MaterialType.AnimalCard).getItem<Animal>(move.itemIndex)

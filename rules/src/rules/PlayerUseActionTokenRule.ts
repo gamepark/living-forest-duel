@@ -1,14 +1,14 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { Animal, animalProperties, CardElements } from '../material/Animal'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Element, elements, Season } from '../Season'
-import { ElementsHelper } from './helpers/ElementsHelper'
-import { Memory } from './Memory'
-import { RuleId } from './RuleId'
 import { AnimalsHelper } from './helpers/AnimalsHelper'
+import { ElementsHelper } from './helpers/ElementsHelper'
 import { FireHelper } from './helpers/FireHelper'
 import { TreesHelper } from './helpers/TreesHelper'
+import { Memory } from './Memory'
+import { RuleId } from './RuleId'
 
 export class PlayerUseActionTokenRule extends PlayerTurnRule {
   onRuleStart() {
@@ -107,7 +107,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
     return moves
   }
 
-  beforeItemMove(move: ItemMove<number, number, number>, _context?: PlayMoveContext) {
+  beforeItemMove(move: ItemMove) {
     const moves: MaterialMove[] = []
 
     if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.ActionToken) {
