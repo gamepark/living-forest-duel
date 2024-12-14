@@ -82,9 +82,11 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
             bonuses.push(treeProperties[movedCard.id as Tree]?.bonus.element)
           }
         }
-
+        // TODO: Fix this - It makes the player lose the remaining points for the tree bonus action if planting the tree triggers an additional bonus action
         if (bonuses.length > 0) {
           this.memorize(Memory.RemainingBonuses, bonuses)
+          return [this.startRule(RuleId.TreeBonusAction)]
+        } else if (this.remind(Memory.BonusAction)) {
           return [this.startRule(RuleId.TreeBonusAction)]
         } else {
           return [this.startRule(RuleId.PlantingProtectiveTree)]
