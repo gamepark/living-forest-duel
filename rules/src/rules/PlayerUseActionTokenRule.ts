@@ -65,8 +65,6 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
 
     // Validate the positions. At least 1 element between the action token and the previous one.
     for (const element of elements) {
-      // const elementIndex = Object.keys(maxElements).indexOf(element) + 1
-      // const elementIndex = element + 1
       let cardsWithElement = 0
       for (let x = this.material(MaterialType.AnimalCard).id(maxElements[element]).getItem()?.location.x; x! >= 0; x!--) {
         const card = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine && l.x === x).getItem<Animal>()!

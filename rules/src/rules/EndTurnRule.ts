@@ -44,8 +44,6 @@ export class EndTurnRule extends PlayerTurnRule {
 
       // Recover action tokens
       for (const season of seasons) {
-        // const actionTokens = this.material(MaterialType.ActionToken).id(season)
-        // moves.push(...actionTokens.moveItems({type: LocationType.PlayerActionSupply, id: season}))
         const actionTokens = this.material(MaterialType.ActionToken).id(season).location(LocationType.ActionToken)
         if (actionTokens.getItems().length > 0) {
           moves.push(...actionTokens.moveItems({type: LocationType.PlayerActionSupply, player: season}))
@@ -67,14 +65,6 @@ export class EndTurnRule extends PlayerTurnRule {
 
     return moves
   }
-
-  // afterItemMove(move: ItemMove) {
-  //   if (isMoveItemsAtOnce(move) && move.itemType === MaterialType.AnimalCard && move.location.type === LocationType.SharedDeck) {
-  //     const deck = this.material(MaterialType.AnimalCard).location(LocationType.SharedDeck)
-  //     return [deck.shuffle()]
-  //   } 
-  //   return []
-  // }
 
   get fireValue() {
     let value = 0

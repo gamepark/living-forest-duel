@@ -17,7 +17,6 @@ export class TreesHelper extends MaterialRulesPart {
     return treesInDecks
       .location(l => !items.some(item => item.location.id === l.id && item.location.x! > l.x!))
       .filter(tree => !this.remind(Memory.PlantedTreesTypes).includes(getTreeType(tree.id)) && treeProperties[tree.id as Tree]?.cost! <= plantValue)
-      // .filter(tree => !this.remind(Memory.PlantedTreesTypes).includes(getTreeType(tree.id)) && treeProperties[tree.id as Tree]?.cost! <= this.remind(Memory.RemainingElementValue))
   }
 
   getTreesMinCost(treesIds: number[]) {

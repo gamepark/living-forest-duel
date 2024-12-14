@@ -9,7 +9,6 @@ import { Memory } from './Memory'
 import { PlayerUseActionTokenRule } from './PlayerUseActionTokenRule'
 import { RuleId } from './RuleId'
 
-// export class PlayerActionRule extends PlayerTurnRule {
 export class PlayerActionRule extends PlayerUseActionTokenRule {
   getPlayerMoves() {
     const moves: MaterialMove[] = []

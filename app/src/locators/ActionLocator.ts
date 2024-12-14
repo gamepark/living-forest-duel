@@ -10,7 +10,6 @@ class ActionLocator extends Locator {
   }
 
   locationDescription = new DropAreaDescription({ width: 2.7, height: 1 })
-  // locationDescription = new DropAreaDescription({width: 2.7, height: 1, extraCss: css`border: 1px solid red`})
 }
 
 export const actionLocator = new ActionLocator()

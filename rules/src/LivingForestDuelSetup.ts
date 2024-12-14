@@ -54,7 +54,6 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
       }
     }))
     this.material(MaterialType.TreeCard).createItems(trees)
-    // this.material(MaterialType.TreeCard).location(l => l.type === LocationType.TreeDeckSpot && l.id ).shuffle()
     for (const treeType of treeTypes) {
       this.material(MaterialType.TreeCard).location(l => l.id === treeType).shuffle()
     }

@@ -33,13 +33,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
         ]
       })
     )
-    // let lastPosX = undefined
-    // if (!this.remind(Memory.BonusAction)) {
-    //   const playerActionTokens = this.material(MaterialType.ActionToken).id(this.player).location(l => l.type === LocationType.ActionToken && l.y === Element.Sun).getItems()
-    //   const lastActionToken = playerActionTokens.reduce((max, token) => token.location.x! > max.location.x! ? token : max, playerActionTokens[0])
-    //   lastPosX = lastActionToken.location.x!
-    // }
-    // if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Sun, this.player, lastPosX)) {
+
     // Only can pass if at least one animal was taken
     const lastTokenX = !this.remind(Memory.BonusAction) ? this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.y === Element.Sun).getItem()?.location.x : undefined
     if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Sun, this.player, lastTokenX)) {

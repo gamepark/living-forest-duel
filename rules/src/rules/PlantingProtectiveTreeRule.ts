@@ -39,9 +39,6 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
       )
     }
 
-    // const playerActionTokens = this.material(MaterialType.ActionToken).id(this.player).location(l => l.type === LocationType.ActionToken && l.y === Element.Plant).getItems()
-    // const lastActionToken = playerActionTokens.reduce((max, token) => token.location.x! > max.location.x! ? token : max, playerActionTokens[0])
-    // if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Plant, this.player, lastActionToken.location.x)) {
     // Only can pass if at least one tree was planted
     const lastTokenX = !this.remind(Memory.BonusAction) ? this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.y === Element.Plant).getItem()?.location.x : undefined
     if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Plant, this.player, lastTokenX)) {

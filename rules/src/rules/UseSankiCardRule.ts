@@ -40,7 +40,7 @@ export class UseSankiCardRule extends PlayerTurnRule {
         moves.push(actionToken.moveItem({ type: LocationType.PlayerActionLost, player: this.player }))
       }
     }
-    // moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
+
     if (!this.remind(Memory.UseSankiOnOtherPlayerTurn)) {
       moves.push(this.startRule(RuleId.EndTurn))
     } else {
