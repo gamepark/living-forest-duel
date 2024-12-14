@@ -3,11 +3,13 @@
 import { LivingForestDuelRules } from "@gamepark/living-forest-duel/LivingForestDuelRules"
 import { CustomMoveType } from "@gamepark/living-forest-duel/rules/CustomMoveType"
 import { ExtinguishingFireRule } from "@gamepark/living-forest-duel/rules/ExtinguishingFireRule"
+import { Memory } from "@gamepark/living-forest-duel/rules/Memory"
 import { useRules, usePlayerId, usePlayerName, useLegalMove, PlayMoveButton } from "@gamepark/react-game"
 import { isCustomMoveType } from "@gamepark/rules-api"
-import { Trans } from "react-i18next"
+import { Trans, useTranslation } from "react-i18next"
 
 export const ExtinguishingFireHeader = () => {
+  const { t } = useTranslation()
   const rules = useRules<LivingForestDuelRules>()!
   const me = usePlayerId()
   const activePlayer = rules.getActivePlayer()
@@ -16,10 +18,11 @@ export const ExtinguishingFireHeader = () => {
   const extinguishingFireRule = new ExtinguishingFireRule(rules.game)
   const cost = extinguishingFireRule.elementValue
   const pass = useLegalMove(isCustomMoveType(CustomMoveType.Pass))
+  const bonusHeader = extinguishingFireRule.remind(Memory.BonusAction) ? t('header.bonus-header') : ""
 
   if (itsMe) {
-    return <Trans defaults="header.extinguishing-fire.you" values={{ cost }} components={{ pass: <PlayMoveButton move={pass} /> }} />
+    return <Trans defaults="header.extinguishing-fire.you" values={{ bonusHeader, cost }} components={{ pass: <PlayMoveButton move={pass} /> }} />
   } else {
-    return <Trans defaults="header.extinguishing-fire.player" values={{ player, cost }} />
+    return <Trans defaults="header.extinguishing-fire.player" values={{ bonusHeader, player, cost }} />
   }
 }
