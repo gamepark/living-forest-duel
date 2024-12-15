@@ -4,20 +4,19 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Element } from '../Season'
 import { CustomMoveType } from './CustomMoveType'
-
 import { AnimalsHelper } from './helpers/AnimalsHelper'
 import { ElementsHelper } from './helpers/ElementsHelper'
-import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
 export class RecruitingAnimalsRule extends PlayerTurnRule {
-  elementValue = !this.remind(Memory.BonusAction) ? this.remind(Memory.RemainingElementValue) : this.remind(Memory.RemainingBonusElementValue)
+  elementsHelper = new ElementsHelper(this.game, this.player)
+  elementValue = this.elementsHelper.getRemainingElementValue()
 
   onRuleStart() {
-    if (!new AnimalsHelper(this.game,this.player).canAnimalsBeRecruited(this.elementValue)) {
+    if (!new AnimalsHelper(this.game, this.player).canAnimalsBeRecruited(this.elementValue)) {
       return [this.startRule(RuleId.RefillRecruitmentLine)]
     }
-  
+
     return []
   }
 
@@ -35,10 +34,10 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
     )
 
     // Only can pass if at least one animal was taken
-    const lastTokenX = !this.remind(Memory.BonusAction) ? this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.y === Element.Sun).getItem()?.location.x : undefined
-    if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Sun, this.player, lastTokenX)) {
+    const lastTokenX = !this.elementsHelper.isBonusAction() ? this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.y === Element.Sun).getItem()?.location.x : undefined
+    if (this.elementValue < this.elementsHelper.getElementValue(Element.Sun, this.player, lastTokenX)) {
       moves.push(this.customMove(CustomMoveType.Pass))
-    }  
+    }
 
     const restOfCards = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
       .id<Animal>(animal => getAnimalSeason(animal) !== this.player && this.elementValue >= animalProperties[animal].cost!)
@@ -63,7 +62,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
         moves.push(this.endGame())
       } else {
         const movedCard = this.material(MaterialType.AnimalCard).getItem<Animal>(move.itemIndex)
-        this.memorize(!this.remind(Memory.BonusAction) ? Memory.RemainingElementValue : Memory.RemainingBonusElementValue, this.elementValue - animalProperties[movedCard.id].cost)
+        this.elementsHelper.updateRemainingElementValue(this.elementValue - animalProperties[movedCard.id].cost)
 
         moves.push(this.startRule(RuleId.RecruitingAnimals))
       }

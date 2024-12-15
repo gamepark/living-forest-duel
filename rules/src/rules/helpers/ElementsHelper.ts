@@ -15,8 +15,43 @@ export class ElementsHelper extends MaterialRulesPart {
     this.memorize(Memory.RemainingElementValue, this.getElementValue(elementType, this.player))
   }
 
+  getRemainingElementValue() {
+    return this.remind(Memory.RemainingBonuses).length === 0 ? this.remind(Memory.RemainingElementValue) : this.getRemainingBonusElementValue()
+  }
+
   setRemainingBonusElementValue(elementType: Element) {
-    this.memorize(Memory.RemainingBonusElementValue, this.getElementValue(elementType, this.player))
+    this.updateRemainingElementValue(this.getElementValue(elementType, this.player))
+  }
+
+  getRemainingBonusElementValue() {
+    const bonus:BonusType = this.remind(Memory.RemainingBonuses).slice(-1)[0]
+    if (bonus !== undefined) {
+      return bonus.remainingElementValue
+    } else {
+      return 0
+    }
+  }
+
+  updateRemainingElementValue(newValue: number) {
+    if (!this.isBonusAction()) {
+      this.memorize(Memory.RemainingElementValue, newValue)
+    } else {
+      const bonuses: BonusType[] = this.remind(Memory.RemainingBonuses)
+      bonuses[bonuses.length - 1].remainingElementValue = newValue
+      this.memorize(Memory.RemainingBonuses, bonuses)
+    }
+  }
+
+  removeLastBonusElement() {
+    const remainingBonuses = this.remind(Memory.RemainingBonuses)
+    remainingBonuses.pop()
+    this.memorize(Memory.RemainingBonuses, remainingBonuses)
+
+    return remainingBonuses
+  }
+
+  isBonusAction() {
+    return this.remind(Memory.RemainingBonuses).length > 0
   }
 
   // lastTokenX indicates the position from where we want to start calculating
@@ -51,5 +86,9 @@ export class ElementsHelper extends MaterialRulesPart {
 
     return elementValue
   }
+}
 
+export type BonusType = {
+  bonusElement: Element,
+  remainingElementValue: number
 }

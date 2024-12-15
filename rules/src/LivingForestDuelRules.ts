@@ -14,16 +14,15 @@ import { MaterialType } from './material/MaterialType'
 import { AdvancingOnibiRule } from './rules/AdvancingOnibiRule'
 import { EndTurnRule } from './rules/EndTurnRule'
 import { ExtinguishingFireRule } from './rules/ExtinguishingFireRule'
-import { OnibiBonusActionRule } from './rules/OnibiBonusActionRule'
 import { PlantingProtectiveTreeRule } from './rules/PlantingProtectiveTreeRule'
 import { PlayerActionRule } from './rules/PlayerActionRule'
 import { PlayerUseActionTokenRule } from './rules/PlayerUseActionTokenRule'
 import { RecruitingAnimalsRule } from './rules/RecruitingAnimalsRule'
 import { RefillRecruitmentLineRule } from './rules/RefillRecruitmentLineRule'
 import { RuleId } from './rules/RuleId'
-import { TreeBonusActionRule } from './rules/TreeBonusActionRule'
 import { UseSankiCardRule } from './rules/UseSankiCardRule'
 import { Season } from './Season'
+import { BonusActionRule } from './rules/BonusActionRule'
 
 /**
  * This class implements the rules of the board game.
@@ -41,8 +40,7 @@ export class LivingForestDuelRules extends HiddenMaterialRules<Season, MaterialT
     [RuleId.RefillRecruitmentLine]: RefillRecruitmentLineRule,
     [RuleId.PlantingProtectiveTree]: PlantingProtectiveTreeRule,
     [RuleId.AdvancingOnibi]: AdvancingOnibiRule,
-    [RuleId.TreeBonusAction]: TreeBonusActionRule,
-    [RuleId.OnibiBonusAction]: OnibiBonusActionRule,
+    [RuleId.BonusAction]: BonusActionRule,
     [RuleId.EndTurn]: EndTurnRule,
     [RuleId.UseSankiCard]: UseSankiCardRule
   }

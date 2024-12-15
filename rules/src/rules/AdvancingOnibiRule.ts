@@ -8,6 +8,7 @@ import { getOpponentSeason, Season } from '../Season'
 import { CustomMoveType } from './CustomMoveType'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
+import { BonusType } from './helpers/ElementsHelper'
 
 export class AdvancingOnibiRule extends PlayerTurnRule {
   get elementValue() {
@@ -63,8 +64,11 @@ export class AdvancingOnibiRule extends PlayerTurnRule {
     if (this.elementValue > 0) {
       return [this.moveOnibiOnce()]
     } else {
-      this.memorize(Memory.RemainingBonuses, [clearingProperties[move.location.x! as Clearing]?.bonus])
-      return [this.startRule(RuleId.OnibiBonusAction)]
+      const bonus:BonusType = {bonusElement: clearingProperties[move.location.x! as Clearing]?.bonus!, remainingElementValue: -1}
+      const remainingBonuses:BonusType[] = this.remind(Memory.RemainingBonuses) ?? []
+      remainingBonuses.push(bonus)
+      this.memorize(Memory.RemainingBonuses, remainingBonuses)
+      return [this.startRule(RuleId.BonusAction)]
     }
   }
 

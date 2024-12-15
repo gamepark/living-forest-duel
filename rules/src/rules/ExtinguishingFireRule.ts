@@ -5,18 +5,20 @@ import { Element } from '../Season'
 import { CustomMoveType } from './CustomMoveType'
 import { ElementsHelper } from './helpers/ElementsHelper'
 import { FireHelper } from './helpers/FireHelper'
-import { Memory } from './Memory'
+// import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
 export class ExtinguishingFireRule extends PlayerTurnRule {
-  elementValue = !this.remind(Memory.BonusAction) ? this.remind(Memory.RemainingElementValue) : this.remind(Memory.RemainingBonusElementValue)
+  elementsHelper = new ElementsHelper(this.game, this.player)
+  elementValue = this.elementsHelper.getRemainingElementValue()
 
   onRuleStart() {
     if (!new FireHelper(this.game,this.player).canFireBeExtinguished(this.elementValue)) {
-      if (!this.remind(Memory.BonusAction)) {
+      if (!this.elementsHelper.isBonusAction()) {        
         return [this.startRule(RuleId.EndTurn)]
       } else {
-        return[this.startRule(this.remind(Memory.BonusAction) === Element.Plant ? RuleId.TreeBonusAction : RuleId.OnibiBonusAction)]
+        this.elementsHelper.removeLastBonusElement()
+        return[this.startRule(RuleId.BonusAction)]       
       }
     }
 
@@ -29,8 +31,8 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
     moves.push(...availableFireTokens.moveItems({type: LocationType.PlayerFireStock, player: this.player}))
 
     // Only can pass if at least one fire was taken
-    const lastTokenX = !this.remind(Memory.BonusAction) ? this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.y === Element.Water).getItem()?.location.x : undefined
-    if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Water, this.player, lastTokenX)) {
+    const lastTokenX = !this.elementsHelper.isBonusAction() ? this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.y === Element.Water).getItem()?.location.x : undefined
+    if (this.elementValue < this.elementsHelper.getElementValue(Element.Water, this.player, lastTokenX)) {
       moves.push(this.customMove(CustomMoveType.Pass))
     }
 
@@ -43,10 +45,10 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
 
   onCustomMove(move: CustomMove) {
     if (move.type === CustomMoveType.Pass) {
-      if (!this.remind(Memory.BonusAction)) {
+      if (!this.elementsHelper.isBonusAction()) {
         return [this.startRule(RuleId.EndTurn)]
       } else {
-        return[this.startRule(this.remind(Memory.BonusAction) === Element.Plant ? RuleId.TreeBonusAction : RuleId.OnibiBonusAction)]
+        return[this.startRule(RuleId.BonusAction)]
       }
     }
     return []
@@ -55,7 +57,7 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
   beforeItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.FireToken)(move)) {
       const x = Number(this.material(move.itemType).getItem(move.itemIndex).location.x)
-      this.memorize(!this.remind(Memory.BonusAction) ? Memory.RemainingElementValue : Memory.RemainingBonusElementValue, this.elementValue - this.getClearingCardValue(x))
+      this.elementsHelper.updateRemainingElementValue(this.elementValue - this.getClearingCardValue(x))
     }
     return []
   }
@@ -64,7 +66,6 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
 
     if (isMoveItemType(MaterialType.FireToken)(move)) {
-      // Check winning condition
       if (this.material(MaterialType.FireToken).location(l => l.type === LocationType.PlayerFireStock && l.player === this.player).getQuantity() === 8) {
         moves.push(this.endGame())
       } else {

@@ -2,7 +2,7 @@
 
 import { LivingForestDuelRules } from "@gamepark/living-forest-duel/LivingForestDuelRules"
 import { CustomMoveType } from "@gamepark/living-forest-duel/rules/CustomMoveType"
-import { Memory } from "@gamepark/living-forest-duel/rules/Memory"
+import { ElementsHelper } from "@gamepark/living-forest-duel/rules/helpers/ElementsHelper"
 import { RecruitingAnimalsRule } from "@gamepark/living-forest-duel/rules/RecruitingAnimalsRule"
 import { useRules, usePlayerId, usePlayerName, useLegalMove, PlayMoveButton } from "@gamepark/react-game"
 import { isCustomMoveType } from "@gamepark/rules-api"
@@ -18,7 +18,9 @@ export const RecruitingAnimalsHeader = () => {
   const recruitingAnimalsRule = new RecruitingAnimalsRule(rules.game)
   const cost = recruitingAnimalsRule.elementValue
   const pass = useLegalMove(isCustomMoveType(CustomMoveType.Pass))
-  const bonusHeader = recruitingAnimalsRule.remind(Memory.BonusAction) ? t('header.bonus-header') : ""
+  const elementsHelper = new ElementsHelper(rules.game, activePlayer)
+  const bonusHeader = elementsHelper.isBonusAction() ? t('header.bonus-header') + ": " : ""
+
   if (itsMe) {
     <></>
     return <Trans defaults="header.recruiting-animals.you" values={{ bonusHeader, cost }} components={{ pass: <PlayMoveButton move={pass} /> }} />

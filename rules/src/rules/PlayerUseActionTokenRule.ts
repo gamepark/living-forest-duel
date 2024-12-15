@@ -16,7 +16,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
       return [this.startRule(RuleId.EndTurn)]
     } else {
       this.memorize(Memory.PlantedTreesTypes, [])
-      this.memorize(Memory.BonusAction, 0)
+      this.memorize(Memory.RemainingBonuses, [])
       this.memorize(Memory.UseSankiOnOtherPlayerTurn, false)
       return []
     }

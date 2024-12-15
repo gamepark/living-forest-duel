@@ -5,20 +5,25 @@ import { MaterialType } from '../material/MaterialType'
 import { getTreeType, Tree, treeProperties } from '../material/Tree'
 import { Element } from '../Season'
 import { CustomMoveType } from './CustomMoveType'
-import { ElementsHelper } from './helpers/ElementsHelper'
+import { BonusType, ElementsHelper } from './helpers/ElementsHelper'
 import { TreesHelper } from './helpers/TreesHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
 export class PlantingProtectiveTreeRule extends PlayerTurnRule {
-  elementValue = !this.remind(Memory.BonusAction) ? this.remind(Memory.RemainingElementValue) : this.remind(Memory.RemainingBonusElementValue)
+  elementsHelper = new ElementsHelper(this.game, this.player)
+  elementValue = this.elementsHelper.getRemainingElementValue()
 
   onRuleStart() {
-    if (!new TreesHelper(this.game,this.player).canTreesBePlanted(this.elementValue)) {
-      return [this.startRule(RuleId.EndTurn)]
+    if (!new TreesHelper(this.game, this.player).canTreesBePlanted(this.elementValue)) {
+      if (!this.elementsHelper.isBonusAction()) {
+        return [this.startRule(RuleId.EndTurn)]
+      } else {
+        this.elementsHelper.removeLastBonusElement()
+        return [this.startRule(RuleId.BonusAction)]
+      }
     }
 
-    this.memorize(Memory.RemainingBonuses, [])
     return []
   }
 
@@ -40,11 +45,11 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
     }
 
     // Only can pass if at least one tree was planted
-    const lastTokenX = !this.remind(Memory.BonusAction) ? this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.y === Element.Plant).getItem()?.location.x : undefined
-    if (this.elementValue < new ElementsHelper(this.game, this.player).getElementValue(Element.Plant, this.player, lastTokenX)) {
+    const lastTokenX = !this.elementsHelper.isBonusAction() ? this.material(MaterialType.ActionToken).location(l => l.type === LocationType.ActionToken && l.y === Element.Plant).getItem()?.location.x : undefined
+    if (this.elementValue < this.elementsHelper.getElementValue(Element.Plant, this.player, lastTokenX)) {
       moves.push(this.customMove(CustomMoveType.Pass))
     }
-    
+
     return moves
   }
 
@@ -69,22 +74,23 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
         this.memorize(Memory.PlantedTreesTypes, plantedTreesTypes)
 
         // Update remaining value
-        this.memorize(Memory.RemainingElementValue, this.elementValue - treeProperties[movedCard!.id as Tree]!.cost)
+        this.elementsHelper.updateRemainingElementValue(this.elementValue - treeProperties[movedCard!.id as Tree]!.cost)
 
         // Check possible bonuses
         const treesHelper = new TreesHelper(this.game, this.player)
         const bonuses = []
         for (const direction of directions) {
           if (treesHelper.hasBonusInDirection(movedCard, direction)) {
-            bonuses.push(treeProperties[movedCard.id as Tree]?.bonus.element)
+            const bonus: BonusType = { bonusElement: treeProperties[movedCard.id as Tree]?.bonus.element!, remainingElementValue: -1 }
+            bonuses.push(bonus)
           }
         }
-        // TODO: Fix this - It makes the player lose the remaining points for the tree bonus action if planting the tree triggers an additional bonus action
+
         if (bonuses.length > 0) {
-          this.memorize(Memory.RemainingBonuses, bonuses)
-          return [this.startRule(RuleId.TreeBonusAction)]
-        } else if (this.remind(Memory.BonusAction)) {
-          return [this.startRule(RuleId.TreeBonusAction)]
+          const remainingBonuses = this.remind(Memory.RemainingBonuses)
+          remainingBonuses.push(...bonuses)
+          this.memorize(Memory.RemainingBonuses, remainingBonuses)
+          return [this.startRule(RuleId.BonusAction)]
         } else {
           return [this.startRule(RuleId.PlantingProtectiveTree)]
         }

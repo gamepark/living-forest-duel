@@ -7,25 +7,30 @@ import { MaterialType } from '../material/MaterialType'
 import { SpiritType } from '../material/SpiritType'
 import { LocationType } from '../material/LocationType'
 
-export abstract class BonusActionRule extends PlayerTurnRule {
-  abstract bonusRule: number
+export class BonusActionRule extends PlayerTurnRule {
+  elementsHelper = new ElementsHelper(this.game, this.player)
 
   onRuleStart() {
-    const bonus = this.remind(Memory.RemainingBonuses).pop()
+    const bonus = this.remind(Memory.RemainingBonuses).slice(-1)[0]
     if (bonus !== undefined) {
       const moves: MaterialMove[] = []
-      this.memorize(Memory.BonusAction, this.bonusRule)
-      switch (bonus) {
+      switch (bonus.bonusElement) {
         case Element.Sun:
-          new ElementsHelper(this.game, this.player).setRemainingBonusElementValue(Element.Sun)
+          if (bonus.remainingElementValue === -1) {
+            this.elementsHelper.setRemainingBonusElementValue(Element.Sun)
+          }
           moves.push(this.startRule(RuleId.RecruitingAnimals))
           break
         case Element.Water:
-          new ElementsHelper(this.game, this.player).setRemainingBonusElementValue(Element.Water)
+          if (bonus.remainingElementValue === -1) {
+            this.elementsHelper.setRemainingBonusElementValue(Element.Water)
+          }
           moves.push(this.startRule(RuleId.ExtinguishingFire))
           break
         case Element.Plant:
-          new ElementsHelper(this.game, this.player).setRemainingBonusElementValue(Element.Plant)
+          if (bonus.remainingElementValue === -1) {
+            this.elementsHelper.setRemainingBonusElementValue(Element.Plant)
+          }
           moves.push(this.startRule(RuleId.PlantingProtectiveTree))
           break
         case Element.Wind:
@@ -35,16 +40,24 @@ export abstract class BonusActionRule extends PlayerTurnRule {
           if (sankiCards.getQuantity() > 0) {
             moves.push(sankiCards.dealOne({ type: LocationType.PlayerSpiritLine, player: this.player }))
           }
-          // If it's an Onibi bonus action, check end turn, in other case continue the Plant trees in case there are other trees to take
-          moves.push(this.bonusRule === Element.Wind ? this.startRule(RuleId.EndTurn) : this.startRule(RuleId.PlantingProtectiveTree))
-          this.memorize(Memory.BonusAction, 0)
+
+          const remainingBonuses = this.elementsHelper.removeLastBonusElement()
+          if (remainingBonuses.length > 0) {
+            moves.push(this.startRule(RuleId.BonusAction))
+          } else {
+            const remainingElementValue = this.elementsHelper.getRemainingElementValue()
+            if (remainingElementValue > 0) {
+              moves.push(this.startRule(RuleId.PlantingProtectiveTree))
+            } else {
+              moves.push(this.startRule(RuleId.EndTurn))
+            }
+          }
           break
       }
       return moves
     } else {
-      this.memorize(Memory.BonusAction, 0)
-      // If it's an Onibi bonus action, check end turn, in other case continue the Plant trees in case there are other trees to take
-      return [this.bonusRule === Element.Wind ? this.startRule(RuleId.EndTurn) : this.startRule(RuleId.PlantingProtectiveTree)]
+      const remainingBonuses = this.elementsHelper.removeLastBonusElement()
+      return [remainingBonuses.length === 0 ? this.startRule(RuleId.EndTurn) : this.startRule(RuleId.BonusAction)]
     }
   }
 }

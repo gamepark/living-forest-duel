@@ -6,8 +6,7 @@ export enum RuleId {
   RefillRecruitmentLine,
   PlantingProtectiveTree,
   AdvancingOnibi,
-  TreeBonusAction,
-  OnibiBonusAction,
+  BonusAction,
   UseSankiCard,
   EndTurn
 }
