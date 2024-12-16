@@ -12,11 +12,12 @@ export class ElementsHelper extends MaterialRulesPart {
   }
 
   setRemainingElementValue(elementType: Element) {
-    this.memorize(Memory.RemainingElementValue, this.getElementValue(elementType, this.player))
+    const action: ActionType = { element: elementType, remainingElementValue: this.getElementValue(elementType, this.player) }
+    this.memorize(Memory.CurrentAction, action)
   }
 
   getRemainingElementValue() {
-    return this.remind(Memory.RemainingBonuses).length === 0 ? this.remind(Memory.RemainingElementValue) : this.getRemainingBonusElementValue()
+    return this.remind(Memory.RemainingBonuses).length === 0 ? this.remind(Memory.CurrentAction).remainingElementValue : this.getRemainingBonusElementValue()
   }
 
   setRemainingBonusElementValue(elementType: Element) {
@@ -24,7 +25,7 @@ export class ElementsHelper extends MaterialRulesPart {
   }
 
   getRemainingBonusElementValue() {
-    const bonus:BonusType = this.remind(Memory.RemainingBonuses).slice(-1)[0]
+    const bonus: ActionType = this.remind(Memory.RemainingBonuses).slice(-1)[0]
     if (bonus !== undefined) {
       return bonus.remainingElementValue
     } else {
@@ -34,9 +35,11 @@ export class ElementsHelper extends MaterialRulesPart {
 
   updateRemainingElementValue(newValue: number) {
     if (!this.isBonusAction()) {
-      this.memorize(Memory.RemainingElementValue, newValue)
+      const currentAction = this.remind(Memory.CurrentAction)
+      currentAction.remainingElementValue = newValue
+      this.memorize(Memory.CurrentAction, currentAction)
     } else {
-      const bonuses: BonusType[] = this.remind(Memory.RemainingBonuses)
+      const bonuses: ActionType[] = this.remind(Memory.RemainingBonuses)
       bonuses[bonuses.length - 1].remainingElementValue = newValue
       this.memorize(Memory.RemainingBonuses, bonuses)
     }
@@ -88,7 +91,7 @@ export class ElementsHelper extends MaterialRulesPart {
   }
 }
 
-export type BonusType = {
-  bonusElement: Element,
+export type ActionType = {
+  element: Element,
   remainingElementValue: number
 }

@@ -8,11 +8,11 @@ import { getOpponentSeason, Season } from '../Season'
 import { CustomMoveType } from './CustomMoveType'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
-import { BonusType } from './helpers/ElementsHelper'
+import { ActionType } from './helpers/ElementsHelper'
 
 export class AdvancingOnibiRule extends PlayerTurnRule {
   get elementValue() {
-    return this.remind(Memory.RemainingElementValue)
+    return this.remind(Memory.CurrentAction).remainingElementValue
   }
 
   getPlayerMoves() {
@@ -21,7 +21,9 @@ export class AdvancingOnibiRule extends PlayerTurnRule {
 
   onCustomMove(move: CustomMove) {
     if (move.type !== CustomMoveType.MoveOnibi) return []
-    this.memorize(Memory.RemainingElementValue, move.data)
+    const currentAction = this.remind(Memory.CurrentAction)
+    currentAction.remainingElementValue = move.data
+    this.memorize(Memory.CurrentAction, currentAction)
     return [this.moveOnibiOnce()]
   }
 
@@ -60,12 +62,14 @@ export class AdvancingOnibiRule extends PlayerTurnRule {
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.OnibiStandee)(move)) return []
-    this.memorize<number>(Memory.RemainingElementValue, value => value - 1)
+    const currentAction = this.remind(Memory.CurrentAction)
+    currentAction.remainingElementValue = currentAction.remainingElementValue - 1
+    this.memorize(Memory.CurrentAction, currentAction)
     if (this.elementValue > 0) {
       return [this.moveOnibiOnce()]
     } else {
-      const bonus:BonusType = {bonusElement: clearingProperties[move.location.x! as Clearing]?.bonus!, remainingElementValue: -1}
-      const remainingBonuses:BonusType[] = this.remind(Memory.RemainingBonuses) ?? []
+      const bonus: ActionType = { element: clearingProperties[move.location.x! as Clearing]?.bonus!, remainingElementValue: -1 }
+      const remainingBonuses: ActionType[] = this.remind(Memory.RemainingBonuses) ?? []
       remainingBonuses.push(bonus)
       this.memorize(Memory.RemainingBonuses, remainingBonuses)
       return [this.startRule(RuleId.BonusAction)]

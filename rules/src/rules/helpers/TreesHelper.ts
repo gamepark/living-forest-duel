@@ -1,4 +1,4 @@
-import { Direction, Location, Material, MaterialGame, MaterialItem, MaterialRulesPart } from "@gamepark/rules-api";
+import { Direction, directions, getSquareInDirection, Location, Material, MaterialGame, MaterialItem, MaterialRulesPart, XYCoordinates } from "@gamepark/rules-api";
 import { minBy, uniqBy } from "lodash";
 import { MaterialType } from "../../material/MaterialType";
 import { LocationType } from "../../material/LocationType";
@@ -114,31 +114,31 @@ export class TreesHelper extends MaterialRulesPart {
         treeSpaces.push(space)
       }
     }
-    
+
     return treeSpaces
   }
 
   checkNeighbors(treeId: Tree, space: Location) {
-    let neighborSpace = {}
+    let neighborSpace: XYCoordinates = { x: 0, y: 0 }
 
     // North
-    neighborSpace = { x: space.x, y: space.y! - 1 }
-    if (this.hasValidNeighborCard(neighborSpace, treeProperties[treeId]?.bonus.river[Direction.North]!, Direction.South)) {
+    neighborSpace = { x: space.x!, y: space.y! - 1 }
+    if (this.hasValidNeighborCard(treeId, space, Direction.North, neighborSpace, Direction.South)) {
       return true
     }
     // East
     neighborSpace = { x: space.x! + 1, y: space.y! }
-    if (this.hasValidNeighborCard(neighborSpace, treeProperties[treeId]?.bonus.river[Direction.East]!, Direction.West)) {
+    if (this.hasValidNeighborCard(treeId, space, Direction.East, neighborSpace, Direction.West)) {
       return true
     }
     // South
-    neighborSpace = { x: space.x, y: space.y! + 1 }
-    if (this.hasValidNeighborCard(neighborSpace, treeProperties[treeId]?.bonus.river[Direction.South]!, Direction.North)) {
+    neighborSpace = { x: space.x!, y: space.y! + 1 }
+    if (this.hasValidNeighborCard(treeId, space, Direction.South, neighborSpace, Direction.North)) {
       return true
     }
     // West
-    neighborSpace = { x: space.x! - 1, y: space.y }
-    if (this.hasValidNeighborCard(neighborSpace, treeProperties[treeId]?.bonus.river[Direction.West]!, Direction.East)) {
+    neighborSpace = { x: space.x! - 1, y: space.y! }
+    if (this.hasValidNeighborCard(treeId, space, Direction.West, neighborSpace, Direction.East)) {
       return true
     }
 
@@ -155,29 +155,85 @@ export class TreesHelper extends MaterialRulesPart {
     return treesInLocation.location(l => !items.some(item => item.location.x === l.x && item.location.y === l.y && item.location.z! > l.z!))
   }
 
-  // This algorithm only works while the river in the card is always connected.
-  // It would not work if we introduce a card that, for example, has a river connecting N-E and a separate one connecting S-W
-  hasValidNeighborCard(reference: { x?: number; y?: number }, treeHasRiver: boolean, direction: Direction) {
+  hasValidNeighborCard(treeId: Tree, treePos: Location, treeDirection: Direction, neighborPos: XYCoordinates, neighborDirection: Direction) {
     // There can be more than one neighbor tree as they could be piled. We need to consider only the top one
-    const neighborTree = this.showVisibleTree(reference)
+    const neighborTree = this.showVisibleTree(neighborPos)
     if (neighborTree.getItems().length === 0) { // No neighbor
       return false
-    }else if (treeHasRiver && (neighborTree.id(this.player).getItem() !== undefined || treeProperties[neighborTree.getItem()!.id! as Tree]?.bonus.river[direction])) {
+    } else if (this.hasRiverInDirection(treeId, treeDirection)
+      && (this.isLake(neighborTree)
+        || (this.hasRiverInDirection(neighborTree.getItem()?.id, neighborDirection) && this.canReachLake(treeId, treePos)))) {
       return true
     }
 
     return false
   }
 
+  canReachLake(treeId: Tree, treePos: Location): boolean {
+    const initialCoordinates = { x: treePos.x!, y: treePos.y! }
+    const queue: XYCoordinates[] = [initialCoordinates];
+    const visited = new Set<string>();
+
+    while (queue.length > 0) {
+      const position = queue.shift()!;
+      const positionKey = `${position.x},${position.y}`;
+
+      if (visited.has(positionKey)) continue;
+      visited.add(positionKey);
+
+      const currentTree = position !== initialCoordinates ? this.showVisibleTree(position) : this.material(MaterialType.TreeCard).id(treeId);
+      if (!currentTree.getItem()) continue;
+
+      for (const dir of directions) {
+        const currentLocation = position !== initialCoordinates ? currentTree.getItem()!.location : treePos;
+        const neighborPos = getSquareInDirection(currentLocation, dir);
+        const neighborKey = `${neighborPos.x},${neighborPos.y}`;
+
+        if (!visited.has(neighborKey)) {
+          const neighbor = this.showVisibleTree(neighborPos);
+          if (neighbor.getItem()) {
+            if (this.isLake(neighbor)) {
+              return true;
+            } else if (treeProperties[neighbor.getItem()!.id as Tree]?.bonus.river[dir]) {
+              queue.push(neighborPos);
+            }
+          }
+        }
+      }
+    }
+
+    return false;
+  }
+
+  isLake(tree: Material) {
+    return tree.id(this.player).getItem() !== undefined
+  }
+
+  hasRiverInDirection(treeId: Tree, direction: Direction) {
+    return treeProperties[treeId]?.bonus.river[direction]!
+  }
+
   hasBonusInDirection(tree: MaterialItem, direction: Direction) {
     const neighborDelta = { x: CardinalLocations[direction].x, y: CardinalLocations[direction].y }
     // There can be more than one neighbor tree as they could be piled. We need to consider only the top one
-    const neighbor = this.showVisibleTree({x: tree.location.x! + neighborDelta.x, y: tree.location.y! + neighborDelta.y}).getItem()
+    const neighbor = this.showVisibleTree({ x: tree.location.x! + neighborDelta.x, y: tree.location.y! + neighborDelta.y }).getItem()
     return neighbor !== undefined && treeProperties[tree.id as Tree]?.bonus.element === treeProperties[neighbor.id as Tree]?.bonus.element
   }
 
 }
 
+export const oppositeDirection = (direction: Direction) => {
+  switch (direction) {
+    case Direction.North:
+      return Direction.South
+    case Direction.South:
+      return Direction.North
+    case Direction.East:
+      return Direction.West
+    case Direction.West:
+      return Direction.East
+  }
+}
 
 export const isAnyCardToTheLeft = (slotToCheck: MaterialItem, reference: { x?: number; y?: number }) => {
   return slotToCheck.location.x === reference.x! - 1 && slotToCheck.location.y === reference.y

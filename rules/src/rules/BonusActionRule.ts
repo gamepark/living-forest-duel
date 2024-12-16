@@ -14,7 +14,7 @@ export class BonusActionRule extends PlayerTurnRule {
     const bonus = this.remind(Memory.RemainingBonuses).slice(-1)[0]
     if (bonus !== undefined) {
       const moves: MaterialMove[] = []
-      switch (bonus.bonusElement) {
+      switch (bonus.element) {
         case Element.Sun:
           if (bonus.remainingElementValue === -1) {
             this.elementsHelper.setRemainingBonusElementValue(Element.Sun)
@@ -57,7 +57,17 @@ export class BonusActionRule extends PlayerTurnRule {
       return moves
     } else {
       const remainingBonuses = this.elementsHelper.removeLastBonusElement()
-      return [remainingBonuses.length === 0 ? this.startRule(RuleId.EndTurn) : this.startRule(RuleId.BonusAction)]
+      if (remainingBonuses.length === 0) {
+        const currentAction = this.remind(Memory.CurrentAction)
+        // We can only be in bonus from trees or Onibi. Only the tress can still have points to expend
+        if (currentAction.element === Element.Plant && currentAction.remainingElementValue > 0) {
+          return [this.startRule(RuleId.PlantingProtectiveTree)]
+        } else {
+          return [this.startRule(RuleId.EndTurn)]
+        }
+      } else {
+        return [this.startRule(RuleId.BonusAction)]
+      }
     }
   }
 }

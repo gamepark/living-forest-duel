@@ -5,7 +5,7 @@ import { MaterialType } from '../material/MaterialType'
 import { getTreeType, Tree, treeProperties } from '../material/Tree'
 import { Element } from '../Season'
 import { CustomMoveType } from './CustomMoveType'
-import { BonusType, ElementsHelper } from './helpers/ElementsHelper'
+import { ActionType, ElementsHelper } from './helpers/ElementsHelper'
 import { TreesHelper } from './helpers/TreesHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
@@ -81,7 +81,7 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
         const bonuses = []
         for (const direction of directions) {
           if (treesHelper.hasBonusInDirection(movedCard, direction)) {
-            const bonus: BonusType = { bonusElement: treeProperties[movedCard.id as Tree]?.bonus.element!, remainingElementValue: -1 }
+            const bonus: ActionType = { element: treeProperties[movedCard.id as Tree]?.bonus.element!, remainingElementValue: -1 }
             bonuses.push(bonus)
           }
         }

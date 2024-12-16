@@ -1,7 +1,6 @@
 export enum Memory {
-  RemainingElementValue = 1,
+  CurrentAction = 1,
   PlantedTreesTypes,
   RemainingBonuses,
-  // BonusAction,
   UseSankiOnOtherPlayerTurn
 }
