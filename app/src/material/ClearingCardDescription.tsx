@@ -8,6 +8,7 @@ import { Season } from '@gamepark/living-forest-duel/Season'
 import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
 import { isCustomMoveType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { range } from 'lodash'
+import { Trans } from 'react-i18next'
 import ClearingCenter from '../images/cards/clearing/ClearingCenter.jpg'
 import ClearingSummer2 from '../images/cards/clearing/ClearingSummer2.jpg'
 import ClearingSummer3 from '../images/cards/clearing/ClearingSummer3.jpg'
@@ -50,7 +51,8 @@ class ClearingCardDescription extends CardDescription {
     if (!moveToThisCard.length) return
     return <>
       {moveToThisCard.map(move =>
-        <ItemMenuButton key={move.data} move={move} label={`${move.data} steps`} x={-2} y={-2.5 * Math.floor(move.data / 7) - 3}>
+        <ItemMenuButton key={move.data} move={move} x={-2} y={-2.5 * Math.floor(move.data / 7) - 3}
+                        label={<Trans defaults="button.steps" values={{steps: move.data}}/>}>
           <FontAwesomeIcon icon={move.data < 7 ? faChevronRight : faAnglesRight}/>
         </ItemMenuButton>
       )}
