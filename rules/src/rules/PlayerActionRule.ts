@@ -79,7 +79,7 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
         }
       }
     }
-    if (this.playerHasSankiCard(this.player) && this.opponentHasActionToken) {
+    if (!isVaran(animal) && this.playerHasSankiCard(this.player) && this.opponentHasActionToken) {
       moves.push(this.startRule(RuleId.UseSankiPlayAction))
     } else {
       moves.push(this.startRule(RuleId.EndTurn))
