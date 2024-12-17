@@ -12,6 +12,7 @@ import { CustomNegativeFillGapStrategy } from './material/location/strategy/Cust
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { AdvancingOnibiRule } from './rules/AdvancingOnibiRule'
+import { BonusActionRule } from './rules/BonusActionRule'
 import { EndTurnRule } from './rules/EndTurnRule'
 import { ExtinguishingFireRule } from './rules/ExtinguishingFireRule'
 import { PlantingProtectiveTreeRule } from './rules/PlantingProtectiveTreeRule'
@@ -20,9 +21,9 @@ import { PlayerUseActionTokenRule } from './rules/PlayerUseActionTokenRule'
 import { RecruitingAnimalsRule } from './rules/RecruitingAnimalsRule'
 import { RefillRecruitmentLineRule } from './rules/RefillRecruitmentLineRule'
 import { RuleId } from './rules/RuleId'
-import { UseSankiCardRule } from './rules/UseSankiCardRule'
+import { UseSankiOnVaranRule } from './rules/UseSankiOnVaranRule'
+import { UseSankiPlayActionRule } from './rules/UseSankiPlayActionRule'
 import { Season } from './Season'
-import { BonusActionRule } from './rules/BonusActionRule'
 
 /**
  * This class implements the rules of the board game.
@@ -41,8 +42,9 @@ export class LivingForestDuelRules extends HiddenMaterialRules<Season, MaterialT
     [RuleId.PlantingProtectiveTree]: PlantingProtectiveTreeRule,
     [RuleId.AdvancingOnibi]: AdvancingOnibiRule,
     [RuleId.BonusAction]: BonusActionRule,
+    [RuleId.UseSankiOnVaran]: UseSankiOnVaranRule,
+    [RuleId.UseSankiPlayAction]: UseSankiPlayActionRule,
     [RuleId.EndTurn]: EndTurnRule,
-    [RuleId.UseSankiCard]: UseSankiCardRule
   }
 
   locationsStrategies = {

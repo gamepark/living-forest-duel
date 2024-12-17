@@ -54,10 +54,10 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
 
   offerToUseSankiOnVaran(player: Season) {
     if (player === this.player) {
-      return [this.startRule(RuleId.UseSankiCard)]
+      return [this.startRule(RuleId.UseSankiOnVaran)]
     } else {
       this.memorize(Memory.UseSankiOnOtherPlayerTurn, true)
-      return [this.startPlayerTurn(RuleId.UseSankiCard, this.nextPlayer)]
+      return [this.startPlayerTurn(RuleId.UseSankiOnVaran, this.nextPlayer)]
     }
   }
 
@@ -79,13 +79,16 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
         }
       }
     }
-    if (this.playerHasSankiCard(this.player)
-      && this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.nextPlayer).length > 0) {
-      moves.push(this.startRule(RuleId.UseSankiCard))
+    if (this.playerHasSankiCard(this.player) && this.opponentHasActionToken) {
+      moves.push(this.startRule(RuleId.UseSankiPlayAction))
     } else {
       moves.push(this.startRule(RuleId.EndTurn))
     }
 
     return moves
+  }
+
+  get opponentHasActionToken() {
+    return this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.nextPlayer).length > 0
   }
 }

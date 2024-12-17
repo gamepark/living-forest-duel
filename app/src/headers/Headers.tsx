@@ -19,7 +19,8 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.PlayerAction]: PlayerActionHeader,
   [RuleId.PlayerUseActionToken]: PlayerUseActionTokenHeader,
   [RuleId.RecruitingAnimals]: RecruitingAnimalsHeader,
-  [RuleId.UseSankiCard]: UseSankiCardHeader,
+  [RuleId.UseSankiOnVaran]: UseSankiCardHeader,
+  [RuleId.UseSankiPlayAction]: UseSankiCardHeader,
   [RuleId.RefillRecruitmentLine]: RefillRecruitmentLineHeader,
   [RuleId.BonusAction]: BonusActionHeader,
   [RuleId.EndTurn]: EndTurnHeader

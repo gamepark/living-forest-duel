@@ -7,6 +7,7 @@ export enum RuleId {
   PlantingProtectiveTree,
   AdvancingOnibi,
   BonusAction,
-  UseSankiCard,
+  UseSankiOnVaran,
+  UseSankiPlayAction,
   EndTurn
 }
