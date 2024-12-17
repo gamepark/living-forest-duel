@@ -10,12 +10,6 @@ export class EndTurnRule extends PlayerTurnRule {
 
   onRuleStart() {
     const moves: MaterialMove[] = []
-    if (this.material(MaterialType.AnimalCard).location(LocationType.SharedDeck).getItems().length === 0) {
-      // TODO: Is there a shuffle effect?
-      const discardedDeck = this.material(MaterialType.AnimalCard).location(LocationType.SharedDiscardPile)
-      moves.push(discardedDeck.moveItemsAtOnce({type: LocationType.SharedDeck}))
-      moves.push(discardedDeck.shuffle())
-    }
 
     if (this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.nextPlayer).length > 0) {
       moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))

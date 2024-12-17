@@ -36,16 +36,22 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
   }
 
   afterDrawCard(move: MoveItem) {
+    const moves: MaterialMove[] = []
+    if (this.material(MaterialType.AnimalCard).location(LocationType.SharedDeck).length === 0) {
+      const discard = this.material(MaterialType.AnimalCard).location(LocationType.SharedDiscardPile)
+      moves.push(discard.moveItemsAtOnce({type: LocationType.SharedDeck}))
+      moves.push(discard.shuffle())
+    }
     const animal = this.material(MaterialType.AnimalCard).getItem<Animal>(move.itemIndex).id
     const animalSeason = getAnimalSeason(animal)
     if (animalSeason !== undefined) {
       if (isVaran(animal) && this.playerHasSankiCard(animalSeason)) {
-        return this.offerToUseSankiOnVaran(animalSeason)
+        return moves.concat(this.offerToUseSankiOnVaran(animalSeason))
       } else if (isVaran(animal) || !this.playerHasOnibiCard(animalSeason)) {
-        return [this.material(MaterialType.AnimalCard).index(move.itemIndex).moveItem({ type: LocationType.PlayerHelpLine, player: animalSeason })]
+        return moves.concat(this.material(MaterialType.AnimalCard).index(move.itemIndex).moveItem({ type: LocationType.PlayerHelpLine, player: animalSeason }))
       }
     }
-    return this.afterAnimalMovedAtFinalDestination(animal)
+    return moves.concat(this.afterAnimalMovedAtFinalDestination(animal))
   }
 
   playerHasSankiCard(player: Season) {
