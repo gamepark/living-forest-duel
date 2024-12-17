@@ -8,7 +8,7 @@ import { UseSankiRule } from './UseSankiRule'
 export class UseSankiOnVaranRule extends UseSankiRule {
   onPass() {
     const moves: MaterialMove[] = []
-    if (!this.remind(Memory.UseSankiOnOtherPlayerTurn)) {
+    if (this.player === this.remind(Memory.CurrentPlayer)) {
       moves.push(this.startRule(RuleId.PlayerAction))
     } else {
       moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
@@ -20,7 +20,7 @@ export class UseSankiOnVaranRule extends UseSankiRule {
   onUseSanki(): MaterialMove[] {
     const moves: MaterialMove[] = []
     moves.push(this.varan.moveItem({ type: LocationType.VaranDeck, player: this.player }))
-    if (!this.remind(Memory.UseSankiOnOtherPlayerTurn)) {
+    if (this.player === this.remind(Memory.CurrentPlayer)) {
       moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
     } else {
       moves.push(this.startRule(RuleId.PlayerAction))

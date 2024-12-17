@@ -10,6 +10,11 @@ import { PlayerUseActionTokenRule } from './PlayerUseActionTokenRule'
 import { RuleId } from './RuleId'
 
 export class PlayerActionRule extends PlayerUseActionTokenRule {
+  onRuleStart() {
+    this.memorize(Memory.CurrentPlayer, this.player)
+    return super.onRuleStart()
+  }
+
   getPlayerMoves() {
     const moves: MaterialMove[] = []
 
@@ -62,7 +67,6 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
     if (player === this.player) {
       return [this.startRule(RuleId.UseSankiOnVaran)]
     } else {
-      this.memorize(Memory.UseSankiOnOtherPlayerTurn, true)
       return [this.startPlayerTurn(RuleId.UseSankiOnVaran, this.nextPlayer)]
     }
   }
