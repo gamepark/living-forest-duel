@@ -8,6 +8,7 @@ import { CustomMoveType } from './CustomMoveType'
 import { ActionType, ElementsHelper } from './helpers/ElementsHelper'
 import { TreesHelper } from './helpers/TreesHelper'
 import { Memory } from './Memory'
+import { PlayerTurnHelper } from './PlayerTurnHelper'
 import { RuleId } from './RuleId'
 
 export class PlantingProtectiveTreeRule extends PlayerTurnRule {
@@ -17,7 +18,7 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
   onRuleStart() {
     if (!new TreesHelper(this.game, this.player).canTreesBePlanted(this.elementValue)) {
       if (!this.elementsHelper.isBonusAction()) {
-        return [this.startRule(RuleId.EndTurn)]
+        return [new PlayerTurnHelper(this.game).endCurrentPlayerTurn()]
       } else {
         this.elementsHelper.removeLastBonusElement()
         return [this.startRule(RuleId.BonusAction)]
@@ -55,7 +56,7 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
 
   onCustomMove(move: CustomMove) {
     if (move.type === CustomMoveType.Pass) {
-      return [this.startRule(RuleId.EndTurn)]
+      return [new PlayerTurnHelper(this.game).endCurrentPlayerTurn()] // TODO: potential bug: might be wrong if inside bonus action
     }
     return []
   }

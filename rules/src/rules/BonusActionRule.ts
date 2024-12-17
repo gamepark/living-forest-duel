@@ -1,5 +1,6 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { Memory } from './Memory'
+import { PlayerTurnHelper } from './PlayerTurnHelper'
 import { RuleId } from './RuleId'
 import { Element, getOpponentSeason } from '../Season'
 import { ElementsHelper } from './helpers/ElementsHelper'
@@ -49,7 +50,7 @@ export class BonusActionRule extends PlayerTurnRule {
             if (remainingElementValue > 0) {
               moves.push(this.startRule(RuleId.PlantingProtectiveTree))
             } else {
-              moves.push(this.startRule(RuleId.EndTurn))
+              moves.push(new PlayerTurnHelper(this.game).endCurrentPlayerTurn())
             }
           }
           break
@@ -63,7 +64,7 @@ export class BonusActionRule extends PlayerTurnRule {
         if (currentAction.element === Element.Plant && currentAction.remainingElementValue > 0) {
           return [this.startRule(RuleId.PlantingProtectiveTree)]
         } else {
-          return [this.startRule(RuleId.EndTurn)]
+          return [new PlayerTurnHelper(this.game).endCurrentPlayerTurn()]
         }
       } else {
         return [this.startRule(RuleId.BonusAction)]

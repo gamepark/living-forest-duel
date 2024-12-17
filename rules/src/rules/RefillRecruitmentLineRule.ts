@@ -1,4 +1,5 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { PlayerTurnHelper } from './PlayerTurnHelper'
 import { RuleId } from './RuleId'
 import { MaterialType } from '../material/MaterialType'
 import { LocationType } from '../material/LocationType'
@@ -12,7 +13,7 @@ export class RefillRecruitmentLineRule extends PlayerTurnRule {
     const totalCardsInRecruitmentLine = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine).getQuantity()
     moves.push(...playerDeck.deal({ type: LocationType.RecruitmentLine }, 7 - totalCardsInRecruitmentLine))
     if (!new ElementsHelper(this.game, this.player).isBonusAction()) {
-      moves.push(this.startRule(RuleId.EndTurn))
+      moves.push(new PlayerTurnHelper(this.game).endCurrentPlayerTurn())
     } else {
       new ElementsHelper(this.game, this.player).removeLastBonusElement()
       moves.push(this.startRule(RuleId.BonusAction))

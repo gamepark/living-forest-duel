@@ -2,6 +2,7 @@ import { MaterialMove } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
+import { PlayerTurnHelper } from './PlayerTurnHelper'
 import { RuleId } from './RuleId'
 import { UseSankiRule } from './UseSankiRule'
 
@@ -18,14 +19,10 @@ export class UseSankiOnVaranRule extends UseSankiRule {
   }
 
   onUseSanki(): MaterialMove[] {
-    const moves: MaterialMove[] = []
-    moves.push(this.varan.moveItem({ type: LocationType.VaranDeck, player: this.player }))
-    if (this.player === this.remind(Memory.CurrentPlayer)) {
-      moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
-    } else {
-      moves.push(this.startRule(RuleId.PlayerAction))
-    }
-    return moves
+    return [
+      this.varan.moveItem({ type: LocationType.VaranDeck, player: this.player }),
+      new PlayerTurnHelper(this.game).endCurrentPlayerTurn()
+    ]
   }
 
   get varan() {

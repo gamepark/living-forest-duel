@@ -12,13 +12,9 @@ import { RuleId } from './RuleId'
 
 export class PlayerUseActionTokenRule extends PlayerTurnRule {
   onRuleStart() {
-    if (this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.player).getQuantity() === 0) {
-      return [this.startRule(RuleId.EndTurn)]
-    } else {
-      this.memorize(Memory.PlantedTreesTypes, [])
-      this.memorize(Memory.RemainingBonuses, [])
-      return []
-    }
+    this.memorize(Memory.PlantedTreesTypes, [])
+    this.memorize(Memory.RemainingBonuses, [])
+    return []
   }
 
   getPlayerMoves() {

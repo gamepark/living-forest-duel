@@ -5,6 +5,7 @@ import { Element } from '../Season'
 import { CustomMoveType } from './CustomMoveType'
 import { ElementsHelper } from './helpers/ElementsHelper'
 import { FireHelper } from './helpers/FireHelper'
+import { PlayerTurnHelper } from './PlayerTurnHelper'
 // import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
@@ -15,7 +16,7 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
   onRuleStart() {
     if (!new FireHelper(this.game,this.player).canFireBeExtinguished(this.elementValue)) {
       if (!this.elementsHelper.isBonusAction()) {        
-        return [this.startRule(RuleId.EndTurn)]
+        return [new PlayerTurnHelper(this.game).endCurrentPlayerTurn()]
       } else {
         this.elementsHelper.removeLastBonusElement()
         return[this.startRule(RuleId.BonusAction)]       
@@ -46,7 +47,7 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
   onCustomMove(move: CustomMove) {
     if (move.type === CustomMoveType.Pass) {
       if (!this.elementsHelper.isBonusAction()) {
-        return [this.startRule(RuleId.EndTurn)]
+        return [new PlayerTurnHelper(this.game).endCurrentPlayerTurn()]
       } else {
         return[this.startRule(RuleId.BonusAction)]
       }

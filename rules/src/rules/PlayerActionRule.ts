@@ -6,6 +6,7 @@ import { SpiritType } from '../material/SpiritType'
 import { Season, seasons } from '../Season'
 import { AnimalsHelper } from './helpers/AnimalsHelper'
 import { Memory } from './Memory'
+import { PlayerTurnHelper } from './PlayerTurnHelper'
 import { PlayerUseActionTokenRule } from './PlayerUseActionTokenRule'
 import { RuleId } from './RuleId'
 
@@ -44,7 +45,7 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
     const moves: MaterialMove[] = []
     if (this.material(MaterialType.AnimalCard).location(LocationType.SharedDeck).length === 0) {
       const discard = this.material(MaterialType.AnimalCard).location(LocationType.SharedDiscardPile)
-      moves.push(discard.moveItemsAtOnce({type: LocationType.SharedDeck}))
+      moves.push(discard.moveItemsAtOnce({ type: LocationType.SharedDeck }))
       moves.push(discard.shuffle())
     }
     const animal = this.material(MaterialType.AnimalCard).getItem<Animal>(move.itemIndex).id
@@ -92,7 +93,7 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
     if (!isVaran(animal) && this.playerHasSankiCard(this.player) && this.opponentHasActionToken) {
       moves.push(this.startRule(RuleId.UseSankiPlayAction))
     } else {
-      moves.push(this.startRule(RuleId.EndTurn))
+      moves.push(new PlayerTurnHelper(this.game).endCurrentPlayerTurn())
     }
 
     return moves
