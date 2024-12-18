@@ -45,6 +45,13 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
       }
     }
 
+    // Element must not be taken
+    for (const element of elements) {
+      if (this.material(MaterialType.ActionToken).location(LocationType.ActionToken).location(l => l.y === element).parent(elementCardIndexes[element]).length) {
+        delete elementCardIndexes[element]
+      }
+    }
+
     // Validate the positions. At least 1 element between the action token and the previous one.
     const actionTokenOnCard = this.material(MaterialType.ActionToken).id(this.player).location(LocationType.ActionToken).getItem()
     if (actionTokenOnCard) {
