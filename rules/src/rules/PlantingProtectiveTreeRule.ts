@@ -46,8 +46,7 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
     }
 
     // Only can pass if at least one tree was planted
-    const lastTokenX = !this.elementsHelper.isBonusAction() ? this.material(MaterialType.ActionToken).location(LocationType.ActionToken).locationId(Element.Plant).getItem()?.location.x : undefined
-    if (this.elementValue < this.elementsHelper.getElementValue(Element.Plant, this.player, lastTokenX)) {
+    if (this.elementValue < this.elementsHelper.getElementValue(Element.Plant, this.player, !this.elementsHelper.isBonusAction())) {
       moves.push(this.customMove(CustomMoveType.Pass))
     }
 

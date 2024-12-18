@@ -67,7 +67,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
       const elementCardIndex = elementCardIndexes[element]
       if (elementCardIndex !== undefined) {
         const card = this.material(MaterialType.AnimalCard).index(elementCardIndex)
-        if (this.elementCanBePlayed(element, card.getItem()?.location.x!)) {
+        if (this.elementCanBePlayed(element)) {
           moves.push(...this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.player)
             .moveItems({
               type: LocationType.ActionToken,
@@ -103,8 +103,8 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
     return []
   }
 
-  elementCanBePlayed(element: Element, cardPosX: number) {
-    const elementValue = new ElementsHelper(this.game, this.player).getElementValue(element, this.player, cardPosX)
+  elementCanBePlayed(element: Element) {
+    const elementValue = new ElementsHelper(this.game, this.player).getElementValue(element, this.player)
     if (elementValue > 0) {
       switch (element) {
         case Element.Sun:

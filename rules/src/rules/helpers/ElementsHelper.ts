@@ -1,4 +1,4 @@
-import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
+import { MaterialGame, MaterialItem, MaterialRulesPart } from '@gamepark/rules-api'
 import { sumBy } from 'lodash'
 import { Animal, animalProperties } from '../../material/Animal'
 import { LocationType } from '../../material/LocationType'
@@ -58,28 +58,23 @@ export class ElementsHelper extends MaterialRulesPart {
     return this.remind(Memory.RemainingBonuses).length > 0
   }
 
-  // lastTokenX indicates the position from where we want to start calculating
-  // When playing the token we use the token position, but we don't have it before to check if there are enough points to play
-  getElementValue(element: Element, player: Season, lastTokenX?: number | undefined) {
-    return this.getSharedElementValue(element, lastTokenX)
+  getElementValue(element: Element, player: Season, ignoreLastToken = false) {
+    return this.getSharedElementValue(element, ignoreLastToken)
       + this.getPlayerLineElementValue(element, player)
       + this.getPlayerForestElementValue(element, player)
   }
 
-  getSharedElementValue(element: Element, lastTokenX?: number | undefined) {
-    let elementValue = 0
-    const tokensLocations = this.material(MaterialType.ActionToken)
-      .location(l => l.type === LocationType.ActionToken && l.id === element && (lastTokenX !== undefined ? l.x! < lastTokenX : true))
-      .getItems()
-      .sort((a, b) => b.location.x! - a.location.x!)
-    const tokenLocationX = lastTokenX ?? this.material(MaterialType.AnimalCard).location(LocationType.SharedHelpLine).getQuantity() - 1
-    const previousTokenLocationX = tokensLocations.length > 0 ? tokensLocations[0].location.x! : -1
-    for (let x = tokenLocationX!; x > previousTokenLocationX!; x--) {
-      const card = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SharedHelpLine && l.x === x).getItem<Animal>()!
-      const cardProperties = animalProperties[card.id]
-      elementValue += cardProperties.elements[element]! ?? 0
-    }
-    return elementValue
+  getTokenX(token: MaterialItem) {
+    return this.material(MaterialType.AnimalCard).getItem(token.location.parent!).location.x!
+  }
+
+  getSharedElementValue(element: Element, ignoreLastToken = false) {
+    const tokensX = this.material(MaterialType.ActionToken).location(LocationType.ActionToken).locationId(element).getItems()
+      .map(token => this.getTokenX(token))
+    if (ignoreLastToken) tokensX.splice(tokensX.indexOf(Math.max(...tokensX)), 1)
+    const maxTokenX = Math.max(...tokensX)
+    const cards = this.material(MaterialType.AnimalCard).location(LocationType.SharedHelpLine).location(l => l.x! > maxTokenX).getItems<Animal>()
+    return sumBy(cards, card => animalProperties[card.id].elements[element] ?? 0)
   }
 
   getPlayerLineElementValue(element: Element, player: Season) {
