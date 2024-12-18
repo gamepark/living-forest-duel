@@ -14,8 +14,8 @@ type GameDisplayProps = {
 export const GameDisplay = ({game}: GameDisplayProps) => {
   const summerForestBoundaries = new TreesHelper(game, Season.Summer).boundaries
   const winterForestBoundaries = new TreesHelper(game, Season.Winter).boundaries
-  const xMin = -70 - Math.max(summerForestBoundaries.xMax - summerForestBoundaries.xMin - 2, 0) * playerForestLocator.gridGap
-  const xMax = 70 + Math.max(winterForestBoundaries.xMax - winterForestBoundaries.xMin - 2, 0) * playerForestLocator.gridGap
+  const xMin = -70 - Math.max(summerForestBoundaries.xMax - summerForestBoundaries.xMin - 2, 0) * playerForestLocator.gapX
+  const xMax = 70 + Math.max(winterForestBoundaries.xMax - winterForestBoundaries.xMin - 2, 0) * playerForestLocator.gapX
   return <>
     <GameTable xMin={xMin} xMax={xMax} yMin={-30} yMax={33}
       margin={{ top: 7, left: 0, right: 0, bottom: 0 }}
