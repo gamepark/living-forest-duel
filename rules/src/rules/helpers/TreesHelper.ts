@@ -2,7 +2,7 @@ import { Direction, directions, getSquareInDirection, Location, Material, Materi
 import { minBy, uniqBy } from "lodash";
 import { MaterialType } from "../../material/MaterialType";
 import { LocationType } from "../../material/LocationType";
-import { getTreeType, Tree, TreePattern, treeProperties } from "../../material/Tree";
+import { getTreeElement, Tree, TreePattern, treeProperties } from "../../material/Tree";
 import { Memory } from "../Memory";
 import { CardinalLocations } from "../../Season";
 
@@ -16,7 +16,7 @@ export class TreesHelper extends MaterialRulesPart {
     const items = treesInDecks.getItems()
     return treesInDecks
       .location(l => !items.some(item => item.location.id === l.id && item.location.x! > l.x!))
-      .filter(tree => !this.remind(Memory.PlantedTreesTypes).includes(getTreeType(tree.id)) && treeProperties[tree.id as Tree]?.cost! <= plantValue)
+      .id<Tree>(tree => !this.remind(Memory.PlantedTreesTypes).includes(getTreeElement(tree)) && treeProperties[tree]!.cost <= plantValue)
   }
 
   getTreesMinCost(treesIds: number[]) {

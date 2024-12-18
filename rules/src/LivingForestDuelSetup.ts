@@ -6,9 +6,9 @@ import { Animal, animalProperties, commonAnimals, getAnimalSeason, summerAnimals
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { SpiritType } from './material/SpiritType'
-import { getTreeType, Tree, treeCards, treeTypes } from './material/Tree'
+import { getTreeElement, Tree, treeCards } from './material/Tree'
 import { RuleId } from './rules/RuleId'
-import { Season, seasons } from './Season'
+import { elements, Season, seasons } from './Season'
 
 /**
  * This class creates a new Game based on the game options
@@ -50,12 +50,12 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
       id: card,
       location: {
         type: LocationType.TreeDeckSpot,
-        id: getTreeType(card)
+        id: getTreeElement(card)
       }
     }))
     this.material(MaterialType.TreeCard).createItems(trees)
-    for (const treeType of treeTypes) {
-      this.material(MaterialType.TreeCard).location(l => l.id === treeType).shuffle()
+    for (const element of elements) {
+      this.material(MaterialType.TreeCard).location(l => l.id === element).shuffle()
     }
   }
 

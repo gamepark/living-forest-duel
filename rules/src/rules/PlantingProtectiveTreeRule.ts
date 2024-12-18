@@ -2,7 +2,7 @@ import { CustomMove, directions, isMoveItemType, ItemMove, Location, MaterialMov
 import { range } from 'lodash'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { getTreeType, Tree, treeProperties } from '../material/Tree'
+import { getTreeElement, Tree, treeProperties } from '../material/Tree'
 import { Element } from '../Season'
 import { CustomMoveType } from './CustomMoveType'
 import { ActionType, ElementsHelper } from './helpers/ElementsHelper'
@@ -71,7 +71,7 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
       } else {
         // Remember the types planted because we can only take one of each type
         const plantedTreesTypes = this.remind(Memory.PlantedTreesTypes)
-        plantedTreesTypes.push(getTreeType(movedCard.id))
+        plantedTreesTypes.push(getTreeElement(movedCard.id))
         this.memorize(Memory.PlantedTreesTypes, plantedTreesTypes)
 
         // Update remaining value
