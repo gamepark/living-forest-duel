@@ -12,7 +12,7 @@ export const RecruitingAnimalsHeader = () => {
   const { t } = useTranslation()
   const rules = useRules<LivingForestDuelRules>()!
   const me = usePlayerId()
-  const activePlayer = rules.getActivePlayer()
+  const activePlayer = rules.getActivePlayer()!
   const itsMe = activePlayer === me
   const player = usePlayerName(activePlayer)
   const recruitingAnimalsRule = new RecruitingAnimalsRule(rules.game)
