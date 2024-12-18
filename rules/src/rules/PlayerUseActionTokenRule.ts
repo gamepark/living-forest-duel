@@ -18,14 +18,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
   }
 
   getPlayerMoves() {
-    const moves: MaterialMove[] = []
-
-    // Add one action token to one card in the shared help line
-    if (this.availableActionTokens.getQuantity() > 0) {
-      moves.push(...this.getAvailableActions())
-    }
-
-    return moves
+    return this.availableActionTokens.length > 0 ? this.getAvailableActions() : []
   }
 
   get availableActionTokens() {
