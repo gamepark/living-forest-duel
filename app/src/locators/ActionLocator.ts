@@ -6,7 +6,7 @@ class ActionLocator extends Locator {
   parentItemType = MaterialType.AnimalCard
 
   getPositionOnParent(location: Location) {
-    return { x: 52, y: 16.9 + (location.y! * 14.1) }
+    return { x: 52, y: 16.9 + location.id * 14.1 }
   }
 
   locationDescription = new DropAreaDescription({ width: 2.7, height: 1 })

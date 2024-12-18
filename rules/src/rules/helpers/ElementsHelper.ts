@@ -69,7 +69,7 @@ export class ElementsHelper extends MaterialRulesPart {
   getSharedElementValue(element: Element, lastTokenX?: number | undefined) {
     let elementValue = 0
     const tokensLocations = this.material(MaterialType.ActionToken)
-      .location(l => l.type === LocationType.ActionToken && l.y === element && (lastTokenX !== undefined ? l.x! < lastTokenX : true))
+      .location(l => l.type === LocationType.ActionToken && l.id === element && (lastTokenX !== undefined ? l.x! < lastTokenX : true))
       .getItems()
       .sort((a, b) => b.location.x! - a.location.x!)
     const tokenLocationX = lastTokenX ?? this.material(MaterialType.AnimalCard).location(LocationType.SharedHelpLine).getQuantity() - 1

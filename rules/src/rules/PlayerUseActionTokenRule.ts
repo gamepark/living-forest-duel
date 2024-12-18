@@ -47,7 +47,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
 
     // Element must not be taken
     for (const element of elements) {
-      if (this.material(MaterialType.ActionToken).location(LocationType.ActionToken).location(l => l.y === element).parent(elementCardIndexes[element]).length) {
+      if (this.material(MaterialType.ActionToken).location(LocationType.ActionToken).locationId(element).parent(elementCardIndexes[element]).length) {
         delete elementCardIndexes[element]
       }
     }
@@ -55,7 +55,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
     // Validate the positions. At least 1 element between the action token and the previous one.
     const actionTokenOnCard = this.material(MaterialType.ActionToken).id(this.player).location(LocationType.ActionToken).getItem()
     if (actionTokenOnCard) {
-      const element = actionTokenOnCard.location.y as Element
+      const element = actionTokenOnCard.location.id as Element
       const cardsAfterToken = sharedCards.location(l => l.x! > actionTokenOnCard.location.x!)
       if (cardsAfterToken.id<Animal>(animal => animalProperties[animal].elements[element] !== undefined).length < 2) {
         delete elementCardIndexes[element]
@@ -71,9 +71,9 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
           moves.push(...this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.player)
             .moveItems({
               type: LocationType.ActionToken,
-              x: card.getItem()?.location.x,
-              y: element,
-              parent: elementCardIndex
+              parent: elementCardIndex,
+              id: element,
+              x: card.getItem()?.location.x
             })
           )
         }
@@ -84,30 +84,23 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
   }
 
   beforeItemMove(move: ItemMove) {
-    const moves: MaterialMove[] = []
-
     if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.ActionToken) {
-      switch (move.location.y) {
+      switch (move.location.id as Element) {
         case Element.Sun:
           new ElementsHelper(this.game, this.player).setRemainingElementValue(Element.Sun)
-          moves.push(this.startRule(RuleId.RecruitingAnimals))
-          break
+          return [this.startRule(RuleId.RecruitingAnimals)]
         case Element.Water:
           new ElementsHelper(this.game, this.player).setRemainingElementValue(Element.Water)
-          moves.push(this.startRule(RuleId.ExtinguishingFire))
-          break
+          return [this.startRule(RuleId.ExtinguishingFire)]
         case Element.Plant:
           new ElementsHelper(this.game, this.player).setRemainingElementValue(Element.Plant)
-          moves.push(this.startRule(RuleId.PlantingProtectiveTree))
-          break
+          return [this.startRule(RuleId.PlantingProtectiveTree)]
         case Element.Wind:
           new ElementsHelper(this.game, this.player).setRemainingElementValue(Element.Wind)
-          moves.push(this.startRule(RuleId.AdvancingOnibi))
-          break
+          return [this.startRule(RuleId.AdvancingOnibi)]
       }
     }
-
-    return moves
+    return []
   }
 
   elementCanBePlayed(element: Element, cardPosX: number) {
