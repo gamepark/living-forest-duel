@@ -29,23 +29,18 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
     const sharedCards = this.material(MaterialType.AnimalCard).location(LocationType.SharedHelpLine).sort(item => -item.location.x!)
     // Using the CardElements type to store the id of the animal card id that is available in this action
-    const maxElements: Record<Element, number> = {
-      [Element.Sun]: -1,
-      [Element.Water]: -1,
-      [Element.Plant]: -1,
-      [Element.Wind]: -1
-    }
+    const elementCardIndexes: Partial<Record<Element, number>> = {}
 
-    for (const card of sharedCards.getItems<Animal>()) {
-      const cardProperties = animalProperties[card.id]
+    for (const [index, card] of sharedCards.entries) {
+      const cardProperties = animalProperties[card.id as Animal]
       for (const element of elements) {
-        if (maxElements[element] < 0 && cardProperties.elements[element] !== undefined) {
-          maxElements[element] = card.id
+        if (elementCardIndexes[element] === undefined && cardProperties.elements[element] !== undefined) {
+          elementCardIndexes[element] = index
         }
       }
 
       // If we already have the 4 positions, exit the loop
-      if (elements.every(element => maxElements[element] !== -1)) {
+      if (elements.every(element => elementCardIndexes[element] !== undefined)) {
         break
       }
     }
@@ -56,22 +51,22 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
       const element = actionTokenOnCard.location.y as Element
       const cardsAfterToken = sharedCards.location(l => l.x! > actionTokenOnCard.location.x!)
       if (cardsAfterToken.id<Animal>(animal => animalProperties[animal].elements[element] !== undefined).length < 2) {
-        maxElements[element] = -1
+        delete elementCardIndexes[element]
       }
     }
 
     // Create the moves
     for (const element of elements) {
-      const elementCard = maxElements[element]
-      if (elementCard > 0) {
-        const card = this.material(MaterialType.AnimalCard).id(elementCard)
+      const elementCardIndex = elementCardIndexes[element]
+      if (elementCardIndex !== undefined) {
+        const card = this.material(MaterialType.AnimalCard).index(elementCardIndex)
         if (this.elementCanBePlayed(element, card.getItem()?.location.x!)) {
           moves.push(...this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.player)
             .moveItems({
               type: LocationType.ActionToken,
               x: card.getItem()?.location.x,
               y: element,
-              parent: card.getIndex()
+              parent: elementCardIndex
             })
           )
         }
