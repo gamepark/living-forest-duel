@@ -27,7 +27,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
 
   getAvailableActions() {
     const moves: MaterialMove[] = []
-    const sharedCards = this.material(MaterialType.AnimalCard).location(LocationType.SharedHelpLine)
+    const sharedCards = this.material(MaterialType.AnimalCard).location(LocationType.SharedHelpLine).sort(item => -item.location.x!).getItems<Animal>()
     // Using the CardElements type to store the id of the animal card id that is available in this action
     const maxElements: CardElements = {
       [Element.Sun]: -1,
@@ -36,8 +36,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
       [Element.Wind]: -1
     }
 
-    for (let x = sharedCards.getQuantity() - 1; x >= 0; x--) {
-      const card = sharedCards.location(l => l.x === x).getItem<Animal>()!
+    for (const card of sharedCards) {
       const cardProperties = animalProperties[card.id]
       for (const element of elements) {
         if (maxElements[element]! < 0 && cardProperties.elements[element] !== undefined) {
