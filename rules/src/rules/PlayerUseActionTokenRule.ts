@@ -1,5 +1,5 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { Animal, animalProperties, CardElements } from '../material/Animal'
+import { Animal, animalProperties } from '../material/Animal'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Element, elements } from '../Season'
@@ -29,7 +29,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
     const sharedCards = this.material(MaterialType.AnimalCard).location(LocationType.SharedHelpLine).sort(item => -item.location.x!)
     // Using the CardElements type to store the id of the animal card id that is available in this action
-    const maxElements: CardElements = {
+    const maxElements: Record<Element, number> = {
       [Element.Sun]: -1,
       [Element.Water]: -1,
       [Element.Plant]: -1,
@@ -39,13 +39,13 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
     for (const card of sharedCards.getItems<Animal>()) {
       const cardProperties = animalProperties[card.id]
       for (const element of elements) {
-        if (maxElements[element]! < 0 && cardProperties.elements[element] !== undefined) {
+        if (maxElements[element] < 0 && cardProperties.elements[element] !== undefined) {
           maxElements[element] = card.id
         }
       }
 
       // If we already have the 4 positions, exit the loop
-      if (Object.values(maxElements).every(value => value !== undefined && value > 0)) {
+      if (elements.every(element => maxElements[element] !== -1)) {
         break
       }
     }
@@ -62,7 +62,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
 
     // Create the moves
     for (const element of elements) {
-      const elementCard = maxElements[element]!
+      const elementCard = maxElements[element]
       if (elementCard > 0) {
         const card = this.material(MaterialType.AnimalCard).id(elementCard)
         if (this.elementCanBePlayed(element, card.getItem()?.location.x!)) {

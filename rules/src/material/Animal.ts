@@ -76,7 +76,7 @@ export type CardElements = {
 
 export type CardPattern = {
   type: number,
-  elements: CardElements,
+  elements: Partial<Record<Element, number>>,
   cost: number
 }
 
