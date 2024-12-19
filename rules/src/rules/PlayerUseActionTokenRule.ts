@@ -56,7 +56,8 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
     const actionTokenOnCard = this.material(MaterialType.ActionToken).id(this.player).location(LocationType.ActionToken).getItem()
     if (actionTokenOnCard) {
       const element = actionTokenOnCard.location.id as Element
-      const cardsAfterToken = sharedCards.location(l => l.x! > actionTokenOnCard.location.x!)
+      const tokenX = this.material(MaterialType.AnimalCard).getItem(actionTokenOnCard.location.parent!).location.x!
+      const cardsAfterToken = sharedCards.location(l => l.x! > tokenX)
       if (cardsAfterToken.id<Animal>(animal => animalProperties[animal].elements[element] !== undefined).length < 2) {
         delete elementCardIndexes[element]
       }
@@ -66,14 +67,12 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
     for (const element of elements) {
       const elementCardIndex = elementCardIndexes[element]
       if (elementCardIndex !== undefined) {
-        const card = this.material(MaterialType.AnimalCard).index(elementCardIndex)
         if (this.elementCanBePlayed(element)) {
           moves.push(...this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.player)
             .moveItems({
               type: LocationType.ActionToken,
               parent: elementCardIndex,
-              id: element,
-              x: card.getItem()?.location.x
+              id: element
             })
           )
         }
