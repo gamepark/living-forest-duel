@@ -82,7 +82,7 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
       // Check number of solitary symbols
       for (const season of seasons) {
         if (this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(season).getQuantity() > 0
-          && new AnimalsHelper(this.game, this.player).checkTooManySolitaryAnimals(season)) {
+          && new AnimalsHelper(this.game).checkTooManySolitaryAnimals(season)) {
           moves.push(this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(season).moveItem({
             type: LocationType.PlayerActionLost,
             player: season

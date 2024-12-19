@@ -13,7 +13,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
   elementValue = this.elementsHelper.getRemainingElementValue()
 
   onRuleStart() {
-    if (!new AnimalsHelper(this.game, this.player).canAnimalsBeRecruited(this.elementValue)) {
+    if (!new AnimalsHelper(this.game).canAnimalsBeRecruited(this.elementValue)) {
       return [this.startRule(RuleId.RefillRecruitmentLine)]
     }
 

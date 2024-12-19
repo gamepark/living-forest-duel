@@ -1,14 +1,10 @@
-import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
+import { MaterialRulesPart } from '@gamepark/rules-api'
 import { countBy, minBy } from 'lodash'
 import { Animal, animalProperties, AnimalType, CardPattern, isVaran } from '../../material/Animal'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 
 export class AnimalsHelper extends MaterialRulesPart {
-  constructor(game: MaterialGame, readonly player?: number) {
-    super(game)
-  }
-
   getAnimalsMinCost(animalsIds: Animal[]) {
     return this.getMinCostElement(this.getAnimalsProperties(animalsIds))?.cost
   }
@@ -49,7 +45,7 @@ export class AnimalsHelper extends MaterialRulesPart {
 
   canAnimalsBeRecruited(sunValue: number) {
     const animalsIds = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine).getItems().map(animal => animal.id)
-    const minCost = new AnimalsHelper(this.game, this.player).getAnimalsMinCost(animalsIds) || 0
+    const minCost = this.getAnimalsMinCost(animalsIds) || 0
 
     if (minCost > sunValue) {
       return false

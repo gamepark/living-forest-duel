@@ -107,7 +107,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
     if (elementValue > 0) {
       switch (element) {
         case Element.Sun:
-          return new AnimalsHelper(this.game, this.player).canAnimalsBeRecruited(elementValue)
+          return new AnimalsHelper(this.game).canAnimalsBeRecruited(elementValue)
         case Element.Water:
           return new FireHelper(this.game).canFireBeExtinguished(elementValue)
         case Element.Plant:
