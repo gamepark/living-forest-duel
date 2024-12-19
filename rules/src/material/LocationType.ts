@@ -18,5 +18,5 @@ export enum LocationType {
   SharedDeck,
   SharedDiscardPile,
   TreeToken,
-  ActionToken
+  PointElement
 }

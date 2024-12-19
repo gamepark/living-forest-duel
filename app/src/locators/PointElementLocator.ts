@@ -2,7 +2,7 @@ import { MaterialType } from "@gamepark/living-forest-duel/material/MaterialType
 import { DropAreaDescription, Locator } from "@gamepark/react-game"
 import { Location } from '@gamepark/rules-api'
 
-class ActionLocator extends Locator {
+class PointElementLocator extends Locator {
   parentItemType = MaterialType.AnimalCard
 
   getPositionOnParent(location: Location) {
@@ -12,4 +12,4 @@ class ActionLocator extends Locator {
   locationDescription = new DropAreaDescription({ width: 2.7, height: 1 })
 }
 
-export const actionLocator = new ActionLocator()
+export const pointElementLocator = new PointElementLocator()

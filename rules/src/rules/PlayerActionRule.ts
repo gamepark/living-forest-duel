@@ -35,7 +35,7 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
         const animal = this.material(MaterialType.AnimalCard).getItem<Animal>(move.itemIndex).id
         return this.afterAnimalMovedAtFinalDestination(animal)
       }
-    } else if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.ActionToken) {
+    } else if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.PointElement) {
       return super.afterItemMove(move)
     }
     return []

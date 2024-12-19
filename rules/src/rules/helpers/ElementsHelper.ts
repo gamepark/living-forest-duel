@@ -69,7 +69,7 @@ export class ElementsHelper extends MaterialRulesPart {
   }
 
   getSharedElementValue(element: Element, ignoreLastToken = false) {
-    const tokensX = this.material(MaterialType.ActionToken).location(LocationType.ActionToken).locationId(element).getItems()
+    const tokensX = this.material(MaterialType.ActionToken).location(LocationType.PointElement).locationId(element).getItems()
       .map(token => this.getTokenX(token))
     if (ignoreLastToken) tokensX.splice(tokensX.indexOf(Math.max(...tokensX)), 1)
     const maxTokenX = Math.max(...tokensX)

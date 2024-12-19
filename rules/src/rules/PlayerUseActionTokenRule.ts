@@ -47,13 +47,13 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
 
     // Element must not be taken
     for (const element of elements) {
-      if (this.material(MaterialType.ActionToken).location(LocationType.ActionToken).locationId(element).parent(elementCardIndexes[element]).length) {
+      if (this.material(MaterialType.ActionToken).location(LocationType.PointElement).locationId(element).parent(elementCardIndexes[element]).length) {
         delete elementCardIndexes[element]
       }
     }
 
     // Validate the positions. At least 1 element between the action token and the previous one.
-    const actionTokenOnCard = this.material(MaterialType.ActionToken).id(this.player).location(LocationType.ActionToken).getItem()
+    const actionTokenOnCard = this.material(MaterialType.ActionToken).id(this.player).location(LocationType.PointElement).getItem()
     if (actionTokenOnCard) {
       const element = actionTokenOnCard.location.id as Element
       const tokenX = this.material(MaterialType.AnimalCard).getItem(actionTokenOnCard.location.parent!).location.x!
@@ -70,7 +70,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
         if (this.elementCanBePlayed(element)) {
           moves.push(...this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.player)
             .moveItems({
-              type: LocationType.ActionToken,
+              type: LocationType.PointElement,
               parent: elementCardIndex,
               id: element
             })
@@ -83,7 +83,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
   }
 
   beforeItemMove(move: ItemMove) {
-    if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.ActionToken) {
+    if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.PointElement) {
       switch (move.location.id as Element) {
         case Element.Sun:
           new ElementsHelper(this.game, this.player).setRemainingElementValue(Element.Sun)

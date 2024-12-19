@@ -29,7 +29,7 @@ export class EndTurnRule extends PlayerTurnRule {
       }
     }
     for (const season of seasons) {
-      const actionTokens = this.material(MaterialType.ActionToken).id(season).location(LocationType.ActionToken)
+      const actionTokens = this.material(MaterialType.ActionToken).id(season).location(LocationType.PointElement)
       if (actionTokens.getItems().length > 0) {
         moves.push(...actionTokens.moveItems({ type: LocationType.PlayerActionSupply, player: season }))
       }

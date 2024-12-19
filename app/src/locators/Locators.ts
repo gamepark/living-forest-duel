@@ -16,7 +16,7 @@ import { sharedHelpLineLocator } from './SharedHelpLineLocator'
 import { sharedDeckLocator } from './SharedDeckLocator'
 import { treeTokenLocator } from './TreeTokenLocator'
 import { playerHelpLineLocator } from './PlayerHelpLineLocator'
-import { actionLocator } from './ActionLocator'
+import { pointElementLocator } from './PointElementLocator'
 import { playerFireStockLocator } from './PlayerFireStockLocator'
 import { sharedDiscardPileLocator } from './SharedDiscardPileLocator'
 import { treeDeckSpotLocator } from './TreeDeckSpotLocator'
@@ -43,5 +43,5 @@ export const Locators: Partial<Record<LocationType, Locator<Season, MaterialType
   [LocationType.SharedDeck]: sharedDeckLocator,
   [LocationType.SharedDiscardPile]: sharedDiscardPileLocator,
   [LocationType.TreeToken]: treeTokenLocator,
-  [LocationType.ActionToken]: actionLocator
+  [LocationType.PointElement]: pointElementLocator
 }
