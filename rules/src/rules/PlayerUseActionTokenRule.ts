@@ -86,16 +86,16 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
     if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.PointElement) {
       switch (move.location.id as Element) {
         case Element.Sun:
-          new ElementsHelper(this.game, this.player).setRemainingElementValue(Element.Sun)
+          new ElementsHelper(this.game).setRemainingElementValue(Element.Sun)
           return [this.startRule(RuleId.RecruitingAnimals)]
         case Element.Water:
-          new ElementsHelper(this.game, this.player).setRemainingElementValue(Element.Water)
+          new ElementsHelper(this.game).setRemainingElementValue(Element.Water)
           return [this.startRule(RuleId.ExtinguishingFire)]
         case Element.Plant:
-          new ElementsHelper(this.game, this.player).setRemainingElementValue(Element.Plant)
+          new ElementsHelper(this.game).setRemainingElementValue(Element.Plant)
           return [this.startRule(RuleId.PlantingProtectiveTree)]
         case Element.Wind:
-          new ElementsHelper(this.game, this.player).setRemainingElementValue(Element.Wind)
+          new ElementsHelper(this.game).setRemainingElementValue(Element.Wind)
           return [this.startRule(RuleId.AdvancingOnibi)]
       }
     }
@@ -103,7 +103,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
   }
 
   elementCanBePlayed(element: Element) {
-    const elementValue = new ElementsHelper(this.game, this.player).getElementValue(element, this.player)
+    const elementValue = new ElementsHelper(this.game).getElementValue(element)
     if (elementValue > 0) {
       switch (element) {
         case Element.Sun:

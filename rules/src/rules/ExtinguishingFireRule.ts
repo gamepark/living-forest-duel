@@ -10,7 +10,7 @@ import { PlayerTurnHelper } from './PlayerTurnHelper'
 import { RuleId } from './RuleId'
 
 export class ExtinguishingFireRule extends PlayerTurnRule {
-  elementsHelper = new ElementsHelper(this.game, this.player)
+  elementsHelper = new ElementsHelper(this.game)
   elementValue = this.elementsHelper.getRemainingElementValue()
 
   onRuleStart() {
@@ -32,7 +32,7 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
     moves.push(...availableFireTokens.moveItems({type: LocationType.PlayerFireStock, player: this.player}))
 
     // Only can pass if at least one fire was taken
-    if (this.elementValue < this.elementsHelper.getElementValue(Element.Water, this.player, !this.elementsHelper.isBonusAction())) {
+    if (this.elementValue < this.elementsHelper.getElementValue(Element.Water, !this.elementsHelper.isBonusAction())) {
       moves.push(this.customMove(CustomMoveType.Pass))
     }
 

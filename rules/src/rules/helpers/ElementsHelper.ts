@@ -8,12 +8,12 @@ import { Element, Season } from '../../Season'
 import { Memory } from '../Memory'
 
 export class ElementsHelper extends MaterialRulesPart {
-  constructor(game: MaterialGame, readonly player: Season) {
+  constructor(game: MaterialGame, readonly player: Season = game.rule!.player!) {
     super(game)
   }
 
   setRemainingElementValue(elementType: Element) {
-    const action: ActionType = { element: elementType, remainingElementValue: this.getElementValue(elementType, this.player) }
+    const action: ActionType = { element: elementType, remainingElementValue: this.getElementValue(elementType) }
     this.memorize(Memory.CurrentAction, action)
   }
 
@@ -22,7 +22,7 @@ export class ElementsHelper extends MaterialRulesPart {
   }
 
   setRemainingBonusElementValue(elementType: Element) {
-    this.updateRemainingElementValue(this.getElementValue(elementType, this.player))
+    this.updateRemainingElementValue(this.getElementValue(elementType))
   }
 
   getRemainingBonusElementValue() {
@@ -58,10 +58,10 @@ export class ElementsHelper extends MaterialRulesPart {
     return this.remind(Memory.RemainingBonuses).length > 0
   }
 
-  getElementValue(element: Element, player: Season, ignoreLastToken = false) {
+  getElementValue(element: Element, ignoreLastToken = false) {
     return this.getSharedElementValue(element, ignoreLastToken)
-      + this.getPlayerLineElementValue(element, player)
-      + this.getPlayerForestElementValue(element, player)
+      + this.getPlayerLineElementValue(element)
+      + this.getPlayerForestElementValue(element)
   }
 
   getTokenX(token: MaterialItem) {
@@ -77,15 +77,15 @@ export class ElementsHelper extends MaterialRulesPart {
     return sumBy(cards, card => animalProperties[card.id].elements[element] ?? 0)
   }
 
-  getPlayerLineElementValue(element: Element, player: Season) {
-    const cards = this.material(MaterialType.AnimalCard).location(LocationType.PlayerHelpLine).player(player).getItems<Animal>()
+  getPlayerLineElementValue(element: Element) {
+    const cards = this.material(MaterialType.AnimalCard).location(LocationType.PlayerHelpLine).player(this.player).getItems<Animal>()
     return sumBy(cards, card => animalProperties[card.id].elements[element] ?? 0)
   }
 
-  getPlayerForestElementValue(element: Element, player: Season) {
+  getPlayerForestElementValue(element: Element) {
     return this.material(MaterialType.TreeCard)
       .location(LocationType.PlayerForest)
-      .player(player)
+      .player(this.player)
       .id<Tree>(tree => getTreeElement(tree) === element)
       .length
   }

@@ -18,7 +18,7 @@ export const RecruitingAnimalsHeader = () => {
   const recruitingAnimalsRule = new RecruitingAnimalsRule(rules.game)
   const cost = recruitingAnimalsRule.elementValue
   const pass = useLegalMove(isCustomMoveType(CustomMoveType.Pass))
-  const elementsHelper = new ElementsHelper(rules.game, activePlayer)
+  const elementsHelper = new ElementsHelper(rules.game)
   const bonusHeader = elementsHelper.isBonusAction() ? t('header.bonus-header') + ": " : ""
 
   if (itsMe) {

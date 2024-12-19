@@ -9,7 +9,7 @@ import { ElementsHelper } from './helpers/ElementsHelper'
 import { RuleId } from './RuleId'
 
 export class RecruitingAnimalsRule extends PlayerTurnRule {
-  elementsHelper = new ElementsHelper(this.game, this.player)
+  elementsHelper = new ElementsHelper(this.game)
   elementValue = this.elementsHelper.getRemainingElementValue()
 
   onRuleStart() {
@@ -34,7 +34,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
     )
 
     // Only can pass if at least one animal was taken
-    if (this.elementValue < this.elementsHelper.getElementValue(Element.Sun, this.player, !this.elementsHelper.isBonusAction())) {
+    if (this.elementValue < this.elementsHelper.getElementValue(Element.Sun, !this.elementsHelper.isBonusAction())) {
       moves.push(this.customMove(CustomMoveType.Pass))
     }
 

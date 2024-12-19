@@ -9,7 +9,7 @@ import { SpiritType } from '../material/SpiritType'
 import { LocationType } from '../material/LocationType'
 
 export class BonusActionRule extends PlayerTurnRule {
-  elementsHelper = new ElementsHelper(this.game, this.player)
+  elementsHelper = new ElementsHelper(this.game)
 
   onRuleStart() {
     const bonus = this.remind(Memory.RemainingBonuses).slice(-1)[0]

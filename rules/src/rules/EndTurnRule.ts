@@ -13,7 +13,7 @@ export class EndTurnRule extends PlayerTurnRule {
 
     // Varan cards
     for (const season of seasons) {
-      const waterValue = new ElementsHelper(this.game, this.player).getElementValue(Element.Water, season)
+      const waterValue = new ElementsHelper(this.game, season).getElementValue(Element.Water)
       if (this.fireValue > waterValue) {
         const varanDeck = this.material(MaterialType.AnimalCard).location(LocationType.VaranDeck).player(season).deck()
         moves.push(...varanDeck.deal({ type: LocationType.SharedDiscardPile }, this.spotsOnFire))

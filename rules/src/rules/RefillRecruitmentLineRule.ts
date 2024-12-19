@@ -12,10 +12,10 @@ export class RefillRecruitmentLineRule extends PlayerTurnRule {
     const playerDeck = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SeasonAnimalDeck && l.player === this.player).deck()
     const totalCardsInRecruitmentLine = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine).getQuantity()
     moves.push(...playerDeck.deal({ type: LocationType.RecruitmentLine }, 7 - totalCardsInRecruitmentLine))
-    if (!new ElementsHelper(this.game, this.player).isBonusAction()) {
+    if (!new ElementsHelper(this.game).isBonusAction()) {
       moves.push(new PlayerTurnHelper(this.game).endCurrentPlayerTurn())
     } else {
-      new ElementsHelper(this.game, this.player).removeLastBonusElement()
+      new ElementsHelper(this.game).removeLastBonusElement()
       moves.push(this.startRule(RuleId.BonusAction))
     }
 

@@ -12,7 +12,7 @@ import { PlayerTurnHelper } from './PlayerTurnHelper'
 import { RuleId } from './RuleId'
 
 export class PlantingProtectiveTreeRule extends PlayerTurnRule {
-  elementsHelper = new ElementsHelper(this.game, this.player)
+  elementsHelper = new ElementsHelper(this.game)
   elementValue = this.elementsHelper.getRemainingElementValue()
 
   onRuleStart() {
@@ -46,7 +46,7 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
     }
 
     // Only can pass if at least one tree was planted
-    if (this.elementValue < this.elementsHelper.getElementValue(Element.Plant, this.player, !this.elementsHelper.isBonusAction())) {
+    if (this.elementValue < this.elementsHelper.getElementValue(Element.Plant, !this.elementsHelper.isBonusAction())) {
       moves.push(this.customMove(CustomMoveType.Pass))
     }
 

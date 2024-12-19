@@ -18,7 +18,7 @@ export const PlantingProtectiveTreeHeader = () => {
   const plantingProtectiveTreeRule = new PlantingProtectiveTreeRule(rules.game)
   const cost = plantingProtectiveTreeRule.elementValue
   const pass = useLegalMove(isCustomMoveType(CustomMoveType.Pass))
-  const elementsHelper = new ElementsHelper(rules.game, activePlayer)
+  const elementsHelper = new ElementsHelper(rules.game)
   const bonusHeader = elementsHelper.isBonusAction() ? t('header.bonus-header') + ": " : ""
 
   if (itsMe) {

@@ -18,7 +18,7 @@ export const ExtinguishingFireHeader = () => {
   const extinguishingFireRule = new ExtinguishingFireRule(rules.game)
   const cost = extinguishingFireRule.elementValue
   const pass = useLegalMove(isCustomMoveType(CustomMoveType.Pass))
-  const elementsHelper = new ElementsHelper(rules.game, activePlayer)
+  const elementsHelper = new ElementsHelper(rules.game)
   const bonusHeader = elementsHelper.isBonusAction() ? t('header.bonus-header') + ": " : ""
 
   if (itsMe) {
