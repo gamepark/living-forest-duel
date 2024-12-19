@@ -16,7 +16,7 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
   elementValue = this.elementsHelper.getRemainingElementValue()
 
   onRuleStart() {
-    if (!new TreesHelper(this.game, this.player).canTreesBePlanted(this.elementValue)) {
+    if (!new TreesHelper(this.game).canTreesBePlanted(this.elementValue)) {
       if (!this.elementsHelper.isBonusAction()) {
         return [new PlayerTurnHelper(this.game).endCurrentPlayerTurn()]
       } else {
@@ -30,12 +30,12 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
 
   getPlayerMoves() {
     const moves: MaterialMove[] = []
-    const treesHelper = new TreesHelper(this.game, this.player)
+    const treesHelper = new TreesHelper(this.game)
     const availableTrees = treesHelper.getVisibleTreesInStack(this.elementValue)
     const availableSpaces: Location[] = treesHelper.availableSpaces
 
     for (const tree of availableTrees.getItems()) {
-      const availableSpacesForTree = new TreesHelper(this.game, this.player).getAvailableSpacesForTree(tree, availableSpaces)
+      const availableSpacesForTree = new TreesHelper(this.game).getAvailableSpacesForTree(tree, availableSpaces)
       moves.push(
         ...availableSpacesForTree.flatMap((space) => {
           return [
@@ -77,7 +77,7 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
         this.elementsHelper.updateRemainingElementValue(this.elementValue - treeProperties[movedCard!.id as Tree]!.cost)
 
         // Check possible bonuses
-        const treesHelper = new TreesHelper(this.game, this.player)
+        const treesHelper = new TreesHelper(this.game)
         const bonuses = []
         for (const direction of directions) {
           if (treesHelper.hasBonusInDirection(movedCard, direction)) {

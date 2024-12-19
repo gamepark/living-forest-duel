@@ -111,7 +111,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
         case Element.Water:
           return new FireHelper(this.game).canFireBeExtinguished(elementValue)
         case Element.Plant:
-          return new TreesHelper(this.game, this.player).canTreesBePlanted(elementValue)
+          return new TreesHelper(this.game).canTreesBePlanted(elementValue)
         case Element.Wind:
           return true // It's only false if elementValue < 1
       }

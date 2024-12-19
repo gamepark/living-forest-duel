@@ -1,13 +1,23 @@
-import { Direction, directions, getSquareInDirection, Location, Material, MaterialGame, MaterialItem, MaterialRulesPart, XYCoordinates } from "@gamepark/rules-api";
-import { minBy, uniqBy } from "lodash";
-import { MaterialType } from "../../material/MaterialType";
-import { LocationType } from "../../material/LocationType";
-import { getTreeElement, Tree, TreePattern, treeProperties } from "../../material/Tree";
-import { Memory } from "../Memory";
-import { CardinalLocations } from "../../Season";
+import {
+  Direction,
+  directions,
+  getSquareInDirection,
+  Location,
+  Material,
+  MaterialGame,
+  MaterialItem,
+  MaterialRulesPart,
+  XYCoordinates
+} from '@gamepark/rules-api'
+import { uniqBy } from 'lodash'
+import { LocationType } from '../../material/LocationType'
+import { MaterialType } from '../../material/MaterialType'
+import { getTreeElement, Tree, treeProperties } from '../../material/Tree'
+import { CardinalLocations, Season } from '../../Season'
+import { Memory } from '../Memory'
 
 export class TreesHelper extends MaterialRulesPart {
-  constructor(game: MaterialGame, readonly player?: number) {
+  constructor(game: MaterialGame, readonly player: Season = game.rule!.player!) {
     super(game)
   }
 
@@ -19,32 +29,13 @@ export class TreesHelper extends MaterialRulesPart {
       .id<Tree>(tree => !this.remind(Memory.PlantedTreesTypes).includes(getTreeElement(tree)) && treeProperties[tree]!.cost <= plantValue)
   }
 
-  getTreesMinCost(treesIds: number[]) {
-    return this.getMinCostElement(this.getTreesProperties(treesIds))?.cost
-  }
-
-  getTreesProperties(treesIds: number[]) {
-    const filteredProperties = Object.keys(treeProperties).reduce((acc, key) => {
-      if (treesIds.includes(Number(key))) {
-        acc[key] = treeProperties[Number(key) as Tree]
-      }
-      return acc
-    }, {} as Record<string, any>)
-
-    return filteredProperties
-  }
-
-  getMinCostElement(properties: Partial<Record<Tree, TreePattern>>) {
-    return minBy(Object.values(properties), 'cost')
-  }
-
   canTreesBePlanted(plantValue: number) {
     let canPlant = false
     const availableTrees = this.getVisibleTreesInStack(plantValue)
     const availableSpaces: Location[] = this.availableSpaces
 
     for (const tree of availableTrees.getItems()) {
-      const availableSpacesForTree = new TreesHelper(this.game, this.player).getAvailableSpacesForTree(tree, availableSpaces)
+      const availableSpacesForTree = this.getAvailableSpacesForTree(tree, availableSpaces)
       if (availableSpacesForTree.length > 0) {
         canPlant = true
         break
@@ -171,38 +162,38 @@ export class TreesHelper extends MaterialRulesPart {
 
   canReachLake(treeId: Tree, treePos: Location): boolean {
     const initialCoordinates = { x: treePos.x!, y: treePos.y! }
-    const queue: XYCoordinates[] = [initialCoordinates];
-    const visited = new Set<string>();
+    const queue: XYCoordinates[] = [initialCoordinates]
+    const visited = new Set<string>()
 
     while (queue.length > 0) {
-      const position = queue.shift()!;
-      const positionKey = `${position.x},${position.y}`;
+      const position = queue.shift()!
+      const positionKey = `${position.x},${position.y}`
 
-      if (visited.has(positionKey)) continue;
-      visited.add(positionKey);
+      if (visited.has(positionKey)) continue
+      visited.add(positionKey)
 
-      const currentTree = position !== initialCoordinates ? this.showVisibleTree(position) : this.material(MaterialType.TreeCard).id(treeId);
-      if (!currentTree.getItem()) continue;
+      const currentTree = position !== initialCoordinates ? this.showVisibleTree(position) : this.material(MaterialType.TreeCard).id(treeId)
+      if (!currentTree.getItem()) continue
 
       for (const dir of directions) {
-        const currentLocation = position !== initialCoordinates ? currentTree.getItem()!.location : treePos;
-        const neighborPos = getSquareInDirection(currentLocation, dir);
-        const neighborKey = `${neighborPos.x},${neighborPos.y}`;
+        const currentLocation = position !== initialCoordinates ? currentTree.getItem()!.location : treePos
+        const neighborPos = getSquareInDirection(currentLocation, dir)
+        const neighborKey = `${neighborPos.x},${neighborPos.y}`
 
         if (!visited.has(neighborKey)) {
-          const neighbor = this.showVisibleTree(neighborPos);
+          const neighbor = this.showVisibleTree(neighborPos)
           if (neighbor.getItem()) {
             if (this.isLake(neighbor)) {
-              return true;
+              return true
             } else if (treeProperties[neighbor.getItem()!.id as Tree]?.bonus.river[dir]) {
-              queue.push(neighborPos);
+              queue.push(neighborPos)
             }
           }
         }
       }
     }
 
-    return false;
+    return false
   }
 
   isLake(tree: Material) {
@@ -220,19 +211,6 @@ export class TreesHelper extends MaterialRulesPart {
     return neighbor !== undefined && treeProperties[tree.id as Tree]?.bonus.element === treeProperties[neighbor.id as Tree]?.bonus.element
   }
 
-}
-
-export const oppositeDirection = (direction: Direction) => {
-  switch (direction) {
-    case Direction.North:
-      return Direction.South
-    case Direction.South:
-      return Direction.North
-    case Direction.East:
-      return Direction.West
-    case Direction.West:
-      return Direction.East
-  }
 }
 
 export const isAnyCardToTheLeft = (slotToCheck: MaterialItem, reference: { x?: number; y?: number }) => {
