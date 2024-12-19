@@ -1,12 +1,10 @@
 /** @jsxImportSource @emotion/react */
-
-import { LivingForestDuelRules } from "@gamepark/living-forest-duel/LivingForestDuelRules"
-import { CustomMoveType } from "@gamepark/living-forest-duel/rules/CustomMoveType"
-import { ElementsHelper } from "@gamepark/living-forest-duel/rules/helpers/ElementsHelper"
-import { RecruitingAnimalsRule } from "@gamepark/living-forest-duel/rules/RecruitingAnimalsRule"
-import { useRules, usePlayerId, usePlayerName, useLegalMove, PlayMoveButton } from "@gamepark/react-game"
-import { isCustomMoveType } from "@gamepark/rules-api"
-import { Trans, useTranslation } from "react-i18next"
+import { LivingForestDuelRules } from '@gamepark/living-forest-duel/LivingForestDuelRules'
+import { CustomMoveType } from '@gamepark/living-forest-duel/rules/CustomMoveType'
+import { RecruitingAnimalsRule } from '@gamepark/living-forest-duel/rules/RecruitingAnimalsRule'
+import { PlayMoveButton, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { isCustomMoveType } from '@gamepark/rules-api'
+import { Trans, useTranslation } from 'react-i18next'
 
 export const RecruitingAnimalsHeader = () => {
   const { t } = useTranslation()
@@ -16,10 +14,9 @@ export const RecruitingAnimalsHeader = () => {
   const itsMe = activePlayer === me
   const player = usePlayerName(activePlayer)
   const recruitingAnimalsRule = new RecruitingAnimalsRule(rules.game)
-  const cost = recruitingAnimalsRule.elementValue
+  const cost = recruitingAnimalsRule.action.value
   const pass = useLegalMove(isCustomMoveType(CustomMoveType.Pass))
-  const elementsHelper = new ElementsHelper(rules.game)
-  const bonusHeader = elementsHelper.isBonusAction() ? t('header.bonus-header') + ": " : ""
+  const bonusHeader = recruitingAnimalsRule.isBonusAction ? t('header.bonus-header') + ": " : ""
 
   if (itsMe) {
     <></>

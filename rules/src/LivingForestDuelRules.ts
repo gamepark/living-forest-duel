@@ -12,7 +12,6 @@ import { CustomNegativeFillGapStrategy } from './material/location/strategy/Cust
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { AdvancingOnibiRule } from './rules/AdvancingOnibiRule'
-import { BonusActionRule } from './rules/BonusActionRule'
 import { EndTurnRule } from './rules/EndTurnRule'
 import { ExtinguishingFireRule } from './rules/ExtinguishingFireRule'
 import { PlantingProtectiveTreeRule } from './rules/PlantingProtectiveTreeRule'
@@ -41,7 +40,6 @@ export class LivingForestDuelRules extends HiddenMaterialRules<Season, MaterialT
     [RuleId.RefillRecruitmentLine]: RefillRecruitmentLineRule,
     [RuleId.PlantingProtectiveTree]: PlantingProtectiveTreeRule,
     [RuleId.AdvancingOnibi]: AdvancingOnibiRule,
-    [RuleId.BonusAction]: BonusActionRule,
     [RuleId.UseSankiOnVaran]: UseSankiOnVaranRule,
     [RuleId.UseSankiPlayAction]: UseSankiPlayActionRule,
     [RuleId.EndTurn]: EndTurnRule,

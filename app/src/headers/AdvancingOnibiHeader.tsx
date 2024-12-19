@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
-
-import { LivingForestDuelRules } from "@gamepark/living-forest-duel/LivingForestDuelRules"
-import { AdvancingOnibiRule } from "@gamepark/living-forest-duel/rules/AdvancingOnibiRule"
-import { useRules, usePlayerId, usePlayerName } from "@gamepark/react-game"
-import { Trans } from "react-i18next"
+import { LivingForestDuelRules } from '@gamepark/living-forest-duel/LivingForestDuelRules'
+import { AdvancingOnibiRule } from '@gamepark/living-forest-duel/rules/AdvancingOnibiRule'
+import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { Trans } from 'react-i18next'
 
 export const AdvancingOnibiHeader = () => {
   const rules = useRules<LivingForestDuelRules>()!
@@ -12,12 +11,12 @@ export const AdvancingOnibiHeader = () => {
   const itsMe = activePlayer === me
   const player = usePlayerName(activePlayer)
   const advancingOnibiRule = new AdvancingOnibiRule(rules.game)
-  const steps = advancingOnibiRule.elementValue
-  const bonusHeader = ""
+  const steps = advancingOnibiRule.action?.value ?? 0
+  const bonusHeader = ''
 
   if (itsMe) {
-    return <Trans defaults="header.advancing-onibi.you" values={{ bonusHeader, steps }} />
+    return <Trans defaults="header.advancing-onibi.you" values={{ bonusHeader, steps }}/>
   } else {
-    return <Trans defaults="header.advancing-onibi.player" values={{ bonusHeader, player, steps }} />
+    return <Trans defaults="header.advancing-onibi.player" values={{ bonusHeader, player, steps }}/>
   }
 }

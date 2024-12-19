@@ -1,19 +1,20 @@
-import { CustomMove, isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { CustomMove, isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
 import { Animal, animalProperties, getAnimalSeason } from '../material/Animal'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Element } from '../Season'
+import { ActionRule } from './ActionRule'
+import { RecruitingAnimals } from './actions/Action'
 import { CustomMoveType } from './CustomMoveType'
 import { AnimalsHelper } from './helpers/AnimalsHelper'
 import { ElementsHelper } from './helpers/ElementsHelper'
 import { RuleId } from './RuleId'
 
-export class RecruitingAnimalsRule extends PlayerTurnRule {
+export class RecruitingAnimalsRule extends ActionRule<RecruitingAnimals> {
   elementsHelper = new ElementsHelper(this.game)
-  elementValue = this.elementsHelper.getRemainingElementValue()
 
   onRuleStart() {
-    if (!new AnimalsHelper(this.game).canAnimalsBeRecruited(this.elementValue)) {
+    if (!new AnimalsHelper(this.game).canAnimalsBeRecruited(this.action.value)) {
       return [this.startRule(RuleId.RefillRecruitmentLine)]
     }
 
@@ -24,7 +25,7 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
 
     const playerCards = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
-      .id<Animal>(animal => getAnimalSeason(animal) === this.player && this.elementValue >= animalProperties[animal].cost!)
+      .id<Animal>(animal => getAnimalSeason(animal) === this.player && this.action.value >= animalProperties[animal].cost!)
     moves.push(
       ...playerCards.getItems().flatMap((card) => {
         return [
@@ -34,12 +35,12 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
     )
 
     // Only can pass if at least one animal was taken
-    if (this.elementValue < this.elementsHelper.getElementValue(Element.Sun, !this.elementsHelper.isBonusAction())) {
+    if (this.action.value < this.elementsHelper.getElementValue(Element.Sun, !this.isBonusAction)) {
       moves.push(this.customMove(CustomMoveType.Pass))
     }
 
     const restOfCards = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
-      .id<Animal>(animal => getAnimalSeason(animal) !== this.player && this.elementValue >= animalProperties[animal].cost!)
+      .id<Animal>(animal => getAnimalSeason(animal) !== this.player && this.action.value >= animalProperties[animal].cost!)
     moves.push(...restOfCards.moveItems({ type: LocationType.SharedDiscardPile }))
 
     return moves
@@ -53,21 +54,16 @@ export class RecruitingAnimalsRule extends PlayerTurnRule {
   }
 
   afterItemMove(move: ItemMove) {
-    const moves: MaterialMove[] = []
     if (isMoveItemType(MaterialType.AnimalCard)(move) && (move.location.type === LocationType.PlayerHelpLine || move.location.type === LocationType.SharedDiscardPile)) {
       // Check winning condition
-      if (this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.RecruitmentLine)
+      if (this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
         .id<Animal>(animal => getAnimalSeason(animal) !== this.player).getQuantity() === 0) {
-        moves.push(this.endGame())
+        return [this.endGame()]
       } else {
         const movedCard = this.material(MaterialType.AnimalCard).getItem<Animal>(move.itemIndex)
-        this.elementsHelper.updateRemainingElementValue(this.elementValue - animalProperties[movedCard.id].cost)
-
-        moves.push(this.startRule(RuleId.RecruitingAnimals))
+        this.action.value -= animalProperties[movedCard.id].cost
       }
     }
-
-    return moves
+    return []
   }
-
 }

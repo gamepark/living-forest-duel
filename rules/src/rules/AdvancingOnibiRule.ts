@@ -1,29 +1,25 @@
-import { CustomMove, isMoveItemType, ItemMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { CustomMove, isMoveItemType, ItemMove } from '@gamepark/rules-api'
 import { range } from 'lodash'
 import { Clearing, clearingProperties } from '../material/Clearing'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { SpiritType } from '../material/SpiritType'
-import { getOpponentSeason, Season } from '../Season'
+import { Element, getOpponentSeason, Season } from '../Season'
+import { ActionRule } from './ActionRule'
+import { Action, AdvancingOnibi, elementActionRule } from './actions/Action'
 import { CustomMoveType } from './CustomMoveType'
+import { ElementsHelper } from './helpers/ElementsHelper'
+import { SankiHelper } from './helpers/SankiHelper'
 import { Memory } from './Memory'
-import { RuleId } from './RuleId'
-import { ActionType } from './helpers/ElementsHelper'
 
-export class AdvancingOnibiRule extends PlayerTurnRule {
-  get elementValue() {
-    return this.remind(Memory.CurrentAction).remainingElementValue
-  }
-
+export class AdvancingOnibiRule extends ActionRule<AdvancingOnibi> {
   getPlayerMoves() {
-    return range(1, this.elementValue + 1).map(distance => this.customMove(CustomMoveType.MoveOnibi, distance))
+    return range(1, this.action.value + 1).map(distance => this.customMove(CustomMoveType.MoveOnibi, distance))
   }
 
   onCustomMove(move: CustomMove) {
     if (move.type !== CustomMoveType.MoveOnibi) return []
-    const currentAction = this.remind(Memory.CurrentAction)
-    currentAction.remainingElementValue = move.data
-    this.memorize(Memory.CurrentAction, currentAction)
+    this.action.value = move.data
     return [this.moveOnibiOnce()]
   }
 
@@ -62,17 +58,23 @@ export class AdvancingOnibiRule extends PlayerTurnRule {
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.OnibiStandee)(move)) return []
-    const currentAction = this.remind(Memory.CurrentAction)
-    currentAction.remainingElementValue = currentAction.remainingElementValue - 1
-    this.memorize(Memory.CurrentAction, currentAction)
-    if (this.elementValue > 0) {
+
+    if (--this.action.value > 0) {
       return [this.moveOnibiOnce()]
+    }
+
+    const bonus = clearingProperties[move.location.x! as Clearing]!.bonus!
+    if (bonus === Element.Wind) {
+      return new SankiHelper(this.game).takeSankiCards().concat(this.endAction())
     } else {
-      const bonus: ActionType = { element: clearingProperties[move.location.x! as Clearing]?.bonus!, remainingElementValue: -1 }
-      const remainingBonuses: ActionType[] = this.remind(Memory.RemainingBonuses) ?? []
-      remainingBonuses.push(bonus)
-      this.memorize(Memory.RemainingBonuses, remainingBonuses)
-      return [this.startRule(RuleId.BonusAction)]
+      const actions = this.remind<Action[]>(Memory.PendingActions)
+      actions.pop()
+      const value = new ElementsHelper(this.game).getElementValue(bonus)
+      const action: Action = bonus === Element.Plant ?
+        { element: bonus, value, plantedTreesElements: [], bonus: true }
+        : { element: bonus, value, bonus: true }
+      actions.push(action)
+      return [this.startRule(elementActionRule[bonus])]
     }
   }
 

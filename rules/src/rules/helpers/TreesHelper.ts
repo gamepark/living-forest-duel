@@ -13,20 +13,19 @@ import { uniqBy } from 'lodash'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { getTreeElement, Tree, treeProperties } from '../../material/Tree'
-import { CardinalLocations, Season } from '../../Season'
-import { Memory } from '../Memory'
+import { CardinalLocations, Element, Season } from '../../Season'
 
 export class TreesHelper extends MaterialRulesPart {
   constructor(game: MaterialGame, readonly player: Season = game.rule!.player!) {
     super(game)
   }
 
-  getVisibleTreesInStack(plantValue: number): Material {
+  getVisibleTreesInStack(plantValue: number, plantedTreesElements: Element[] = []): Material {
     const treesInDecks = this.material(MaterialType.TreeCard).location(LocationType.TreeDeckSpot)
     const items = treesInDecks.getItems()
     return treesInDecks
       .location(l => !items.some(item => item.location.id === l.id && item.location.x! > l.x!))
-      .id<Tree>(tree => !this.remind(Memory.PlantedTreesTypes).includes(getTreeElement(tree)) && treeProperties[tree]!.cost <= plantValue)
+      .id<Tree>(tree => !plantedTreesElements.includes(getTreeElement(tree)!) && treeProperties[tree]!.cost <= plantValue)
   }
 
   canTreesBePlanted(plantValue: number) {

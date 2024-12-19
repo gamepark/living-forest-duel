@@ -1,37 +1,30 @@
-import { CustomMove, directions, isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { range } from 'lodash'
+import { CustomMove, directions, isMoveItemType, ItemMove, Location, MaterialMove } from '@gamepark/rules-api'
+import { range, sumBy } from 'lodash'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { getTreeElement, Tree, treeProperties } from '../material/Tree'
 import { Element } from '../Season'
+import { ActionRule } from './ActionRule'
+import { Action, elementActionRule, PlantingProtectiveTrees } from './actions/Action'
 import { CustomMoveType } from './CustomMoveType'
-import { ActionType, ElementsHelper } from './helpers/ElementsHelper'
+import { ElementsHelper } from './helpers/ElementsHelper'
+import { SankiHelper } from './helpers/SankiHelper'
 import { TreesHelper } from './helpers/TreesHelper'
 import { Memory } from './Memory'
-import { PlayerTurnHelper } from './PlayerTurnHelper'
-import { RuleId } from './RuleId'
 
-export class PlantingProtectiveTreeRule extends PlayerTurnRule {
-  elementsHelper = new ElementsHelper(this.game)
-  elementValue = this.elementsHelper.getRemainingElementValue()
+export class PlantingProtectiveTreeRule extends ActionRule<PlantingProtectiveTrees> {
 
   onRuleStart() {
-    if (!new TreesHelper(this.game).canTreesBePlanted(this.elementValue)) {
-      if (!this.elementsHelper.isBonusAction()) {
-        return [new PlayerTurnHelper(this.game).endCurrentPlayerTurn()]
-      } else {
-        this.elementsHelper.removeLastBonusElement()
-        return [this.startRule(RuleId.BonusAction)]
-      }
+    if (!new TreesHelper(this.game).canTreesBePlanted(this.action.value)) {
+      return [this.endAction()]
     }
-
     return []
   }
 
   getPlayerMoves() {
     const moves: MaterialMove[] = []
     const treesHelper = new TreesHelper(this.game)
-    const availableTrees = treesHelper.getVisibleTreesInStack(this.elementValue)
+    const availableTrees = treesHelper.getVisibleTreesInStack(this.action.value, this.action.plantedTreesElements)
     const availableSpaces: Location[] = treesHelper.availableSpaces
 
     for (const tree of availableTrees.getItems()) {
@@ -46,7 +39,8 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
     }
 
     // Only can pass if at least one tree was planted
-    if (this.elementValue < this.elementsHelper.getElementValue(Element.Plant, !this.elementsHelper.isBonusAction())) {
+    const elementsHelper = new ElementsHelper(this.game)
+    if (this.action.value < elementsHelper.getElementValue(Element.Plant, !this.isBonusAction)) {
       moves.push(this.customMove(CustomMoveType.Pass))
     }
 
@@ -55,44 +49,45 @@ export class PlantingProtectiveTreeRule extends PlayerTurnRule {
 
   onCustomMove(move: CustomMove) {
     if (move.type === CustomMoveType.Pass) {
-      return [new PlayerTurnHelper(this.game).endCurrentPlayerTurn()] // TODO: potential bug: might be wrong if inside bonus action
+      return [this.endAction()]
     }
     return []
   }
 
   afterItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.TreeCard)(move) && move.location.type === LocationType.PlayerForest) {
-      const movedCard = this.material(move.itemType).getItem(move.itemIndex)
+      const movedCard = this.material(move.itemType).getItem<Tree>(move.itemIndex)
 
       // Check winning condition
       if (this.isPlantWinningCondition()) {
         return [this.endGame()]
       } else {
+        const tree = movedCard.id
         // Remember the types planted because we can only take one of each type
-        const plantedTreesTypes = this.remind(Memory.PlantedTreesTypes)
-        plantedTreesTypes.push(getTreeElement(movedCard.id))
-        this.memorize(Memory.PlantedTreesTypes, plantedTreesTypes)
+        this.action.plantedTreesElements.push(getTreeElement(tree)!)
 
         // Update remaining value
-        this.elementsHelper.updateRemainingElementValue(this.elementValue - treeProperties[movedCard!.id as Tree]!.cost)
+        this.action.value -= treeProperties[tree]!.cost
 
         // Check possible bonuses
+        const bonus = treeProperties[tree]!.bonus.element
         const treesHelper = new TreesHelper(this.game)
-        const bonuses = []
-        for (const direction of directions) {
-          if (treesHelper.hasBonusInDirection(movedCard, direction)) {
-            const bonus: ActionType = { element: treeProperties[movedCard.id as Tree]?.bonus.element!, remainingElementValue: -1 }
-            bonuses.push(bonus)
+        const bonusCount = sumBy(directions, direction =>
+          treesHelper.hasBonusInDirection(movedCard, direction) ? 1 : 0
+        )
+        if (bonusCount > 0) {
+          if (bonus === Element.Wind) {
+            return new SankiHelper(this.game).takeSankiCards(bonusCount)
+          } else {
+            const value = new ElementsHelper(this.game).getElementValue(bonus)
+            for (let i = 0; i < bonusCount; i++) {
+              const action: Action = bonus === Element.Plant ?
+                { element: bonus, value, plantedTreesElements: [], bonus: true }
+                : { element: bonus, value, bonus: true }
+              this.remind<Action[]>(Memory.PendingActions).push(action)
+            }
+            return [this.startRule(elementActionRule[bonus])]
           }
-        }
-
-        if (bonuses.length > 0) {
-          const remainingBonuses = this.remind(Memory.RemainingBonuses)
-          remainingBonuses.push(...bonuses)
-          this.memorize(Memory.RemainingBonuses, remainingBonuses)
-          return [this.startRule(RuleId.BonusAction)]
-        } else {
-          return [this.startRule(RuleId.PlantingProtectiveTree)]
         }
       }
     }

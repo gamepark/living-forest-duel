@@ -10,7 +10,6 @@ import { PlayerUseActionTokenHeader } from './PlayerUseActionTokenHeader'
 import { RecruitingAnimalsHeader } from './RecruitingAnimalsHeader'
 import { RefillRecruitmentLineHeader } from './RefillRecruitmentLineHeader'
 import { UseSankiCardHeader } from './UseSankiCardHeader'
-import { BonusActionHeader } from './BonusActionHeader'
 
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.AdvancingOnibi]: AdvancingOnibiHeader,
@@ -22,6 +21,5 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.UseSankiOnVaran]: UseSankiCardHeader,
   [RuleId.UseSankiPlayAction]: UseSankiCardHeader,
   [RuleId.RefillRecruitmentLine]: RefillRecruitmentLineHeader,
-  [RuleId.BonusAction]: BonusActionHeader,
   [RuleId.EndTurn]: EndTurnHeader
 }

@@ -3,20 +3,14 @@ import { Animal, animalProperties } from '../material/Animal'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Element, elements } from '../Season'
+import { Action, elementActionRule } from './actions/Action'
 import { AnimalsHelper } from './helpers/AnimalsHelper'
 import { ElementsHelper } from './helpers/ElementsHelper'
 import { FireHelper } from './helpers/FireHelper'
 import { TreesHelper } from './helpers/TreesHelper'
 import { Memory } from './Memory'
-import { RuleId } from './RuleId'
 
 export class PlayerUseActionTokenRule extends PlayerTurnRule {
-  onRuleStart() {
-    this.memorize(Memory.PlantedTreesTypes, [])
-    this.memorize(Memory.RemainingBonuses, [])
-    return []
-  }
-
   getPlayerMoves() {
     return this.availableActionTokens.length > 0 ? this.getAvailableActions() : []
   }
@@ -84,20 +78,11 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
 
   beforeItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.PointElement) {
-      switch (move.location.id as Element) {
-        case Element.Sun:
-          new ElementsHelper(this.game).setRemainingElementValue(Element.Sun)
-          return [this.startRule(RuleId.RecruitingAnimals)]
-        case Element.Water:
-          new ElementsHelper(this.game).setRemainingElementValue(Element.Water)
-          return [this.startRule(RuleId.ExtinguishingFire)]
-        case Element.Plant:
-          new ElementsHelper(this.game).setRemainingElementValue(Element.Plant)
-          return [this.startRule(RuleId.PlantingProtectiveTree)]
-        case Element.Wind:
-          new ElementsHelper(this.game).setRemainingElementValue(Element.Wind)
-          return [this.startRule(RuleId.AdvancingOnibi)]
-      }
+      const element = move.location.id as Element
+      const value = new ElementsHelper(this.game).getElementValue(element)
+      const action: Action = element === Element.Plant ? { element, value, plantedTreesElements: [] } : { element, value }
+      this.memorize<Action[]>(Memory.PendingActions, [action])
+      return [this.startRule(elementActionRule[element])]
     }
     return []
   }

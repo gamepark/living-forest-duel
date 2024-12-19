@@ -13,7 +13,7 @@ import { RuleId } from './RuleId'
 export class PlayerActionRule extends PlayerUseActionTokenRule {
   onRuleStart() {
     this.memorize(Memory.CurrentPlayer, this.player)
-    return super.onRuleStart()
+    return []
   }
 
   getPlayerMoves() {
