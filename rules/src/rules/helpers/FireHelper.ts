@@ -1,12 +1,8 @@
-import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
+import { MaterialRulesPart } from '@gamepark/rules-api'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 
 export class FireHelper extends MaterialRulesPart {
-  constructor(game: MaterialGame, readonly player?: number) {
-    super(game)
-  }
-
   getAvailableFireTokens(waterValue: number) {
     return this.material(MaterialType.FireToken).location(LocationType.ClearingCardSpot).filter((token) => waterValue >= this.getClearingCardValue(token.location.x!))
   }

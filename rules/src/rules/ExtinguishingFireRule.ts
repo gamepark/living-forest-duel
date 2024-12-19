@@ -14,7 +14,7 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
   elementValue = this.elementsHelper.getRemainingElementValue()
 
   onRuleStart() {
-    if (!new FireHelper(this.game,this.player).canFireBeExtinguished(this.elementValue)) {
+    if (!new FireHelper(this.game).canFireBeExtinguished(this.elementValue)) {
       if (!this.elementsHelper.isBonusAction()) {        
         return [new PlayerTurnHelper(this.game).endCurrentPlayerTurn()]
       } else {
@@ -28,7 +28,7 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
 
   getPlayerMoves() {
     const moves: MaterialMove[] = []
-    const availableFireTokens = new FireHelper(this.game,this.player).getAvailableFireTokens(this.elementValue)
+    const availableFireTokens = new FireHelper(this.game).getAvailableFireTokens(this.elementValue)
     moves.push(...availableFireTokens.moveItems({type: LocationType.PlayerFireStock, player: this.player}))
 
     // Only can pass if at least one fire was taken
@@ -40,7 +40,7 @@ export class ExtinguishingFireRule extends PlayerTurnRule {
   }
 
   getClearingCardValue(x: number) {
-    return new FireHelper(this.game,this.player).getClearingCardValue(x)
+    return new FireHelper(this.game).getClearingCardValue(x)
   }
 
   onCustomMove(move: CustomMove) {
