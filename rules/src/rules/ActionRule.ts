@@ -2,7 +2,7 @@ import { PlayerTurnRule } from '@gamepark/rules-api'
 import { Element } from '../Season'
 import { Action, elementActionRule } from './actions/Action'
 import { Memory } from './Memory'
-import { PlayerTurnHelper } from './PlayerTurnHelper'
+import { RuleId } from './RuleId'
 
 export abstract class ActionRule<T extends Action> extends PlayerTurnRule {
   get action(): T {
@@ -21,7 +21,7 @@ export abstract class ActionRule<T extends Action> extends PlayerTurnRule {
     if (nextAction) {
       return this.startRule(elementActionRule[nextAction.element])
     } else {
-      return new PlayerTurnHelper(this.game).endCurrentPlayerTurn()
+      return this.startRule(RuleId.EndPlayerTurn)
     }
   }
 }

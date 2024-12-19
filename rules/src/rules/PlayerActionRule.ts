@@ -6,7 +6,6 @@ import { SpiritType } from '../material/SpiritType'
 import { Season, seasons } from '../Season'
 import { AnimalsHelper } from './helpers/AnimalsHelper'
 import { Memory } from './Memory'
-import { PlayerTurnHelper } from './PlayerTurnHelper'
 import { PlayerUseActionTokenRule } from './PlayerUseActionTokenRule'
 import { RuleId } from './RuleId'
 
@@ -93,7 +92,7 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
     if (!isVaran(animal) && this.playerHasSankiCard(this.player) && this.opponentHasActionToken) {
       moves.push(this.startRule(RuleId.UseSankiPlayAction))
     } else {
-      moves.push(new PlayerTurnHelper(this.game).endCurrentPlayerTurn())
+      moves.push(this.startRule(RuleId.EndPlayerTurn))
     }
 
     return moves

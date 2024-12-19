@@ -8,5 +8,6 @@ export enum RuleId {
   AdvancingOnibi,
   UseSankiOnVaran,
   UseSankiPlayAction,
+  EndPlayerTurn,
   EndTurn
 }

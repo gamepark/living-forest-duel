@@ -2,7 +2,6 @@ import { MaterialMove } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
-import { PlayerTurnHelper } from './PlayerTurnHelper'
 import { RuleId } from './RuleId'
 import { UseSankiRule } from './UseSankiRule'
 
@@ -21,7 +20,7 @@ export class UseSankiOnVaranRule extends UseSankiRule {
   onUseSanki(): MaterialMove[] {
     return [
       this.varan.moveItem({ type: LocationType.VaranDeck, player: this.player }),
-      new PlayerTurnHelper(this.game).endCurrentPlayerTurn()
+      this.startRule(RuleId.EndPlayerTurn)
     ]
   }
 

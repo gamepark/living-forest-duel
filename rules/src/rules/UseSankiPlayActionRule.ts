@@ -1,7 +1,6 @@
 import { MaterialMove } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { PlayerTurnHelper } from './PlayerTurnHelper'
 import { PlayerUseActionTokenRule } from './PlayerUseActionTokenRule'
 import { RuleId } from './RuleId'
 import { UseSankiRule } from './UseSankiRule'
@@ -9,7 +8,7 @@ import { UseSankiRule } from './UseSankiRule'
 export class UseSankiPlayActionRule extends UseSankiRule {
   onRuleStart() {
     if (!this.opponentHasActionToken || !new PlayerUseActionTokenRule(this.game).getPlayerMoves().length) {
-      return [new PlayerTurnHelper(this.game).endCurrentPlayerTurn()]
+      return [this.startRule(RuleId.EndPlayerTurn)]
     }
     return []
   }
@@ -19,7 +18,7 @@ export class UseSankiPlayActionRule extends UseSankiRule {
   }
 
   onPass(): MaterialMove[] {
-    return [new PlayerTurnHelper(this.game).endCurrentPlayerTurn()]
+    return [this.startRule(RuleId.EndPlayerTurn)]
   }
 
   onUseSanki(): MaterialMove[] {
