@@ -12,11 +12,10 @@ export const AdvancingOnibiHeader = () => {
   const player = usePlayerName(activePlayer)
   const advancingOnibiRule = new AdvancingOnibiRule(rules.game)
   const steps = advancingOnibiRule.action?.value ?? 0
-  const bonusHeader = ''
 
   if (itsMe) {
-    return <Trans defaults="header.advancing-onibi.you" values={{ bonusHeader, steps }}/>
+    return <Trans defaults="header.advancing-onibi.you" values={{ steps }}/>
   } else {
-    return <Trans defaults="header.advancing-onibi.player" values={{ bonusHeader, player, steps }}/>
+    return <Trans defaults="header.advancing-onibi.player" values={{ player, steps }}/>
   }
 }
