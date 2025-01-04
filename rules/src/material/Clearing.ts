@@ -1,5 +1,5 @@
-import { getEnumValues } from "@gamepark/rules-api";
-import { Element } from '../Season'
+import { getEnumValues } from '@gamepark/rules-api'
+import { Bonus } from './Bonus'
 
 export enum Clearing {
   Summer4 = -3,
@@ -12,37 +12,37 @@ export enum Clearing {
 }
 
 export type CardPattern = {
-  bonus: Element,
+  bonus: Bonus,
   fireValue: number
 }
 
 export const clearingProperties: Partial<Record<Clearing, CardPattern>> = {
   [Clearing.Summer4]: {
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     fireValue: 4
   },
   [Clearing.Summer3]: {
-    bonus: Element.Sun,
+    bonus: Bonus.Recruit,
     fireValue: 3
   },
   [Clearing.Summer2]: {
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     fireValue: 2
   },
   [Clearing.Center]: {
-    bonus: Element.Plant,
+    bonus: Bonus.Plant,
     fireValue: 2
   },
   [Clearing.Winter2]: {
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     fireValue: 2
   },
   [Clearing.Winter3]: {
-    bonus: Element.Water,
+    bonus: Bonus.Extinguish,
     fireValue: 3
   },
   [Clearing.Winter4]: {
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     fireValue: 4
   }
 }

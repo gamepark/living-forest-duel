@@ -1,5 +1,6 @@
 import { CustomMove, isMoveItemType, ItemMove } from '@gamepark/rules-api'
 import { range } from 'lodash'
+import { Bonus, getBonusElement } from '../material/Bonus'
 import { Clearing, clearingProperties } from '../material/Clearing'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -64,15 +65,16 @@ export class AdvancingOnibiRule extends ActionRule<AdvancingOnibi> {
     }
 
     const bonus = clearingProperties[move.location.x! as Clearing]!.bonus!
-    if (bonus === Element.Wind) {
+    if (bonus === Bonus.Sanki) {
       return new SankiHelper(this.game).takeSankiCards().concat(this.endAction())
     } else {
+      const element = getBonusElement(bonus)
       const actions = this.remind<Action[]>(Memory.PendingActions)
       actions.pop()
-      const value = new ElementsHelper(this.game).getElementValue(bonus)
-      const action: Action = bonus === Element.Plant ?
-        { element: bonus, value, plantedTreesElements: [], bonus: true }
-        : { element: bonus, value, bonus: true }
+      const value = new ElementsHelper(this.game).getElementValue(element)
+      const action: Action = element === Element.Plant ?
+        { element, value, plantedTreesElements: [], bonus: true }
+        : { element, value, bonus: true }
       actions.push(action)
       return [this.startRule(elementActionRule[bonus])]
     }

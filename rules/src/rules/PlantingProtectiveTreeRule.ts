@@ -1,5 +1,6 @@
 import { CustomMove, directions, isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
 import { range, sumBy } from 'lodash'
+import { Bonus, getBonusElement } from '../material/Bonus'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { getTreeElement, Tree, treeProperties } from '../material/Tree'
@@ -71,14 +72,15 @@ export class PlantingProtectiveTreeRule extends ActionRule<PlantingProtectiveTre
           treesHelper.hasBonusInDirection(movedCard, direction) ? 1 : 0
         )
         if (bonusCount > 0) {
-          if (bonus === Element.Wind) {
+          if (bonus === Bonus.Sanki) {
             return new SankiHelper(this.game).takeSankiCards(bonusCount)
           } else {
-            const value = new ElementsHelper(this.game).getElementValue(bonus)
+            const element = getBonusElement(bonus)
+            const value = new ElementsHelper(this.game).getElementValue(element)
             for (let i = 0; i < bonusCount; i++) {
-              const action: Action = bonus === Element.Plant ?
-                { element: bonus, value, plantedTreesElements: [], bonus: true }
-                : { element: bonus, value, bonus: true }
+              const action: Action = element === Element.Plant ?
+                { element, value, plantedTreesElements: [], bonus: true }
+                : { element, value, bonus: true }
               this.remind<Action[]>(Memory.PendingActions).push(action)
             }
             return [this.startRule(elementActionRule[bonus])]

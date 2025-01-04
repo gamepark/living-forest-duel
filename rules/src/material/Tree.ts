@@ -1,5 +1,6 @@
 import { Direction, getEnumValues } from '@gamepark/rules-api'
 import { Element } from '../Season'
+import { Bonus } from './Bonus'
 
 export enum Tree {
   // Starting trees
@@ -44,14 +45,14 @@ export type TreeDirections = {
 
 export type TreePattern = {
   cost: number,
-  bonus: Element
+  bonus: Bonus
   river: TreeDirections
 }
 
 export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   [Tree.SunTree1]: {
     cost: 1,
-    bonus: Element.Water,
+    bonus: Bonus.Extinguish,
     river: {
       [Direction.North]: false,
       [Direction.East]: true,
@@ -61,7 +62,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.SunTree2]: {
     cost: 1,
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     river: {
       [Direction.North]: true,
       [Direction.East]: false,
@@ -71,7 +72,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.SunTree3]: {
     cost: 2,
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     river: {
       [Direction.North]: true,
       [Direction.East]: false,
@@ -81,7 +82,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.SunTree4]: {
     cost: 2,
-    bonus: Element.Water,
+    bonus: Bonus.Extinguish,
     river: {
       [Direction.North]: true,
       [Direction.East]: true,
@@ -91,7 +92,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.SunTree5]: {
     cost: 2,
-    bonus: Element.Water,
+    bonus: Bonus.Extinguish,
     river: {
       [Direction.North]: false,
       [Direction.East]: true,
@@ -101,7 +102,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.SunTree6]: {
     cost: 2,
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     river: {
       [Direction.North]: true,
       [Direction.East]: true,
@@ -111,7 +112,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WaterTree1]: {
     cost: 2,
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     river: {
       [Direction.North]: false,
       [Direction.East]: true,
@@ -121,7 +122,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WaterTree2]: {
     cost: 2,
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     river: {
       [Direction.North]: true,
       [Direction.East]: false,
@@ -131,7 +132,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WaterTree3]: {
     cost: 3,
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     river: {
       [Direction.North]: true,
       [Direction.East]: true,
@@ -141,7 +142,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WaterTree4]: {
     cost: 3,
-    bonus: Element.Sun,
+    bonus: Bonus.Recruit,
     river: {
       [Direction.North]: true,
       [Direction.East]: false,
@@ -151,7 +152,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WaterTree5]: {
     cost: 3,
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     river: {
       [Direction.North]: false,
       [Direction.East]: true,
@@ -161,7 +162,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WaterTree6]: {
     cost: 3,
-    bonus: Element.Sun,
+    bonus: Bonus.Recruit,
     river: {
       [Direction.North]: true,
       [Direction.East]: true,
@@ -171,7 +172,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.PlantTree1]: {
     cost: 4,
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     river: {
       [Direction.North]: true,
       [Direction.East]: false,
@@ -181,7 +182,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.PlantTree2]: {
     cost: 4,
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     river: {
       [Direction.North]: false,
       [Direction.East]: true,
@@ -191,7 +192,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.PlantTree3]: {
     cost: 4,
-    bonus: Element.Sun,
+    bonus: Bonus.Recruit,
     river: {
       [Direction.North]: false,
       [Direction.East]: false,
@@ -201,7 +202,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.PlantTree4]: {
     cost: 4,
-    bonus: Element.Water,
+    bonus: Bonus.Extinguish,
     river: {
       [Direction.North]: true,
       [Direction.East]: true,
@@ -211,7 +212,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.PlantTree5]: {
     cost: 5,
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     river: {
       [Direction.North]: false,
       [Direction.East]: true,
@@ -221,7 +222,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.PlantTree6]: {
     cost: 5,
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     river: {
       [Direction.North]: true,
       [Direction.East]: false,
@@ -231,7 +232,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WindTree1]: {
     cost: 4,
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     river: {
       [Direction.North]: true,
       [Direction.East]: false,
@@ -241,7 +242,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WindTree2]: {
     cost: 4,
-    bonus: Element.Wind,
+    bonus: Bonus.Sanki,
     river: {
       [Direction.North]: true,
       [Direction.East]: true,
@@ -251,7 +252,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WindTree3]: {
     cost: 3,
-    bonus: Element.Sun,
+    bonus: Bonus.Recruit,
     river: {
       [Direction.North]: true,
       [Direction.East]: true,
@@ -261,7 +262,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WindTree4]: {
     cost: 3,
-    bonus: Element.Sun,
+    bonus: Bonus.Recruit,
     river: {
       [Direction.North]: false,
       [Direction.East]: false,
@@ -271,7 +272,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WindTree5]: {
     cost: 3,
-    bonus: Element.Water,
+    bonus: Bonus.Extinguish,
     river: {
       [Direction.North]: false,
       [Direction.East]: true,
@@ -281,7 +282,7 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   },
   [Tree.WindTree6]: {
     cost: 3,
-    bonus: Element.Water,
+    bonus: Bonus.Extinguish,
     river: {
       [Direction.North]: false,
       [Direction.East]: false,
