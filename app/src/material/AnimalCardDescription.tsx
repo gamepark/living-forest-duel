@@ -1,8 +1,12 @@
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Animal } from '@gamepark/living-forest-duel/material/Animal'
 import { LocationType } from '@gamepark/living-forest-duel/material/LocationType'
 import { MaterialType } from '@gamepark/living-forest-duel/material/MaterialType'
+import { ElementsHelper } from '@gamepark/living-forest-duel/rules/helpers/ElementsHelper'
+import { Element } from '@gamepark/living-forest-duel/Season'
 import { CardDescription, ItemContext, ItemMenuButton, MaterialContext } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
@@ -58,6 +62,10 @@ import SummerVaran from '../images/cards/animals/VaranSummer.jpg'
 import WinterVaran from '../images/cards/animals/VaranWinter.jpg'
 import Weasel from '../images/cards/animals/Weasel.jpg'
 import Wolf from '../images/cards/animals/Wolf.jpg'
+import Plant from '../images/icons/Plant.png'
+import Sun from '../images/icons/Sun.png'
+import Water from '../images/icons/Water.png'
+import Wind from '../images/icons/Wind.png'
 
 class AnimalCardDescription extends CardDescription {
   width = 6.3
@@ -131,9 +139,9 @@ class AnimalCardDescription extends CardDescription {
       || super.isFlippedOnTable(item, context)
   }
 
-  getItemMenu(_item: MaterialItem, context: ItemContext, legalMoves: MaterialMove[]) {
+  getItemMenu(_item: MaterialItem, { index, rules }: ItemContext, legalMoves: MaterialMove[]) {
     const draw = legalMoves.find(move =>
-      isMoveItemType(MaterialType.AnimalCard)(move) && move.itemIndex === context.index && move.location.type === LocationType.SharedHelpLine
+      isMoveItemType(MaterialType.AnimalCard)(move) && move.itemIndex === index && move.location.type === LocationType.SharedHelpLine
     )
     if (draw) {
       return <>
@@ -143,6 +151,22 @@ class AnimalCardDescription extends CardDescription {
         </ItemMenuButton>
       </>
     }
+    const isLastCard = rules.material(MaterialType.AnimalCard).location(LocationType.SharedHelpLine).maxBy(item => item.location.x!).getIndex() === index
+    if (isLastCard) {
+      const actions = legalMoves.filter(isMoveItemType(MaterialType.ActionToken))
+      if (actions.length) {
+        return <>
+          {actions.map(action => {
+            const element = action.location.id as Element
+            return <ItemMenuButton key={element} move={action} x={4.5} y={element * 2.1 - 5.2} labelPosition="right" label={
+              <span>{new ElementsHelper(rules.game).getElementValue(element)} <img css={iconCss} alt="element" src={elementIcon[element]}/></span>
+            }>
+              <FontAwesomeIcon icon={faArrowLeft}/>
+            </ItemMenuButton>
+          })}
+        </>
+      }
+    }
     return null
   }
 
@@ -150,3 +174,15 @@ class AnimalCardDescription extends CardDescription {
 }
 
 export const animalCardDescription = new AnimalCardDescription()
+
+const elementIcon: Record<Element, string> = {
+  [Element.Sun]: Sun,
+  [Element.Water]: Water,
+  [Element.Plant]: Plant,
+  [Element.Wind]: Wind
+}
+
+const iconCss = css`
+  vertical-align: sub;
+  height: 1.3em;
+`
