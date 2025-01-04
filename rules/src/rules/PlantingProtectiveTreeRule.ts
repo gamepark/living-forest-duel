@@ -1,4 +1,4 @@
-import { CustomMove, directions, isMoveItemType, ItemMove, Location, MaterialMove } from '@gamepark/rules-api'
+import { CustomMove, directions, isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
 import { range, sumBy } from 'lodash'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -25,17 +25,12 @@ export class PlantingProtectiveTreeRule extends ActionRule<PlantingProtectiveTre
     const moves: MaterialMove[] = []
     const treesHelper = new TreesHelper(this.game)
     const availableTrees = treesHelper.getVisibleTreesInStack(this.action.value, this.action.plantedTreesElements)
-    const availableSpaces: Location[] = treesHelper.availableSpaces
 
-    for (const tree of availableTrees.getItems()) {
-      const availableSpacesForTree = new TreesHelper(this.game).getAvailableSpacesForTree(tree, availableSpaces)
-      moves.push(
-        ...availableSpacesForTree.flatMap((space) => {
-          return [
-            ...availableTrees.id(tree.id).moveItems(space)
-          ]
-        })
-      )
+    for (const [index, tree] of availableTrees.entries) {
+      const availableSpacesForTree = new TreesHelper(this.game).getAvailableSpacesForTree(tree.id)
+      for (const { x, y } of availableSpacesForTree) {
+        moves.push(availableTrees.index(index).moveItem({ type: LocationType.PlayerForest, player: this.player, x, y }))
+      }
     }
 
     // Only can pass if at least one tree was planted
@@ -117,11 +112,11 @@ export class PlantingProtectiveTreeRule extends ActionRule<PlantingProtectiveTre
     })
 
     return matrix.some((_, row) =>
-      row <= rows - 3 && matrix[row].some((_, col) =>
-        col <= cols - 3 && range(0, 3).every(i =>
-          range(0, 3).every(j => matrix[row + i][col + j])
+        row <= rows - 3 && matrix[row].some((_, col) =>
+            col <= cols - 3 && range(0, 3).every(i =>
+              range(0, 3).every(j => matrix[row + i][col + j])
+            )
         )
-      )
     )
   }
 

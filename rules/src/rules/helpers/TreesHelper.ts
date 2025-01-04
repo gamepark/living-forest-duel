@@ -1,23 +1,23 @@
-import {
-  Direction,
-  directions,
-  getSquareInDirection,
-  Location,
-  Material,
-  MaterialGame,
-  MaterialItem,
-  MaterialRulesPart,
-  XYCoordinates
-} from '@gamepark/rules-api'
-import { uniqBy } from 'lodash'
+import { Direction, directions, getSquareInDirection, Material, MaterialGame, MaterialItem, MaterialRulesPart, XYCoordinates } from '@gamepark/rules-api'
+import { cloneDeep, range } from 'lodash'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { getTreeElement, Tree, treeProperties } from '../../material/Tree'
+import { getTreeElement, isStartingTree, Tree, treeProperties } from '../../material/Tree'
 import { CardinalLocations, Element, Season } from '../../Season'
 
 export class TreesHelper extends MaterialRulesPart {
   constructor(game: MaterialGame, readonly player: Season = game.rule!.player!) {
     super(game)
+  }
+
+  getCurrentForest() {
+    const { xMin, xMax, yMin, yMax } = this.boundaries
+    const forest: Forest = range(0, yMax - yMin + 3).map(_ => range(0, xMax - xMin + 3).map(_ => undefined))
+    const trees = this.material(MaterialType.TreeCard).location(LocationType.PlayerForest).player(this.player).sort(item => item.location.z!).getItems<Tree>()
+    for (const tree of trees) {
+      forest[tree.location.y! - yMin + 1][tree.location.x! - xMin + 1] = tree.id
+    }
+    return forest
   }
 
   getVisibleTreesInStack(plantValue: number, plantedTreesElements: Element[] = []): Material {
@@ -29,56 +29,8 @@ export class TreesHelper extends MaterialRulesPart {
   }
 
   canTreesBePlanted(plantValue: number) {
-    let canPlant = false
-    const availableTrees = this.getVisibleTreesInStack(plantValue)
-    const availableSpaces: Location[] = this.availableSpaces
-
-    for (const tree of availableTrees.getItems()) {
-      const availableSpacesForTree = this.getAvailableSpacesForTree(tree, availableSpaces)
-      if (availableSpacesForTree.length > 0) {
-        canPlant = true
-        break
-      }
-    }
-
-    return canPlant
-  }
-
-  get availableSpaces() {
-
-    const availableSpaces: Location[] = []
-    const playedCards = this.panorama.getItems()
-    for (const playedCard of playedCards) {
-      const coordinates = { x: playedCard.location.x, y: playedCard.location.y }
-
-      // It's possible to put a card on top, excepting the starting tree
-      if (coordinates.x !== 0 || coordinates.y !== 0) {
-        availableSpaces.push({ type: LocationType.PlayerForest, player: this.player, x: playedCard.location.x, y: playedCard.location.y })
-      }
-
-      const left = { x: playedCard.location.x! - 1, y: playedCard.location.y! }
-      if (!playedCards.find(item => isAnyCardToTheLeft(item, coordinates))) {
-        availableSpaces.push({ type: LocationType.PlayerForest, player: this.player, x: left.x, y: left.y })
-      }
-
-      const right = { x: playedCard.location.x! + 1, y: playedCard.location.y! }
-      if (!playedCards.find(item => isAnyCardToTheRight(item, coordinates))) {
-        availableSpaces.push({ type: LocationType.PlayerForest, player: this.player, x: right.x, y: right.y })
-      }
-
-      const below = { x: playedCard.location.x!, y: playedCard.location.y! + 1 }
-      if (!playedCards.find(item => isAnyCardBelow(item, coordinates))) {
-        availableSpaces.push({ type: LocationType.PlayerForest, player: this.player, x: below.x, y: below.y })
-      }
-
-      const above = { x: playedCard.location.x!, y: playedCard.location.y! - 1 }
-      if (!playedCards.find(item => isAnyCardAbove(item, coordinates))) {
-        availableSpaces.push({ type: LocationType.PlayerForest, player: this.player, x: above.x, y: above.y })
-      }
-    }
-
-    return uniqBy(availableSpaces, (location) => JSON.stringify(location))
-
+    const availableTrees = this.getVisibleTreesInStack(plantValue).getItems<Tree>()
+    return availableTrees.some(tree => this.getAvailableSpacesForTree(tree.id).length > 0)
   }
 
   get boundaries() {
@@ -97,42 +49,20 @@ export class TreesHelper extends MaterialRulesPart {
       .location(l => l.type === LocationType.PlayerForest && l.player === this.player)
   }
 
-  getAvailableSpacesForTree(tree: MaterialItem, spaces: Location[]) {
-    const treeSpaces: Location[] = []
-    for (const space of spaces) {
-      if (this.checkNeighbors(tree.id, space)) {
-        treeSpaces.push(space)
+  getAvailableSpacesForTree(tree: Tree) {
+    const { xMin, yMin } = this.boundaries
+    const forest = this.getCurrentForest()
+    const spaces: XYCoordinates[] = []
+    for (let y = 0; y < forest.length; y++) {
+      for (let x = 0; x < forest[0].length; x++) {
+        const forestClone = cloneDeep(forest)
+        forestClone[y][x] = tree
+        if (isValidForest(forestClone)) {
+          spaces.push({ x: x + xMin - 1, y: y + yMin - 1 })
+        }
       }
     }
-
-    return treeSpaces
-  }
-
-  checkNeighbors(treeId: Tree, space: Location) {
-    let neighborSpace: XYCoordinates = { x: 0, y: 0 }
-
-    // North
-    neighborSpace = { x: space.x!, y: space.y! - 1 }
-    if (this.hasValidNeighborCard(treeId, space, Direction.North, neighborSpace, Direction.South)) {
-      return true
-    }
-    // East
-    neighborSpace = { x: space.x! + 1, y: space.y! }
-    if (this.hasValidNeighborCard(treeId, space, Direction.East, neighborSpace, Direction.West)) {
-      return true
-    }
-    // South
-    neighborSpace = { x: space.x!, y: space.y! + 1 }
-    if (this.hasValidNeighborCard(treeId, space, Direction.South, neighborSpace, Direction.North)) {
-      return true
-    }
-    // West
-    neighborSpace = { x: space.x! - 1, y: space.y! }
-    if (this.hasValidNeighborCard(treeId, space, Direction.West, neighborSpace, Direction.East)) {
-      return true
-    }
-
-    return false
+    return spaces
   }
 
   showVisibleTree(reference: { x?: number; y?: number }) {
@@ -145,82 +75,50 @@ export class TreesHelper extends MaterialRulesPart {
     return treesInLocation.location(l => !items.some(item => item.location.x === l.x && item.location.y === l.y && item.location.z! > l.z!))
   }
 
-  hasValidNeighborCard(treeId: Tree, treePos: Location, treeDirection: Direction, neighborPos: XYCoordinates, neighborDirection: Direction) {
-    // There can be more than one neighbor tree as they could be piled. We need to consider only the top one
-    const neighborTree = this.showVisibleTree(neighborPos)
-    if (neighborTree.getItems().length === 0) { // No neighbor
-      return false
-    } else if (this.hasRiverInDirection(treeId, treeDirection)
-      && (this.isLake(neighborTree)
-        || (this.hasRiverInDirection(neighborTree.getItem()?.id, neighborDirection) && this.canReachLake(treeId, treePos)))) {
-      return true
-    }
-
-    return false
-  }
-
-  canReachLake(treeId: Tree, treePos: Location): boolean {
-    const initialCoordinates = { x: treePos.x!, y: treePos.y! }
-    const queue: XYCoordinates[] = [initialCoordinates]
-    const visited = new Set<string>()
-
-    while (queue.length > 0) {
-      const position = queue.shift()!
-      const positionKey = `${position.x},${position.y}`
-
-      if (visited.has(positionKey)) continue
-      visited.add(positionKey)
-
-      const currentTree = position !== initialCoordinates ? this.showVisibleTree(position) : this.material(MaterialType.TreeCard).id(treeId)
-      if (!currentTree.getItem()) continue
-
-      for (const dir of directions) {
-        const currentLocation = position !== initialCoordinates ? currentTree.getItem()!.location : treePos
-        const neighborPos = getSquareInDirection(currentLocation, dir)
-        const neighborKey = `${neighborPos.x},${neighborPos.y}`
-
-        if (!visited.has(neighborKey)) {
-          const neighbor = this.showVisibleTree(neighborPos)
-          if (neighbor.getItem()) {
-            if (this.isLake(neighbor)) {
-              return true
-            } else if (treeProperties[neighbor.getItem()!.id as Tree]?.bonus.river[dir]) {
-              queue.push(neighborPos)
-            }
-          }
-        }
-      }
-    }
-
-    return false
-  }
-
-  isLake(tree: Material) {
-    return tree.id(this.player).getItem() !== undefined
-  }
-
-  hasRiverInDirection(treeId: Tree, direction: Direction) {
-    return treeProperties[treeId]?.bonus.river[direction]!
-  }
-
   hasBonusInDirection(tree: MaterialItem, direction: Direction) {
     const neighborDelta = { x: CardinalLocations[direction].x, y: CardinalLocations[direction].y }
     // There can be more than one neighbor tree as they could be piled. We need to consider only the top one
     const neighbor = this.showVisibleTree({ x: tree.location.x! + neighborDelta.x, y: tree.location.y! + neighborDelta.y }).getItem()
     return neighbor !== undefined && treeProperties[tree.id as Tree]?.bonus.element === treeProperties[neighbor.id as Tree]?.bonus.element
   }
-
 }
 
-export const isAnyCardToTheLeft = (slotToCheck: MaterialItem, reference: { x?: number; y?: number }) => {
-  return slotToCheck.location.x === reference.x! - 1 && slotToCheck.location.y === reference.y
-}
-export const isAnyCardToTheRight = (slotToCheck: MaterialItem, reference: { x?: number; y?: number }) => {
-  return slotToCheck.location.x === reference.x! + 1 && slotToCheck.location.y === reference.y
-}
-export const isAnyCardAbove = (slotToCheck: MaterialItem, reference: { x?: number; y?: number }) => {
-  return slotToCheck.location.x === reference.x! && slotToCheck.location.y === reference.y! - 1
-}
-export const isAnyCardBelow = (slotToCheck: MaterialItem, reference: { x?: number; y?: number }) => {
-  return slotToCheck.location.x === reference.x! && slotToCheck.location.y === reference.y! + 1
+export type Forest = (Tree | undefined)[][]
+
+const oppositeDirection = (direction: Direction): Direction => direction % 2 === 0 ? direction - 1 : direction + 1
+
+export function isValidForest(forest: Forest) {
+  const pathfinding = forest.map(line => line.map(tree => tree === undefined))
+  const lakeY = forest.findIndex(line => line.some(isStartingTree))
+  if (lakeY === -1) return false
+  const lakeX = forest[lakeY].findIndex(isStartingTree)
+  pathfinding[lakeY][lakeX] = true
+  const spacesToCheck: XYCoordinates[] = []
+  for (const direction of directions) {
+    const { x, y } = getSquareInDirection({ x: lakeX, y: lakeY }, direction)
+    if (0 <= y && y < forest.length && 0 <= x && x < forest[0].length) {
+      const tree = forest[y][x]
+      if (tree !== undefined && treeProperties[tree]!.bonus.river[oppositeDirection(direction)]) {
+        pathfinding[y][x] = true
+        spacesToCheck.push({ x, y })
+      }
+    }
+  }
+  while (spacesToCheck.length > 0) {
+    const space = spacesToCheck.pop()!
+    const connectedTree = forest[space.y][space.x]!
+    for (const direction of directions) {
+      const { x, y } = getSquareInDirection(space, direction)
+      if (0 <= y && y < forest.length && 0 <= x && x < forest[0].length) {
+        const tree = forest[y][x]
+        if (tree !== undefined && !pathfinding[y][x]
+          && treeProperties[connectedTree]!.bonus.river[direction]
+          && treeProperties[tree]!.bonus.river[oppositeDirection(direction)]) {
+          pathfinding[y][x] = true
+          spacesToCheck.push({ x, y })
+        }
+      }
+    }
+  }
+  return pathfinding.every(line => !line.includes(false))
 }

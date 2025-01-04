@@ -344,3 +344,5 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
 export const getTreeElement = (tree: Tree): Element | undefined => Math.floor(tree / 10) || undefined
 
 export const treeCards = getEnumValues(Tree).filter(tree => tree >= 11)
+
+export const isStartingTree = (tree?: Tree) => tree !== undefined && tree <= 2
