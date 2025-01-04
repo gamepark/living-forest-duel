@@ -44,299 +44,249 @@ export type TreeDirections = {
 
 export type TreePattern = {
   cost: number,
-  bonus: {
-    element: Element,
-    river: TreeDirections
-  }
+  bonus: Element
+  river: TreeDirections
 }
 
 export const treeProperties: Partial<Record<Tree, TreePattern>> = {
   [Tree.SunTree1]: {
     cost: 1,
-    bonus: {
-      element: Element.Water,
-      river: {
-        [Direction.North]: false,
-        [Direction.East]: true,
-        [Direction.South]: false,
-        [Direction.West]: true
-      }
+    bonus: Element.Water,
+    river: {
+      [Direction.North]: false,
+      [Direction.East]: true,
+      [Direction.South]: false,
+      [Direction.West]: true
     }
   },
   [Tree.SunTree2]: {
     cost: 1,
-    bonus: {
-      element: Element.Wind,
-      river: {
-        [Direction.North]: true,
-        [Direction.East]: false,
-        [Direction.South]: true,
-        [Direction.West]: false
-      }
+    bonus: Element.Wind,
+    river: {
+      [Direction.North]: true,
+      [Direction.East]: false,
+      [Direction.South]: true,
+      [Direction.West]: false
     }
   },
   [Tree.SunTree3]: {
     cost: 2,
-    bonus: {
-      element: Element.Wind,
-      river: {
-        [Direction.North]: true,
-        [Direction.East]: false,
-        [Direction.South]: true,
-        [Direction.West]: true
-      }
+    bonus: Element.Wind,
+    river: {
+      [Direction.North]: true,
+      [Direction.East]: false,
+      [Direction.South]: true,
+      [Direction.West]: true
     }
   },
   [Tree.SunTree4]: {
     cost: 2,
-    bonus: {
-      element: Element.Water,
-      river: {
-        [Direction.North]: true,
-        [Direction.East]: true,
-        [Direction.South]: true,
-        [Direction.West]: false
-      }
+    bonus: Element.Water,
+    river: {
+      [Direction.North]: true,
+      [Direction.East]: true,
+      [Direction.South]: true,
+      [Direction.West]: false
     }
   },
   [Tree.SunTree5]: {
     cost: 2,
-    bonus: {
-      element: Element.Water,
-      river: {
-        [Direction.North]: false,
-        [Direction.East]: true,
-        [Direction.South]: true,
-        [Direction.West]: true
-      }
+    bonus: Element.Water,
+    river: {
+      [Direction.North]: false,
+      [Direction.East]: true,
+      [Direction.South]: true,
+      [Direction.West]: true
     }
   },
   [Tree.SunTree6]: {
     cost: 2,
-    bonus: {
-      element: Element.Wind,
-      river: {
-        [Direction.North]: true,
-        [Direction.East]: true,
-        [Direction.South]: false,
-        [Direction.West]: true
-      }
+    bonus: Element.Wind,
+    river: {
+      [Direction.North]: true,
+      [Direction.East]: true,
+      [Direction.South]: false,
+      [Direction.West]: true
     }
   },
   [Tree.WaterTree1]: {
     cost: 2,
-    bonus: {
-      element: Element.Wind,
-      river: {
-        [Direction.North]: false,
-        [Direction.East]: true,
-        [Direction.South]: false,
-        [Direction.West]: true
-      }
+    bonus: Element.Wind,
+    river: {
+      [Direction.North]: false,
+      [Direction.East]: true,
+      [Direction.South]: false,
+      [Direction.West]: true
     }
   },
   [Tree.WaterTree2]: {
     cost: 2,
-    bonus: {
-      element: Element.Wind,
-      river: {
-        [Direction.North]: true,
-        [Direction.East]: false,
-        [Direction.South]: true,
-        [Direction.West]: false
-      }
+    bonus: Element.Wind,
+    river: {
+      [Direction.North]: true,
+      [Direction.East]: false,
+      [Direction.South]: true,
+      [Direction.West]: false
     }
   },
   [Tree.WaterTree3]: {
     cost: 3,
-    bonus: {
-      element: Element.Wind,
-      river: {
-        [Direction.North]: true,
-        [Direction.East]: true,
-        [Direction.South]: true,
-        [Direction.West]: false
-      }
+    bonus: Element.Wind,
+    river: {
+      [Direction.North]: true,
+      [Direction.East]: true,
+      [Direction.South]: true,
+      [Direction.West]: false
     }
   },
   [Tree.WaterTree4]: {
     cost: 3,
-    bonus: {
-      element: Element.Sun,
-      river: {
-        [Direction.North]: true,
-        [Direction.East]: false,
-        [Direction.South]: true,
-        [Direction.West]: true
-      }
+    bonus: Element.Sun,
+    river: {
+      [Direction.North]: true,
+      [Direction.East]: false,
+      [Direction.South]: true,
+      [Direction.West]: true
     }
   },
   [Tree.WaterTree5]: {
     cost: 3,
-    bonus: {
-      element: Element.Wind,
-      river: {
-        [Direction.North]: false,
-        [Direction.East]: true,
-        [Direction.South]: true,
-        [Direction.West]: true
-      }
+    bonus: Element.Wind,
+    river: {
+      [Direction.North]: false,
+      [Direction.East]: true,
+      [Direction.South]: true,
+      [Direction.West]: true
     }
   },
   [Tree.WaterTree6]: {
     cost: 3,
-    bonus: {
-      element: Element.Sun,
-      river: {
-        [Direction.North]: true,
-        [Direction.East]: true,
-        [Direction.South]: false,
-        [Direction.West]: true
-      }
+    bonus: Element.Sun,
+    river: {
+      [Direction.North]: true,
+      [Direction.East]: true,
+      [Direction.South]: false,
+      [Direction.West]: true
     }
   },
   [Tree.PlantTree1]: {
     cost: 4,
-    bonus: {
-      element: Element.Wind,
-      river: {
-        [Direction.North]: true,
-        [Direction.East]: false,
-        [Direction.South]: true,
-        [Direction.West]: false
-      }
+    bonus: Element.Wind,
+    river: {
+      [Direction.North]: true,
+      [Direction.East]: false,
+      [Direction.South]: true,
+      [Direction.West]: false
     }
   },
   [Tree.PlantTree2]: {
     cost: 4,
-    bonus: {
-      element: Element.Wind,
-      river: {
-        [Direction.North]: false,
-        [Direction.East]: true,
-        [Direction.South]: false,
-        [Direction.West]: true
-      }
+    bonus: Element.Wind,
+    river: {
+      [Direction.North]: false,
+      [Direction.East]: true,
+      [Direction.South]: false,
+      [Direction.West]: true
     }
   },
   [Tree.PlantTree3]: {
     cost: 4,
-    bonus: {
-      element: Element.Sun,
-      river: {
-        [Direction.North]: false,
-        [Direction.East]: false,
-        [Direction.South]: true,
-        [Direction.West]: true
-      }
+    bonus: Element.Sun,
+    river: {
+      [Direction.North]: false,
+      [Direction.East]: false,
+      [Direction.South]: true,
+      [Direction.West]: true
     }
   },
   [Tree.PlantTree4]: {
     cost: 4,
-    bonus: {
-      element: Element.Water,
-      river: {
-        [Direction.North]: true,
-        [Direction.East]: true,
-        [Direction.South]: false,
-        [Direction.West]: false
-      }
+    bonus: Element.Water,
+    river: {
+      [Direction.North]: true,
+      [Direction.East]: true,
+      [Direction.South]: false,
+      [Direction.West]: false
     }
   },
   [Tree.PlantTree5]: {
     cost: 5,
-    bonus: {
-      element: Element.Wind,
-      river: {
-        [Direction.North]: false,
-        [Direction.East]: true,
-        [Direction.South]: true,
-        [Direction.West]: false
-      }
+    bonus: Element.Wind,
+    river: {
+      [Direction.North]: false,
+      [Direction.East]: true,
+      [Direction.South]: true,
+      [Direction.West]: false
     }
   },
   [Tree.PlantTree6]: {
     cost: 5,
-    bonus: {
-      element: Element.Wind,
-      river: {
-        [Direction.North]: true,
-        [Direction.East]: false,
-        [Direction.South]: false,
-        [Direction.West]: true
-      }
+    bonus: Element.Wind,
+    river: {
+      [Direction.North]: true,
+      [Direction.East]: false,
+      [Direction.South]: false,
+      [Direction.West]: true
     }
   },
   [Tree.WindTree1]: {
     cost: 4,
-    bonus: {
-      element: Element.Wind,
-      river: {
-        [Direction.North]: true,
-        [Direction.East]: false,
-        [Direction.South]: true,
-        [Direction.West]: true
-      }
+    bonus: Element.Wind,
+    river: {
+      [Direction.North]: true,
+      [Direction.East]: false,
+      [Direction.South]: true,
+      [Direction.West]: true
     }
   },
   [Tree.WindTree2]: {
     cost: 4,
-    bonus: {
-      element: Element.Wind,
-      river: {
-        [Direction.North]: true,
-        [Direction.East]: true,
-        [Direction.South]: true,
-        [Direction.West]: false
-      }
+    bonus: Element.Wind,
+    river: {
+      [Direction.North]: true,
+      [Direction.East]: true,
+      [Direction.South]: true,
+      [Direction.West]: false
     }
   },
   [Tree.WindTree3]: {
     cost: 3,
-    bonus: {
-      element: Element.Sun,
-      river: {
-        [Direction.North]: true,
-        [Direction.East]: true,
-        [Direction.South]: false,
-        [Direction.West]: false
-      }
+    bonus: Element.Sun,
+    river: {
+      [Direction.North]: true,
+      [Direction.East]: true,
+      [Direction.South]: false,
+      [Direction.West]: false
     }
   },
   [Tree.WindTree4]: {
     cost: 3,
-    bonus: {
-      element: Element.Sun,
-      river: {
-        [Direction.North]: false,
-        [Direction.East]: false,
-        [Direction.South]: true,
-        [Direction.West]: true
-      }
+    bonus: Element.Sun,
+    river: {
+      [Direction.North]: false,
+      [Direction.East]: false,
+      [Direction.South]: true,
+      [Direction.West]: true
     }
   },
   [Tree.WindTree5]: {
     cost: 3,
-    bonus: {
-      element: Element.Water,
-      river: {
-        [Direction.North]: false,
-        [Direction.East]: true,
-        [Direction.South]: true,
-        [Direction.West]: false
-      }
+    bonus: Element.Water,
+    river: {
+      [Direction.North]: false,
+      [Direction.East]: true,
+      [Direction.South]: true,
+      [Direction.West]: false
     }
   },
   [Tree.WindTree6]: {
     cost: 3,
-    bonus: {
-      element: Element.Water,
-      river: {
-        [Direction.North]: false,
-        [Direction.East]: false,
-        [Direction.South]: true,
-        [Direction.West]: true
-      }
+    bonus: Element.Water,
+    river: {
+      [Direction.North]: false,
+      [Direction.East]: false,
+      [Direction.South]: true,
+      [Direction.West]: true
     }
   }
 }

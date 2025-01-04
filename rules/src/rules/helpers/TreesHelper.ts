@@ -79,7 +79,7 @@ export class TreesHelper extends MaterialRulesPart {
     const neighborDelta = { x: CardinalLocations[direction].x, y: CardinalLocations[direction].y }
     // There can be more than one neighbor tree as they could be piled. We need to consider only the top one
     const neighbor = this.showVisibleTree({ x: tree.location.x! + neighborDelta.x, y: tree.location.y! + neighborDelta.y }).getItem()
-    return neighbor !== undefined && treeProperties[tree.id as Tree]?.bonus.element === treeProperties[neighbor.id as Tree]?.bonus.element
+    return neighbor !== undefined && treeProperties[tree.id as Tree]?.bonus === treeProperties[neighbor.id as Tree]?.bonus
   }
 }
 
@@ -98,7 +98,7 @@ export function isValidForest(forest: Forest) {
     const { x, y } = getSquareInDirection({ x: lakeX, y: lakeY }, direction)
     if (0 <= y && y < forest.length && 0 <= x && x < forest[0].length) {
       const tree = forest[y][x]
-      if (tree !== undefined && treeProperties[tree]!.bonus.river[oppositeDirection(direction)]) {
+      if (tree !== undefined && treeProperties[tree]!.river[oppositeDirection(direction)]) {
         pathfinding[y][x] = true
         spacesToCheck.push({ x, y })
       }
@@ -112,8 +112,8 @@ export function isValidForest(forest: Forest) {
       if (0 <= y && y < forest.length && 0 <= x && x < forest[0].length) {
         const tree = forest[y][x]
         if (tree !== undefined && !pathfinding[y][x]
-          && treeProperties[connectedTree]!.bonus.river[direction]
-          && treeProperties[tree]!.bonus.river[oppositeDirection(direction)]) {
+          && treeProperties[connectedTree]!.river[direction]
+          && treeProperties[tree]!.river[oppositeDirection(direction)]) {
           pathfinding[y][x] = true
           spacesToCheck.push({ x, y })
         }

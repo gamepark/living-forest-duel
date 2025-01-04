@@ -65,7 +65,7 @@ export class PlantingProtectiveTreeRule extends ActionRule<PlantingProtectiveTre
         this.action.value -= treeProperties[tree]!.cost
 
         // Check possible bonuses
-        const bonus = treeProperties[tree]!.bonus.element
+        const bonus = treeProperties[tree]!.bonus
         const treesHelper = new TreesHelper(this.game)
         const bonusCount = sumBy(directions, direction =>
           treesHelper.hasBonusInDirection(movedCard, direction) ? 1 : 0
