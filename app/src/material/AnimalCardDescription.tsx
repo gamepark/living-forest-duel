@@ -1,5 +1,11 @@
-import { CardDescription, MaterialContext } from "@gamepark/react-game";
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Animal } from '@gamepark/living-forest-duel/material/Animal'
+import { LocationType } from '@gamepark/living-forest-duel/material/LocationType'
+import { MaterialType } from '@gamepark/living-forest-duel/material/MaterialType'
+import { CardDescription, ItemContext, ItemMenuButton, MaterialContext } from '@gamepark/react-game'
+import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { Trans } from 'react-i18next'
 import AnimalCardBack from '../images/cards/animals/AnimalCardBack.jpg'
 import Anteater from '../images/cards/animals/Anteater.jpg'
 import Axolotl from '../images/cards/animals/Axolotl.jpg'
@@ -48,12 +54,10 @@ import Tanuki from '../images/cards/animals/Tanuki.jpg'
 import Tapir from '../images/cards/animals/Tapir.jpg'
 import Tiger from '../images/cards/animals/Tiger.jpg'
 import Toucan from '../images/cards/animals/Toucan.jpg'
-import Weasel from '../images/cards/animals/Weasel.jpg'
-import Wolf from '../images/cards/animals/Wolf.jpg'
 import SummerVaran from '../images/cards/animals/VaranSummer.jpg'
 import WinterVaran from '../images/cards/animals/VaranWinter.jpg'
-import { MaterialItem } from "@gamepark/rules-api";
-import { LocationType } from "@gamepark/living-forest-duel/material/LocationType";
+import Weasel from '../images/cards/animals/Weasel.jpg'
+import Wolf from '../images/cards/animals/Wolf.jpg'
 
 class AnimalCardDescription extends CardDescription {
   width = 6.3
@@ -127,6 +131,22 @@ class AnimalCardDescription extends CardDescription {
       || super.isFlippedOnTable(item, context)
   }
 
+  getItemMenu(_item: MaterialItem, context: ItemContext, legalMoves: MaterialMove[]) {
+    const draw = legalMoves.find(move =>
+      isMoveItemType(MaterialType.AnimalCard)(move) && move.itemIndex === context.index && move.location.type === LocationType.SharedHelpLine
+    )
+    if (draw) {
+      return <>
+        <ItemMenuButton move={draw} x={-1.8}
+                        label={<Trans defaults="button.draw"/>}>
+          <FontAwesomeIcon icon={faArrowRight}/>
+        </ItemMenuButton>
+      </>
+    }
+    return null
+  }
+
+  menuAlwaysVisible = true
 }
 
 export const animalCardDescription = new AnimalCardDescription()
