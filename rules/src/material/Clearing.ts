@@ -16,7 +16,7 @@ export type CardPattern = {
   fireValue: number
 }
 
-export const clearingProperties: Partial<Record<Clearing, CardPattern>> = {
+export const clearingProperties: Record<Clearing, CardPattern> = {
   [Clearing.Summer4]: {
     bonus: Bonus.Sanki,
     fireValue: 4

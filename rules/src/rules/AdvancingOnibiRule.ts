@@ -64,7 +64,7 @@ export class AdvancingOnibiRule extends ActionRule<AdvancingOnibi> {
       return [this.moveOnibiOnce()]
     }
 
-    const bonus = clearingProperties[move.location.x! as Clearing]!.bonus!
+    const bonus = clearingProperties[move.location.x as Clearing].bonus
     if (bonus === Bonus.Sanki) {
       return new SankiHelper(this.game).takeSankiCards().concat(this.endAction())
     } else {

@@ -50,12 +50,12 @@ export class EndTurnRule extends PlayerTurnRule {
     let value = 0
     const fireTokens = this.material(MaterialType.FireToken).location(LocationType.ClearingCardSpot)
     for (const element of fireTokens.getItems()) {
-      value += clearingProperties[element.location.x! as Clearing]?.fireValue!
+      value += clearingProperties[element.location.x as Clearing].fireValue
     }
 
-    const onibi = this.material(MaterialType.OnibiStandee).getItem()
-    if (!fireTokens.getItems().some(item => item.location.x === onibi?.location.x)) {
-      value += clearingProperties[onibi?.location.x! as Clearing]?.fireValue!
+    const onibi = this.material(MaterialType.OnibiStandee).getItem()!
+    if (!fireTokens.getItems().some(item => item.location.x === onibi.location.x)) {
+      value += clearingProperties[onibi.location.x as Clearing].fireValue
     }
 
     return value
