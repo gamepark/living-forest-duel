@@ -16,6 +16,7 @@ import ClearingSummer4 from '../images/cards/clearing/ClearingSummer4.jpg'
 import ClearingWinter2 from '../images/cards/clearing/ClearingWinter2.jpg'
 import ClearingWinter3 from '../images/cards/clearing/ClearingWinter3.jpg'
 import ClearingWinter4 from '../images/cards/clearing/ClearingWinter4.jpg'
+import { ClearingCardHelp } from './help/ClearingCardHelp'
 
 class ClearingCardDescription extends CardDescription {
   width = 6.3
@@ -39,6 +40,8 @@ class ClearingCardDescription extends CardDescription {
       x
     }
   }))
+
+  help = ClearingCardHelp
 
   getItemMenu(item: MaterialItem, { player, rules }: ItemContext, legalMoves: MaterialMove[]) {
     if (player === undefined) return
