@@ -10,7 +10,7 @@ export const SpiritCardHelp = (props: MaterialHelpProps) => {
   if (props.item.id === SpiritType.Onibi) {
     return <OnibiCardHelp/>
   } else {
-    return <SankiCardHelp {...props}/>
+    return <SankiCardHelp/>
   }
 }
 
@@ -27,7 +27,17 @@ const OnibiCardHelp = () => {
   </>
 }
 
-const SankiCardHelp = (_props: MaterialHelpProps) => {
-  return null
+const SankiCardHelp = () => {
+  const { t } = useTranslation()
+  return <>
+    <h2>{t('sanki.card')}</h2>
+    <p>{t('sanki.get')}</p>
+    <p><Trans defaults="sanki.rule" components={{
+      bold: <strong/>
+    }}/></p>
+    <p><Trans defaults="sanki.use" components={{
+      bold: <strong/>
+    }}/></p>
+  </>
 }
 
