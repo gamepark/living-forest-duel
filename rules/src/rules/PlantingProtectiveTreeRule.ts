@@ -56,6 +56,7 @@ export class PlantingProtectiveTreeRule extends ActionRule<PlantingProtectiveTre
 
       // Check winning condition
       if (this.isPlantWinningCondition()) {
+        this.memorize(Memory.Winner, this.player)
         return [this.endGame()]
       } else {
         const tree = movedCard.id

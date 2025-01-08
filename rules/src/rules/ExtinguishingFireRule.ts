@@ -7,6 +7,7 @@ import { ExtinguishingFire } from './actions/Action'
 import { CustomMoveType } from './CustomMoveType'
 import { ElementsHelper } from './helpers/ElementsHelper'
 import { FireHelper } from './helpers/FireHelper'
+import { Memory } from './Memory'
 
 export class ExtinguishingFireRule extends ActionRule<ExtinguishingFire> {
   onRuleStart() {
@@ -52,6 +53,7 @@ export class ExtinguishingFireRule extends ActionRule<ExtinguishingFire> {
   afterItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.FireToken)(move)
       && this.material(MaterialType.FireToken).location(LocationType.PlayerFireStock).player(this.player).getQuantity() === 8) {
+      this.memorize(Memory.Winner, this.player)
       return [this.endGame()]
     }
     return []

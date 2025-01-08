@@ -8,6 +8,7 @@ import { RecruitingAnimals } from './actions/Action'
 import { CustomMoveType } from './CustomMoveType'
 import { AnimalsHelper } from './helpers/AnimalsHelper'
 import { ElementsHelper } from './helpers/ElementsHelper'
+import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
 export class RecruitingAnimalsRule extends ActionRule<RecruitingAnimals> {
@@ -58,6 +59,7 @@ export class RecruitingAnimalsRule extends ActionRule<RecruitingAnimals> {
       // Check winning condition
       if (this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
         .id<Animal>(animal => getAnimalSeason(animal) !== this.player).getQuantity() === 0) {
+        this.memorize(Memory.Winner, this.player)
         return [this.endGame()]
       } else {
         const movedCard = this.material(MaterialType.AnimalCard).getItem<Animal>(move.itemIndex)

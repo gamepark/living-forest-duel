@@ -53,6 +53,7 @@ export class AdvancingOnibiRule extends ActionRule<AdvancingOnibi> {
     } else if (onibiCardOwner === undefined) {
       return onibiCard.moveItem({ type: LocationType.PlayerSpiritLine, player: getOpponentSeason(this.player) })
     } else {
+      this.memorize(Memory.Winner, this.player)
       return this.endGame()
     }
   }

@@ -15,6 +15,7 @@ import { AdvancingOnibiRule } from './rules/AdvancingOnibiRule'
 import { EndPlayerTurnRule } from './rules/EndPlayerTurnRule'
 import { EndTurnRule } from './rules/EndTurnRule'
 import { ExtinguishingFireRule } from './rules/ExtinguishingFireRule'
+import { Memory } from './rules/Memory'
 import { PlantingProtectiveTreeRule } from './rules/PlantingProtectiveTreeRule'
 import { PlayerActionRule } from './rules/PlayerActionRule'
 import { PlayerUseActionTokenRule } from './rules/PlayerUseActionTokenRule'
@@ -44,7 +45,7 @@ export class LivingForestDuelRules extends HiddenMaterialRules<Season, MaterialT
     [RuleId.UseSankiOnVaran]: UseSankiOnVaranRule,
     [RuleId.UseSankiPlayAction]: UseSankiPlayActionRule,
     [RuleId.EndPlayerTurn]: EndPlayerTurnRule,
-    [RuleId.EndTurn]: EndTurnRule,
+    [RuleId.EndTurn]: EndTurnRule
   }
 
   locationsStrategies = {
@@ -82,6 +83,6 @@ export class LivingForestDuelRules extends HiddenMaterialRules<Season, MaterialT
   }
 
   rankPlayers(playerA: Season, _playerB: Season) {
-    return playerA === this.getActivePlayer() ? 1 : -1
+    return playerA === this.remind(Memory.Winner) ? -1 : 1
   }
 }
