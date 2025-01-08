@@ -178,7 +178,7 @@ class AnimalCardDescription extends CardDescription {
 
 export const animalCardDescription = new AnimalCardDescription()
 
-const elementIcon: Record<Element, string> = {
+export const elementIcon: Record<Element, string> = {
   [Element.Sun]: Sun,
   [Element.Water]: Water,
   [Element.Plant]: Plant,

@@ -26,6 +26,7 @@ import WindTree3 from '../images/cards/trees/WindTree3.jpg'
 import WindTree4 from '../images/cards/trees/WindTree4.jpg'
 import WindTree5 from '../images/cards/trees/WindTree5.jpg'
 import WindTree6 from '../images/cards/trees/WindTree6.jpg'
+import { TreeCardHelp } from './help/TreeCardHelp'
 
 class TreeCardDescription extends CardDescription {
   width = 8.8
@@ -60,6 +61,8 @@ class TreeCardDescription extends CardDescription {
     [Tree.WindTree5]: WindTree5,
     [Tree.WindTree6]: WindTree6
   }
+
+  help = TreeCardHelp
 }
 
 export const treeCardDescription = new TreeCardDescription()
