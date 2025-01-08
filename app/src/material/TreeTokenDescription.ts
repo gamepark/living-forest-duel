@@ -6,8 +6,8 @@ import WinterTreeToken from '../images/winter.png'
 
 
 class TreeTokenDescription extends FlatMaterialDescription {
-  width = 6.3
-  height = 8.8
+  width = 9
+  height = 9
 
   images = {
     [Season.Summer]: SummerTreeToken,
