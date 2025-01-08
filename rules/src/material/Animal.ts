@@ -67,13 +67,6 @@ export enum AnimalType {
   Gregarious
 }
 
-export type CardElements = {
-  [Element.Sun]?: number
-  [Element.Water]?: number
-  [Element.Plant]?: number
-  [Element.Wind]?: number
-}
-
 export type CardPattern = {
   type: AnimalType,
   elements: Partial<Record<Element, number>>,
@@ -493,8 +486,3 @@ export const summerAnimals = getEnumValues(Animal).filter(animal => getAnimalSea
 export const winterAnimals = getEnumValues(Animal).filter(animal => getAnimalSeason(animal) === Season.Winter && animal !== Animal.WinterVaran)
 export const commonAnimals = getEnumValues(Animal).filter(animal => getAnimalSeason(animal) === undefined && animal !== Animal.Stag)
 export const isVaran = (animal: Animal) => animal === Animal.SummerVaran || animal === Animal.WinterVaran
-
-export function isNotOpponentAnimal(animal: Animal, season: Season) {
-  const animalSeason = getAnimalSeason(animal)
-  return animalSeason === undefined || animalSeason === season
-}

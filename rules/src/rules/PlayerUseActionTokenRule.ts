@@ -22,7 +22,6 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
   getAvailableActions() {
     const moves: MaterialMove[] = []
     const sharedCards = this.material(MaterialType.AnimalCard).location(LocationType.SharedHelpLine).sort(item => -item.location.x!)
-    // Using the CardElements type to store the id of the animal card id that is available in this action
     const elementCardIndexes: Partial<Record<Element, number>> = {}
 
     for (const [index, card] of sharedCards.entries) {
