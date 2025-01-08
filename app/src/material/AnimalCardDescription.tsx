@@ -66,6 +66,7 @@ import Plant from '../images/icons/Plant.png'
 import Sun from '../images/icons/Sun.png'
 import Water from '../images/icons/Water.png'
 import Wind from '../images/icons/Wind.png'
+import { AnimalCardHelp } from './help/AnimalCardHelp'
 
 class AnimalCardDescription extends CardDescription {
   width = 6.3
@@ -126,6 +127,8 @@ class AnimalCardDescription extends CardDescription {
     [Animal.SummerVaran]: SummerVaran,
     [Animal.WinterVaran]: WinterVaran
   }
+
+  help = AnimalCardHelp
 
   isFlipped(item: Partial<MaterialItem>, context: MaterialContext) {
     if (item.location?.type === LocationType.SharedDeck || item.location?.type === LocationType.SeasonAnimalDeck) return true

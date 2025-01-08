@@ -33,7 +33,7 @@ export class AnimalsHelper extends MaterialRulesPart {
     const solitary = Object.entries(animalsProperties).filter(([key, properties]) => !isVaran(Number(key) as Animal) && properties.type === AnimalType.Solitary).length
     const totalSolitary = totalVarans + solitary
 
-    const totalGregarious = countBy(animalsProperties, animal => animal.type === AnimalType.Gregarius).true || 0
+    const totalGregarious = countBy(animalsProperties, animal => animal.type === AnimalType.Gregarious).true || 0
     const difference = totalSolitary - totalGregarious
     // To avoid losing another action after getting a grearious animal
     if (difference > 3 || (difference === 3 && this.material(MaterialType.ActionToken).location(LocationType.PlayerActionLost).player(season).getItems().length === 0)) {

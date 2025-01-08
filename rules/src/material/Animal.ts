@@ -64,7 +64,7 @@ export enum Animal {
 export enum AnimalType {
   Neutral = 1,
   Solitary,
-  Gregarius
+  Gregarious
 }
 
 export type CardElements = {
@@ -75,14 +75,14 @@ export type CardElements = {
 }
 
 export type CardPattern = {
-  type: number,
+  type: AnimalType,
   elements: Partial<Record<Element, number>>,
   cost: number
 }
 
 export const animalProperties: Record<Animal, CardPattern> = {
   [Animal.Stag]: {
-    type: AnimalType.Gregarius,
+    type: AnimalType.Gregarious,
     elements: {},
     cost: 12
   },
@@ -265,7 +265,7 @@ export const animalProperties: Record<Animal, CardPattern> = {
     cost: 4
   },
   [Animal.Chimpanzee]: {
-    type: AnimalType.Gregarius,
+    type: AnimalType.Gregarious,
     elements: {
       [Element.Sun]: 3,
       [Element.Water]: -1
@@ -360,7 +360,7 @@ export const animalProperties: Record<Animal, CardPattern> = {
     cost: 7
   },
   [Animal.Toucan]: {
-    type: AnimalType.Gregarius,
+    type: AnimalType.Gregarious,
     elements: {
       [Element.Sun]: 1,
       [Element.Wind]: -1
@@ -392,7 +392,7 @@ export const animalProperties: Record<Animal, CardPattern> = {
     cost: 7
   },
   [Animal.Eagle]: {
-    type: AnimalType.Gregarius,
+    type: AnimalType.Gregarious,
     elements: {
       [Element.Sun]: 1,
       [Element.Wind]: -1
@@ -427,7 +427,7 @@ export const animalProperties: Record<Animal, CardPattern> = {
     cost: 6
   },
   [Animal.Macaque]: {
-    type: AnimalType.Gregarius,
+    type: AnimalType.Gregarious,
     elements: {
       [Element.Sun]: 3,
       [Element.Water]: -1
