@@ -6,6 +6,7 @@ import SummerArrowLost from '../images/tokens/SummerArrowLost.png'
 import WinterArrowLost from '../images/tokens/WinterArrowLost.png'
 import { LocationType } from "@gamepark/living-forest-duel/material/LocationType"
 import { MaterialItem } from "@gamepark/rules-api"
+import { ActionTokenHelp } from './help/ActionTokenHelp'
 
 class ActionTokenDescription extends TokenDescription {
   width = 2.7
@@ -20,6 +21,8 @@ class ActionTokenDescription extends TokenDescription {
     [Season.Summer]: SummerArrowLost,
     [Season.Winter]: WinterArrowLost,
   }
+
+  help = ActionTokenHelp
 
   isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext) {
     return item.location?.type === LocationType.PlayerActionLost || super.isFlippedOnTable(item, context)
