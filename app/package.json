@@ -1,6 +1,6 @@
 {
   "name": "@gamepark/living-forest-duel-app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "The user interface of Living Forest Duel adaptation for Game Park",
   "author": "Romain Fromi <romain@game-park.com> (https://game-park.com/)",
