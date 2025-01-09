@@ -3,6 +3,8 @@ import { css } from '@emotion/react'
 import { Season } from '@gamepark/living-forest-duel/Season'
 import { StyledPlayerPanel, usePlayers } from '@gamepark/react-game'
 import { createPortal } from 'react-dom'
+import SummerBackground from '../images/backgrounds/SummerBackground.jpg'
+import WinterBackground from '../images/backgrounds/WinterBackground.jpg'
 
 export const PlayerPanels = () => {
   const players = usePlayers<Season>({ sortFromMe: true })
@@ -14,20 +16,15 @@ export const PlayerPanels = () => {
   return createPortal(
     <>
       {players.map((player) =>
-        <StyledPlayerPanel key={player.id} player={player} color={playerColorCode[player.id]} 
-                            css={[panelCss, player.id === Season.Summer ? left : right]}/>
-                            // css={panelPosition(index)}/>
+        <StyledPlayerPanel key={player.id} player={player} color={playerColorCode[player.id]}
+                           backgroundImage={player.id === Season.Summer ? SummerBackground : WinterBackground}
+                           css={[panelCss, player.id === Season.Summer ? left : right]}/>
       )}
     </>,
     root
   )
 }
-// const panelPosition = (index: number) => css`
-//   position: absolute;
-//   right: 1em;
-//   top: ${8.5 + index * 16}em;
-//   width: 28em;
-// `
+
 const panelCss = css`
   position: absolute;
   transform: translateY(50%) translateY(75em);
@@ -35,11 +32,11 @@ const panelCss = css`
 `
 
 const left = css`
-  left: 0em
+  left: 3em
 `
 
 const right = css`
-  right: 0em
+  right: 3em
 `
 
 export const playerColorCode: Record<Season, string> = {
