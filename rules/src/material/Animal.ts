@@ -77,7 +77,7 @@ export const animalProperties: Record<Animal, CardPattern> = {
   [Animal.Stag]: {
     type: AnimalType.Gregarious,
     elements: {},
-    cost: 12
+    cost: 7
   },
   [Animal.SummerVaran]: {
     type: AnimalType.Solitary,
