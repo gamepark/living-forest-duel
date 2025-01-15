@@ -11,6 +11,7 @@ import { ActionTokenHelp } from './help/ActionTokenHelp'
 class ActionTokenDescription extends TokenDescription {
   width = 2.7
   height = 2.3
+  borderRadius = 0.5
 
   images = {
     [Season.Summer]: SummerArrow,
