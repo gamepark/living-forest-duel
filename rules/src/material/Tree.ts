@@ -264,9 +264,9 @@ export const treeProperties: Partial<Record<Tree, TreePattern>> = {
     cost: 3,
     bonus: Bonus.Recruit,
     river: {
-      [Direction.North]: false,
+      [Direction.North]: true,
       [Direction.East]: false,
-      [Direction.South]: true,
+      [Direction.South]: false,
       [Direction.West]: true
     }
   },
