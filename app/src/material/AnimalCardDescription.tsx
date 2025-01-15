@@ -8,7 +8,7 @@ import { MaterialType } from '@gamepark/living-forest-duel/material/MaterialType
 import { ElementsHelper } from '@gamepark/living-forest-duel/rules/helpers/ElementsHelper'
 import { Element } from '@gamepark/living-forest-duel/Season'
 import { CardDescription, ItemContext, ItemMenuButton, MaterialContext } from '@gamepark/react-game'
-import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import AnimalCardBack from '../images/cards/animals/AnimalCardBack.jpg'
 import Anteater from '../images/cards/animals/Anteater.jpg'
@@ -67,6 +67,7 @@ import Sun from '../images/icons/Sun.png'
 import Water from '../images/icons/Water.png'
 import Wind from '../images/icons/Wind.png'
 import { AnimalCardHelp } from './help/AnimalCardHelp'
+import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
 class AnimalCardDescription extends CardDescription {
   width = 6.3
@@ -138,8 +139,12 @@ class AnimalCardDescription extends CardDescription {
   isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext) {
     return item.location?.type === LocationType.SeasonAnimalDeck
       || item.location?.type === LocationType.SharedDeck
-      || item.location?.type === LocationType.SharedDiscardPile
       || super.isFlippedOnTable(item, context)
+  }
+
+  displayHelp(item: MaterialItem, context: ItemContext) {
+    if (item.location.type === LocationType.SharedDiscardPile) return displayLocationHelp(item.location)
+    return super.displayHelp(item, context)
   }
 
   getItemMenu(_item: MaterialItem, { index, rules }: ItemContext, legalMoves: MaterialMove[]) {

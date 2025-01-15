@@ -73,7 +73,6 @@ export class LivingForestDuelRules extends HiddenMaterialRules<Season, MaterialT
   hidingStrategies = {
     [MaterialType.AnimalCard]: {
       [LocationType.SharedDeck]: hideItemId,
-      [LocationType.SharedDiscardPile]: hideItemId,
       [LocationType.SeasonAnimalDeck]: hideItemId
     }
   }
