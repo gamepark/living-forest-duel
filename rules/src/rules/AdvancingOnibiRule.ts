@@ -1,7 +1,7 @@
 import { CustomMove, isMoveItemType, ItemMove } from '@gamepark/rules-api'
 import { range } from 'lodash'
 import { Bonus, getBonusElement } from '../material/Bonus'
-import { Clearing, clearingProperties } from '../material/Clearing'
+import { Clearing, getClearingBonus } from '../material/Clearing'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { SpiritType } from '../material/SpiritType'
@@ -65,7 +65,7 @@ export class AdvancingOnibiRule extends ActionRule<AdvancingOnibi> {
       return [this.moveOnibiOnce()]
     }
 
-    const bonus = clearingProperties[move.location.x as Clearing].bonus
+    const bonus = getClearingBonus(move.location.x as Clearing)
     if (bonus === Bonus.Sanki) {
       return new SankiHelper(this.game).takeSankiCards().concat(this.endAction())
     } else {

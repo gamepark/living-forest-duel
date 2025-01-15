@@ -1,5 +1,5 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { Clearing, clearingProperties } from '../material/Clearing'
+import { Clearing, getClearingFireValue } from '../material/Clearing'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Element, seasons } from '../Season'
@@ -50,12 +50,12 @@ export class EndTurnRule extends PlayerTurnRule {
     let value = 0
     const fireTokens = this.material(MaterialType.FireToken).location(LocationType.ClearingCardSpot)
     for (const element of fireTokens.getItems()) {
-      value += clearingProperties[element.location.x as Clearing].fireValue
+      value += getClearingFireValue(element.location.x as Clearing)
     }
 
     const onibi = this.material(MaterialType.OnibiStandee).getItem()!
     if (!fireTokens.getItems().some(item => item.location.x === onibi.location.x)) {
-      value += clearingProperties[onibi.location.x as Clearing].fireValue
+      value += getClearingFireValue(onibi.location.x as Clearing)
     }
 
     return value

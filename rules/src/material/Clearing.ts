@@ -11,39 +11,18 @@ export enum Clearing {
   Winter4
 }
 
-export type CardPattern = {
-  bonus: Bonus,
-  fireValue: number
-}
+export const getClearingFireValue = (clearing: Clearing) => Math.min(2, Math.abs(clearing) + 1)
 
-export const clearingProperties: Record<Clearing, CardPattern> = {
-  [Clearing.Summer4]: {
-    bonus: Bonus.Sanki,
-    fireValue: 4
-  },
-  [Clearing.Summer3]: {
-    bonus: Bonus.Recruit,
-    fireValue: 3
-  },
-  [Clearing.Summer2]: {
-    bonus: Bonus.Sanki,
-    fireValue: 2
-  },
-  [Clearing.Center]: {
-    bonus: Bonus.Plant,
-    fireValue: 2
-  },
-  [Clearing.Winter2]: {
-    bonus: Bonus.Sanki,
-    fireValue: 2
-  },
-  [Clearing.Winter3]: {
-    bonus: Bonus.Extinguish,
-    fireValue: 3
-  },
-  [Clearing.Winter4]: {
-    bonus: Bonus.Sanki,
-    fireValue: 4
+export function getClearingBonus(clearing: Clearing) {
+  switch (Math.abs(clearing)) {
+    case 0:
+      return Bonus.Plant
+    case 1:
+      return Bonus.Recruit
+    case 2:
+      return Bonus.Extinguish
+    default:
+      return Bonus.Sanki
   }
 }
 

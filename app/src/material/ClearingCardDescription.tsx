@@ -1,13 +1,12 @@
 import { faAnglesRight, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Clearing } from '@gamepark/living-forest-duel/material/Clearing'
+import { Clearing, clearings } from '@gamepark/living-forest-duel/material/Clearing'
 import { LocationType } from '@gamepark/living-forest-duel/material/LocationType'
 import { MaterialType } from '@gamepark/living-forest-duel/material/MaterialType'
 import { CustomMoveType } from '@gamepark/living-forest-duel/rules/CustomMoveType'
 import { Season } from '@gamepark/living-forest-duel/Season'
 import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
 import { isCustomMoveType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
-import { range } from 'lodash'
 import { Trans } from 'react-i18next'
 import ClearingCenter from '../images/cards/clearing/ClearingCenter.jpg'
 import ClearingSummer2 from '../images/cards/clearing/ClearingSummer2.jpg'
@@ -33,7 +32,7 @@ class ClearingCardDescription extends CardDescription {
     [Clearing.Winter4]: ClearingWinter4
   }
 
-  staticItems = range(-3, 4).map(x => ({
+  staticItems = clearings.map(x => ({
     id: x,
     location: {
       type: LocationType.ClearingLine,
