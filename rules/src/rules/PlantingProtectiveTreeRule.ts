@@ -3,17 +3,18 @@ import { range, sumBy } from 'lodash'
 import { Bonus, getBonusElement } from '../material/Bonus'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { getTreeElement, Tree, treeProperties } from '../material/Tree'
+import { TreeId, treeProperties } from '../material/Tree'
 import { Element } from '../Season'
 import { ActionRule } from './ActionRule'
-import { Action, elementActionRule, PlantingProtectiveTrees } from './actions/Action'
+import { Action, elementActionRule } from './actions/Action'
 import { CustomMoveType } from './CustomMoveType'
 import { ElementsHelper } from './helpers/ElementsHelper'
 import { SankiHelper } from './helpers/SankiHelper'
 import { TreesHelper } from './helpers/TreesHelper'
 import { Memory } from './Memory'
+import { RuleId } from './RuleId'
 
-export class PlantingProtectiveTreeRule extends ActionRule<PlantingProtectiveTrees> {
+export class PlantingProtectiveTreeRule extends ActionRule {
 
   onRuleStart() {
     if (!new TreesHelper(this.game).canTreesBePlanted(this.action.value)) {
@@ -25,10 +26,10 @@ export class PlantingProtectiveTreeRule extends ActionRule<PlantingProtectiveTre
   getPlayerMoves() {
     const moves: MaterialMove[] = []
     const treesHelper = new TreesHelper(this.game)
-    const availableTrees = treesHelper.getVisibleTreesInStack(this.action.value, this.action.plantedTreesElements)
+    const availableTrees = treesHelper.getAvailableTrees(this.action.value)
 
     for (const [index, tree] of availableTrees.entries) {
-      const availableSpacesForTree = new TreesHelper(this.game).getAvailableSpacesForTree(tree.id)
+      const availableSpacesForTree = new TreesHelper(this.game).getAvailableSpacesForTree(tree.id.front)
       for (const { x, y } of availableSpacesForTree) {
         moves.push(availableTrees.index(index).moveItem({ type: LocationType.PlayerForest, player: this.player, x, y }))
       }
@@ -36,7 +37,7 @@ export class PlantingProtectiveTreeRule extends ActionRule<PlantingProtectiveTre
 
     // Only can pass if at least one tree was planted
     const elementsHelper = new ElementsHelper(this.game)
-    if (this.action.value < elementsHelper.getElementValue(Element.Plant, !this.isBonusAction)) {
+    if (this.action.value < elementsHelper.getElementValue(Element.Plant, !this.action.bonus)) {
       moves.push(this.customMove(CustomMoveType.Pass))
     }
 
@@ -45,23 +46,21 @@ export class PlantingProtectiveTreeRule extends ActionRule<PlantingProtectiveTre
 
   onCustomMove(move: CustomMove) {
     if (move.type === CustomMoveType.Pass) {
-      return [this.endAction()]
+      return [this.startRule(RuleId.RevealTrees)]
     }
     return []
   }
 
   afterItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.TreeCard)(move) && move.location.type === LocationType.PlayerForest) {
-      const movedCard = this.material(move.itemType).getItem<Tree>(move.itemIndex)
+      const movedCard = this.material(move.itemType).getItem<TreeId>(move.itemIndex)
 
       // Check winning condition
       if (this.isPlantWinningCondition()) {
         this.memorize(Memory.Winner, this.player)
         return [this.endGame()]
       } else {
-        const tree = movedCard.id
-        // Remember the types planted because we can only take one of each type
-        this.action.plantedTreesElements.push(getTreeElement(tree)!)
+        const tree = movedCard.id.front
 
         // Update remaining value
         this.action.value -= treeProperties[tree]!.cost
@@ -79,10 +78,7 @@ export class PlantingProtectiveTreeRule extends ActionRule<PlantingProtectiveTre
             const element = getBonusElement(bonus)
             const value = new ElementsHelper(this.game).getElementValue(element)
             for (let i = 0; i < bonusCount; i++) {
-              const action: Action = element === Element.Plant ?
-                { element, value, plantedTreesElements: [], bonus: true }
-                : { element, value, bonus: true }
-              this.remind<Action[]>(Memory.PendingActions).push(action)
+              this.remind<Action[]>(Memory.PendingActions).push({ element, value, bonus: true })
             }
             return [this.startRule(elementActionRule[bonus])]
           }

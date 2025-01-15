@@ -2,7 +2,7 @@ import {
   CompetitiveRank,
   HiddenMaterialRules,
   hideItemId,
-  MaterialGame,
+  MaterialGame, MaterialItem,
   MaterialMove,
   PositiveSequenceStrategy,
   StakingStrategy,
@@ -21,6 +21,7 @@ import { PlayerActionRule } from './rules/PlayerActionRule'
 import { PlayerUseActionTokenRule } from './rules/PlayerUseActionTokenRule'
 import { RecruitingAnimalsRule } from './rules/RecruitingAnimalsRule'
 import { RefillRecruitmentLineRule } from './rules/RefillRecruitmentLineRule'
+import { RevealTreesRule } from './rules/RevealTreesRule'
 import { RuleId } from './rules/RuleId'
 import { UseSankiOnVaranRule } from './rules/UseSankiOnVaranRule'
 import { UseSankiPlayActionRule } from './rules/UseSankiPlayActionRule'
@@ -41,6 +42,7 @@ export class LivingForestDuelRules extends HiddenMaterialRules<Season, MaterialT
     [RuleId.RecruitingAnimals]: RecruitingAnimalsRule,
     [RuleId.RefillRecruitmentLine]: RefillRecruitmentLineRule,
     [RuleId.PlantingProtectiveTree]: PlantingProtectiveTreeRule,
+    [RuleId.RevealTrees]: RevealTreesRule,
     [RuleId.AdvancingOnibi]: AdvancingOnibiRule,
     [RuleId.UseSankiOnVaran]: UseSankiOnVaranRule,
     [RuleId.UseSankiPlayAction]: UseSankiPlayActionRule,
@@ -74,6 +76,9 @@ export class LivingForestDuelRules extends HiddenMaterialRules<Season, MaterialT
     [MaterialType.AnimalCard]: {
       [LocationType.SharedDeck]: hideItemId,
       [LocationType.SeasonAnimalDeck]: hideItemId
+    },
+    [MaterialType.TreeCard]: {
+      [LocationType.TreeDeckSpot]: (item: MaterialItem) => item.location.rotation ? ['id.front'] : []
     }
   }
 

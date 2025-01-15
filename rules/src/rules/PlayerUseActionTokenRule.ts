@@ -79,8 +79,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
     if (isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.PointElement) {
       const element = move.location.id as Element
       const value = new ElementsHelper(this.game).getElementValue(element)
-      const action: Action = element === Element.Plant ? { element, value, plantedTreesElements: [] } : { element, value }
-      this.memorize<Action[]>(Memory.PendingActions, [action])
+      this.memorize<Action[]>(Memory.PendingActions, [{ element, value }])
       return [this.startRule(elementActionRule[element])]
     }
     return []

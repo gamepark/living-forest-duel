@@ -5,15 +5,15 @@ import { Clearing, getClearingBonus } from '../material/Clearing'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { SpiritType } from '../material/SpiritType'
-import { Element, getOpponentSeason, Season } from '../Season'
+import { getOpponentSeason, Season } from '../Season'
 import { ActionRule } from './ActionRule'
-import { Action, AdvancingOnibi, elementActionRule } from './actions/Action'
+import { Action, elementActionRule } from './actions/Action'
 import { CustomMoveType } from './CustomMoveType'
 import { ElementsHelper } from './helpers/ElementsHelper'
 import { SankiHelper } from './helpers/SankiHelper'
 import { Memory } from './Memory'
 
-export class AdvancingOnibiRule extends ActionRule<AdvancingOnibi> {
+export class AdvancingOnibiRule extends ActionRule {
   getPlayerMoves() {
     return range(1, this.action.value + 1).map(distance => this.customMove(CustomMoveType.MoveOnibi, distance))
   }
@@ -73,10 +73,7 @@ export class AdvancingOnibiRule extends ActionRule<AdvancingOnibi> {
       const actions = this.remind<Action[]>(Memory.PendingActions)
       actions.pop()
       const value = new ElementsHelper(this.game).getElementValue(element)
-      const action: Action = element === Element.Plant ?
-        { element, value, plantedTreesElements: [], bonus: true }
-        : { element, value, bonus: true }
-      actions.push(action)
+      actions.push({ element, value, bonus: true })
       return [this.startRule(elementActionRule[bonus])]
     }
   }

@@ -9,8 +9,9 @@ import { getBonusLabel } from './ClearingCardHelp'
 
 export const TreeCardHelp = ({ item }: MaterialHelpProps) => {
   const { t } = useTranslation()
-  const tree = item.id as Tree
+  const tree = item.id?.front as Tree
   if (isStartingTree(tree)) return <StartingTree/>
+  if (tree === undefined) return <h2>{t('tree')}</h2>
   const properties = treeProperties[tree]!
   return <>
     <h2>{t('tree')}</h2>

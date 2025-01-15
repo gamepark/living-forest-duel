@@ -46,16 +46,18 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
   }
 
   setupTreeDecks() {
-    const trees = treeCards.map(card => ({
-      id: card,
+    const trees = treeCards.map(tree => ({
+      id: { front: tree, back: getTreeElement(tree) },
       location: {
         type: LocationType.TreeDeckSpot,
-        id: getTreeElement(card)
+        id: getTreeElement(tree),
+        rotation: true
       }
     }))
     this.material(MaterialType.TreeCard).createItems(trees)
     for (const element of elements) {
       this.material(MaterialType.TreeCard).location(l => l.id === element).shuffle()
+      this.material(MaterialType.TreeCard).location(l => l.id === element).maxBy(item => item.location.x!).rotateItem(false)
     }
   }
 
@@ -115,7 +117,7 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
 
     // Player tree area
     this.material(MaterialType.TreeCard).createItem({
-      id: season === Season.Summer ? Tree.SummerStartingTree : Tree.WinterStartingTree,
+      id: { front: season === Season.Summer ? Tree.SummerStartingTree : Tree.WinterStartingTree },
       location: {
         type: LocationType.PlayerForest,
         player: season,

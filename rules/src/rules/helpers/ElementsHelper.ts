@@ -3,7 +3,7 @@ import { sumBy } from 'lodash'
 import { Animal, animalProperties } from '../../material/Animal'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { getTreeElement, Tree } from '../../material/Tree'
+import { getTreeElement, TreeId } from '../../material/Tree'
 import { Element, Season } from '../../Season'
 
 export class ElementsHelper extends MaterialRulesPart {
@@ -39,7 +39,7 @@ export class ElementsHelper extends MaterialRulesPart {
     return this.material(MaterialType.TreeCard)
       .location(LocationType.PlayerForest)
       .player(this.player)
-      .id<Tree>(tree => getTreeElement(tree) === element)
+      .id<TreeId>(tree => getTreeElement(tree.front) === element)
       .length
   }
 }

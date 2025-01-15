@@ -36,6 +36,8 @@ export enum Tree {
   WindTree6
 }
 
+export type TreeId = { front: Tree, back: Element }
+
 export type TreeDirections = {
   [Direction.North]: boolean,
   [Direction.East]: boolean,

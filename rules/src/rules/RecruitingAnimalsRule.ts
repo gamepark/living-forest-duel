@@ -4,14 +4,13 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Element } from '../Season'
 import { ActionRule } from './ActionRule'
-import { RecruitingAnimals } from './actions/Action'
 import { CustomMoveType } from './CustomMoveType'
 import { AnimalsHelper } from './helpers/AnimalsHelper'
 import { ElementsHelper } from './helpers/ElementsHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
-export class RecruitingAnimalsRule extends ActionRule<RecruitingAnimals> {
+export class RecruitingAnimalsRule extends ActionRule {
   elementsHelper = new ElementsHelper(this.game)
 
   onRuleStart() {
@@ -36,7 +35,7 @@ export class RecruitingAnimalsRule extends ActionRule<RecruitingAnimals> {
     )
 
     // Only can pass if at least one animal was taken
-    if (this.action.value < this.elementsHelper.getElementValue(Element.Sun, !this.isBonusAction)) {
+    if (this.action.value < this.elementsHelper.getElementValue(Element.Sun, !this.action.bonus)) {
       moves.push(this.customMove(CustomMoveType.Pass))
     }
 

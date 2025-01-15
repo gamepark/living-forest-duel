@@ -9,17 +9,19 @@ import { PlayerActionHeader } from './PlayerActionHeader'
 import { PlayerUseActionTokenHeader } from './PlayerUseActionTokenHeader'
 import { RecruitingAnimalsHeader } from './RecruitingAnimalsHeader'
 import { RefillRecruitmentLineHeader } from './RefillRecruitmentLineHeader'
+import { RevealTreesHeader } from './RevealTreesHeader'
 import { UseSankiCardHeader } from './UseSankiCardHeader'
 
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
-  [RuleId.AdvancingOnibi]: AdvancingOnibiHeader,
-  [RuleId.ExtinguishingFire]: ExtinguishingFireHeader,
-  [RuleId.PlantingProtectiveTree]: PlantingProtectiveTreeHeader,
   [RuleId.PlayerAction]: PlayerActionHeader,
   [RuleId.PlayerUseActionToken]: PlayerUseActionTokenHeader,
+  [RuleId.ExtinguishingFire]: ExtinguishingFireHeader,
   [RuleId.RecruitingAnimals]: RecruitingAnimalsHeader,
+  [RuleId.RefillRecruitmentLine]: RefillRecruitmentLineHeader,
+  [RuleId.PlantingProtectiveTree]: PlantingProtectiveTreeHeader,
+  [RuleId.RevealTrees]: RevealTreesHeader,
+  [RuleId.AdvancingOnibi]: AdvancingOnibiHeader,
   [RuleId.UseSankiOnVaran]: UseSankiCardHeader,
   [RuleId.UseSankiPlayAction]: UseSankiCardHeader,
-  [RuleId.RefillRecruitmentLine]: RefillRecruitmentLineHeader,
   [RuleId.EndTurn]: EndTurnHeader
 }

@@ -2,8 +2,8 @@ import { Direction, directions, getSquareInDirection, Material, MaterialGame, Ma
 import { cloneDeep, range } from 'lodash'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { getTreeElement, isStartingTree, Tree, treeProperties } from '../../material/Tree'
-import { CardinalLocations, Element, Season } from '../../Season'
+import { isStartingTree, Tree, TreeId, treeProperties } from '../../material/Tree'
+import { CardinalLocations, Season } from '../../Season'
 
 export class TreesHelper extends MaterialRulesPart {
   constructor(game: MaterialGame, readonly player: Season = game.rule!.player!) {
@@ -13,24 +13,24 @@ export class TreesHelper extends MaterialRulesPart {
   getCurrentForest() {
     const { xMin, xMax, yMin, yMax } = this.boundaries
     const forest: Forest = range(0, yMax - yMin + 3).map(_ => range(0, xMax - xMin + 3).map(_ => undefined))
-    const trees = this.material(MaterialType.TreeCard).location(LocationType.PlayerForest).player(this.player).sort(item => item.location.z!).getItems<Tree>()
+    const trees = this.material(MaterialType.TreeCard).location(LocationType.PlayerForest).player(this.player).sort(item => item.location.z!).getItems<TreeId>()
     for (const tree of trees) {
-      forest[tree.location.y! - yMin + 1][tree.location.x! - xMin + 1] = tree.id
+      forest[tree.location.y! - yMin + 1][tree.location.x! - xMin + 1] = tree.id.front
     }
     return forest
   }
 
-  getVisibleTreesInStack(plantValue: number, plantedTreesElements: Element[] = []): Material {
+  getAvailableTrees(plantValue: number): Material {
     const treesInDecks = this.material(MaterialType.TreeCard).location(LocationType.TreeDeckSpot)
     const items = treesInDecks.getItems()
     return treesInDecks
-      .location(l => !items.some(item => item.location.id === l.id && item.location.x! > l.x!))
-      .id<Tree>(tree => !plantedTreesElements.includes(getTreeElement(tree)!) && treeProperties[tree]!.cost <= plantValue)
+      .location(l => !l.rotation && !items.some(item => item.location.id === l.id && item.location.x! > l.x!))
+      .id<TreeId>(tree => treeProperties[tree.front]!.cost <= plantValue)
   }
 
   canTreesBePlanted(plantValue: number) {
-    const availableTrees = this.getVisibleTreesInStack(plantValue).getItems<Tree>()
-    return availableTrees.some(tree => this.getAvailableSpacesForTree(tree.id).length > 0)
+    const availableTrees = this.getAvailableTrees(plantValue).getItems<TreeId>()
+    return availableTrees.some(tree => this.getAvailableSpacesForTree(tree.id.front).length > 0)
   }
 
   get boundaries() {
@@ -79,7 +79,7 @@ export class TreesHelper extends MaterialRulesPart {
     const neighborDelta = { x: CardinalLocations[direction].x, y: CardinalLocations[direction].y }
     // There can be more than one neighbor tree as they could be piled. We need to consider only the top one
     const neighbor = this.showVisibleTree({ x: tree.location.x! + neighborDelta.x, y: tree.location.y! + neighborDelta.y }).getItem()
-    return neighbor !== undefined && treeProperties[tree.id as Tree]?.bonus === treeProperties[neighbor.id as Tree]?.bonus
+    return neighbor !== undefined && treeProperties[tree.id.front as Tree]?.bonus === treeProperties[neighbor.id.front as Tree]?.bonus
   }
 }
 

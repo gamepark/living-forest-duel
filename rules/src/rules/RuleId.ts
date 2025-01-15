@@ -5,6 +5,7 @@ export enum RuleId {
   RecruitingAnimals,
   RefillRecruitmentLine,
   PlantingProtectiveTree,
+  RevealTrees,
   AdvancingOnibi,
   UseSankiOnVaran,
   UseSankiPlayAction,

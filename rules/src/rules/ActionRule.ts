@@ -1,18 +1,12 @@
 import { PlayerTurnRule } from '@gamepark/rules-api'
-import { Element } from '../Season'
 import { Action, elementActionRule } from './actions/Action'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
-export abstract class ActionRule<T extends Action> extends PlayerTurnRule {
-  get action(): T {
+export abstract class ActionRule extends PlayerTurnRule {
+  get action() {
     const actions = this.remind<Action[]>(Memory.PendingActions)
-    return actions[actions.length - 1] as T
-  }
-
-  get isBonusAction() {
-    const action = this.action
-    return action.element !== Element.Wind && action.bonus
+    return actions[actions.length - 1]
   }
 
   endAction() {

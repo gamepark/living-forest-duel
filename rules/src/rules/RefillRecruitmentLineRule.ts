@@ -2,9 +2,8 @@ import { MaterialMove } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { ActionRule } from './ActionRule'
-import { RecruitingAnimals } from './actions/Action'
 
-export class RefillRecruitmentLineRule extends ActionRule<RecruitingAnimals> {
+export class RefillRecruitmentLineRule extends ActionRule {
 
   onRuleStart() {
     const moves: MaterialMove[] = []
