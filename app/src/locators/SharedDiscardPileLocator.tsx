@@ -2,7 +2,7 @@
 import { css } from '@emotion/react'
 import { LivingForestDuelRules } from '@gamepark/living-forest-duel/LivingForestDuelRules'
 import { MaterialType } from '@gamepark/living-forest-duel/material/MaterialType'
-import { DeckLocator, LocationDescription, LocationHelpProps, MaterialComponent, pointerCursorCss, usePlay, useRules } from '@gamepark/react-game'
+import { DeckLocator, DropAreaDescription, LocationHelpProps, MaterialComponent, pointerCursorCss, usePlay, useRules } from '@gamepark/react-game'
 import { MaterialMoveBuilder } from '@gamepark/rules-api'
 import { useTranslation } from 'react-i18next'
 import { animalCardDescription } from '../material/AnimalCardDescription'
@@ -15,7 +15,7 @@ class SharedDiscardPileLocator extends DeckLocator {
   locationDescription = new SharedDiscardPileDescription(animalCardDescription)
 }
 
-class SharedDiscardPileDescription extends LocationDescription {
+class SharedDiscardPileDescription extends DropAreaDescription {
   help = SharedDiscardPileHelp
 }
 
