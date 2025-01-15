@@ -11,7 +11,7 @@ export enum Clearing {
   Winter4
 }
 
-export const getClearingFireValue = (clearing: Clearing) => Math.min(2, Math.abs(clearing) + 1)
+export const getClearingFireValue = (clearing: Clearing) => Math.max(2, Math.abs(clearing) + 1)
 
 export function getClearingBonus(clearing: Clearing) {
   switch (Math.abs(clearing)) {
