@@ -1,3 +1,4 @@
+import { Season } from '@gamepark/living-forest-duel/Season'
 import { ListLocator } from "@gamepark/react-game"
 import { Location } from "@gamepark/rules-api"
 import { animalCardDescription } from "../material/AnimalCardDescription"
@@ -11,7 +12,7 @@ class PlayerHelpLineLocator extends ListLocator {
   
   getCoordinates(location: Location) {
     return {
-      x: treeTokenLocator.getCoordinates(location).x + spiritCardDescription.width + 2,
+      x: treeTokenLocator.getCoordinates(location).x + spiritCardDescription.width + (location.player === Season.Summer ? 2 : 1),
       y: sharedHelpLineLocator.coordinates.y + animalCardDescription.height + 2
     }
   }

@@ -17,7 +17,7 @@ class PlayerForestLocator extends DeckLocator {
     
     return {
       x: x + (location.x! - deltaX) * this.gapX,
-      y: -10 + (location.y! - deltaY) * this.gapY,
+      y: -12 + (location.y! - deltaY) * this.gapY,
       z: (location.z ?? 0) * 0.05
     }
   }

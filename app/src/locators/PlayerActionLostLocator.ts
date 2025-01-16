@@ -1,18 +1,14 @@
 import { ListLocator } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import { actionTokenDescription } from '../material/ActionTokenDescription'
-import { treeTokenDescription } from '../material/TreeTokenDescription'
-import { treeTokenLocator } from './TreeTokenLocator'
+import { playerActionSupplyLocator } from './PlayerActionSupplyLocator'
 
 class PlayerActionLostLocator extends ListLocator {
   gap = { x: actionTokenDescription.width + 0.5 }
 
   getCoordinates(location: Location) {
-    const { x, y } = treeTokenLocator.getCoordinates(location)
-    return {
-      x: x - treeTokenDescription.width / 2,
-      y: y + treeTokenDescription.height / 2
-    }
+    const { x, y } = playerActionSupplyLocator.getCoordinates(location)
+    return { x, y: y + 2.5 }
   }
 }
 
