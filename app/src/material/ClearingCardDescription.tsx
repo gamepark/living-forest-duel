@@ -40,6 +40,10 @@ class ClearingCardDescription extends CardDescription {
     }
   }))
 
+  getLocations(item: MaterialItem) {
+    return [{ type: LocationType.ClearingCardSpot, x: item.location.x }]
+  }
+
   help = ClearingCardHelp
 
   getItemMenu(item: MaterialItem, { player, rules }: ItemContext, legalMoves: MaterialMove[]) {
@@ -54,7 +58,7 @@ class ClearingCardDescription extends CardDescription {
     return <>
       {moveToThisCard.map(move =>
         <ItemMenuButton key={move.data} move={move} x={-2} y={-2.5 * Math.floor(move.data / 7) - 3}
-                        label={<Trans defaults="button.steps" values={{steps: move.data}}/>}>
+                        label={<Trans defaults="button.steps" values={{ steps: move.data }}/>}>
           <FontAwesomeIcon icon={move.data < 7 ? faChevronRight : faAnglesRight}/>
         </ItemMenuButton>
       )}
@@ -62,6 +66,6 @@ class ClearingCardDescription extends CardDescription {
   }
 }
 
-const positiveModulo = (n: number, m: number): number => ((n % m) + m) % m
+export const positiveModulo = (n: number, m: number): number => ((n % m) + m) % m
 
 export const clearingCardDescription = new ClearingCardDescription()
