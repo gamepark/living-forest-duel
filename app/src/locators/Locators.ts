@@ -2,26 +2,31 @@ import { LocationType } from '@gamepark/living-forest-duel/material/LocationType
 import { MaterialType } from '@gamepark/living-forest-duel/material/MaterialType'
 import { Season } from '@gamepark/living-forest-duel/Season'
 import { Locator } from '@gamepark/react-game'
-import { clearingLineLocator } from './ClearingLineLocator'
+import { animalCostLocator } from './AnimalCostLocator'
+import { animalSeasonLocator } from './AnimalSeasonLocator'
+import { clearingCardBonusLocator } from './ClearingCardBonusLocator'
 import { clearingCardSpotLocator } from './ClearingCardSpotLocator'
+import { clearingLineLocator } from './ClearingLineLocator'
 import { fireStockLocator } from './FireStockLocator'
-import { recruitmentLineLocator } from './RecruitmentLineLocator'
-import { varanDecksLocator } from './VaranDecksLocator'
-import { seasonAnimalDeckLocator } from './SeasonAnimalDeckLocator'
-import { playerForestLocator } from './PlayerForestLocator'
-import { playerActionSupplyLocator } from './PlayerActionSupplyLocator'
 import { onibiCardLocator } from './OnibiCardLocator'
-import { sankiDeckLocator } from './SankiDeckLocator'
-import { sharedHelpLineLocator } from './SharedHelpLineLocator'
-import { sharedDeckLocator } from './SharedDeckLocator'
-import { treeTokenLocator } from './TreeTokenLocator'
-import { playerHelpLineLocator } from './PlayerHelpLineLocator'
-import { pointElementLocator } from './PointElementLocator'
-import { playerFireStockLocator } from './PlayerFireStockLocator'
-import { sharedDiscardPileLocator } from './SharedDiscardPileLocator'
-import { treeDeckSpotLocator } from './TreeDeckSpotLocator'
-import { playerSpiritLineLocator } from './PlayerSpiritLineLocator'
 import { playerActionLostLocator } from './PlayerActionLostLocator'
+import { playerActionSupplyLocator } from './PlayerActionSupplyLocator'
+import { playerFireStockLocator } from './PlayerFireStockLocator'
+import { playerForestLocator } from './PlayerForestLocator'
+import { playerHelpLineLocator } from './PlayerHelpLineLocator'
+import { playerSpiritLineLocator } from './PlayerSpiritLineLocator'
+import { pointElementLocator } from './PointElementLocator'
+import { recruitmentLineLocator } from './RecruitmentLineLocator'
+import { sankiDeckLocator } from './SankiDeckLocator'
+import { seasonAnimalDeckLocator } from './SeasonAnimalDeckLocator'
+import { sharedDeckLocator } from './SharedDeckLocator'
+import { sharedDiscardPileLocator } from './SharedDiscardPileLocator'
+import { sharedHelpLineLocator } from './SharedHelpLineLocator'
+import { treeCostLocator } from './TreeCostLocator'
+import { treeDeckSpotLocator } from './TreeDeckSpotLocator'
+import { treeElementLocator } from './TreeElementLocator'
+import { treeTokenLocator } from './TreeTokenLocator'
+import { varanDecksLocator } from './VaranDecksLocator'
 
 export const Locators: Partial<Record<LocationType, Locator<Season, MaterialType, LocationType>>> = {
   [LocationType.ClearingLine]: clearingLineLocator,
@@ -43,5 +48,10 @@ export const Locators: Partial<Record<LocationType, Locator<Season, MaterialType
   [LocationType.SharedDeck]: sharedDeckLocator,
   [LocationType.SharedDiscardPile]: sharedDiscardPileLocator,
   [LocationType.TreeToken]: treeTokenLocator,
-  [LocationType.PointElement]: pointElementLocator
+  [LocationType.PointElement]: pointElementLocator,
+  [LocationType.AnimalCost]: animalCostLocator,
+  [LocationType.AnimalSeason]: animalSeasonLocator,
+  [LocationType.TreeCost]: treeCostLocator,
+  [LocationType.TreeElement]: treeElementLocator,
+  [LocationType.ClearingCardBonus]: clearingCardBonusLocator
 }

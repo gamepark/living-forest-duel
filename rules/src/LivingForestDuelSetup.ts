@@ -87,7 +87,14 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
   }
 
   setupPlayer(season: Season) {
-    // Player Varan deck
+    this.setupPlayerVaranDeck(season)
+    this.setupPlayerAnimalDeck(season)
+    this.setupPlayerRecruitmentLine(season)
+    this.setupPlayerForest(season)
+    this.setupPlayerActionTokens(season)
+  }
+
+  setupPlayerVaranDeck(season: Season) {
     for (let i = 0; i < 7; i++) {
       this.material(MaterialType.AnimalCard).createItem({
         id: season === Season.Summer ? Animal.SummerVaran : Animal.WinterVaran,
@@ -97,16 +104,18 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
         }
       })
     }
+  }
 
-    // Player season deck
-    const seasonAnimals = season === Season.Summer ? summerAnimals : winterAnimals
-
-    // Player initial cards
-    this.material(MaterialType.AnimalCard).createItems(seasonAnimals.map((animal) => ({
+  setupPlayerAnimalDeck(season: Season) {
+    const animals = season === Season.Summer ? summerAnimals : winterAnimals
+    this.material(MaterialType.AnimalCard).createItems(animals.map((animal) => ({
       id: animal, location: { type: LocationType.SeasonAnimalDeck, player: season }
     })))
     this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SeasonAnimalDeck && l.player === season).shuffle()
-    const seasonDeck = this.material(MaterialType.AnimalCard).location(l => l.type === LocationType.SeasonAnimalDeck && l.player === season).deck()
+  }
+
+  setupPlayerRecruitmentLine(season: Season) {
+    const seasonDeck = this.material(MaterialType.AnimalCard).location(LocationType.SeasonAnimalDeck).player(season).deck()
     seasonDeck.deal({ type: LocationType.RecruitmentLine }, 3)
     // Check initial animals cost
     while (this.getInitialRecruitmentCost(season) <= 12) {
@@ -114,25 +123,19 @@ export class LivingForestDuelSetup extends MaterialGameSetup<Season, MaterialTyp
       minCostCard.moveItem({ type: LocationType.SeasonAnimalDeck, player: season, x: 0 })
       seasonDeck.dealOne({ type: LocationType.RecruitmentLine })
     }
+  }
 
-    // Player tree area
+  setupPlayerForest(season: Season) {
     this.material(MaterialType.TreeCard).createItem({
       id: { front: season === Season.Summer ? Tree.SummerStartingTree : Tree.WinterStartingTree },
-      location: {
-        type: LocationType.PlayerForest,
-        player: season,
-        x: 0,
-        y: 0
-      }
+      location: { type: LocationType.PlayerForest, player: season, x: 0, y: 0 }
     })
+  }
 
-    // Action tokens
+  setupPlayerActionTokens(season: Season) {
     this.material(MaterialType.ActionToken).createItem({
       id: season,
-      location: {
-        type: LocationType.PlayerActionSupply,
-        player: season
-      },
+      location: { type: LocationType.PlayerActionSupply, player: season },
       quantity: 2
     })
   }

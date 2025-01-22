@@ -10,6 +10,7 @@ import App from './App'
 import { Locators } from './locators/Locators'
 import { Material } from './material/Material'
 import translations from './translations.json'
+import { Tutorial } from './tutorial/Tutorial'
 
 setupTranslation(translations, { debug: false })
 
@@ -22,7 +23,8 @@ ReactDOM.render(
       GameSetup={LivingForestDuelSetup}
       material={Material}
       locators={Locators}
-      animations={gameAnimations}>
+      animations={gameAnimations}
+      tutorial={new Tutorial()}>
       <App/>
     </GameProvider>
   </StrictMode>,

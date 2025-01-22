@@ -18,5 +18,10 @@ export enum LocationType {
   SharedDeck,
   SharedDiscardPile,
   TreeToken,
-  PointElement
+  PointElement,
+  AnimalCost,
+  AnimalSeason,
+  TreeCost,
+  TreeElement,
+  ClearingCardBonus
 }
