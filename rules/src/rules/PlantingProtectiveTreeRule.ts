@@ -16,13 +16,6 @@ import { RuleId } from './RuleId'
 
 export class PlantingProtectiveTreeRule extends ActionRule {
 
-  onRuleStart() {
-    if (!new TreesHelper(this.game).canTreesBePlanted(this.action.value)) {
-      return [this.endAction()]
-    }
-    return []
-  }
-
   getPlayerMoves() {
     const moves: MaterialMove[] = []
     const treesHelper = new TreesHelper(this.game)
