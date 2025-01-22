@@ -11,6 +11,7 @@ import { Locators } from './locators/Locators'
 import { Material } from './material/Material'
 import translations from './translations.json'
 import { Tutorial } from './tutorial/Tutorial'
+import { TutorialAI } from './tutorial/TutorialAI'
 
 setupTranslation(translations, { debug: false })
 
@@ -24,7 +25,8 @@ ReactDOM.render(
       material={Material}
       locators={Locators}
       animations={gameAnimations}
-      tutorial={new Tutorial()}>
+      tutorial={new Tutorial()}
+      ai={TutorialAI}>
       <App/>
     </GameProvider>
   </StrictMode>,
