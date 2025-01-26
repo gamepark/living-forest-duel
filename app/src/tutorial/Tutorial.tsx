@@ -27,7 +27,7 @@ const winter = Season.Winter
 export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationType> {
   version = 1
   options = {
-    player: [{ id: me }, { id: winter }]
+    players: [{ id: me }, { id: winter }]
   }
   setup = new TutorialSetup()
 
