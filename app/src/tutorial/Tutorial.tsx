@@ -34,7 +34,6 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
   players = [{ id: me },
     {
       id: winter,
-      name: 'Winter',
       avatar: {
         topType: TopType.WinterHat3,
         hatColor: HatColorName.Red,
