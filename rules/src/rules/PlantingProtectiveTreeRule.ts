@@ -4,7 +4,6 @@ import { Bonus, getBonusElement } from '../material/Bonus'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { TreeId, treeProperties } from '../material/Tree'
-import { Element } from '../Season'
 import { ActionRule } from './ActionRule'
 import { Action, elementActionRule } from './actions/Action'
 import { CustomMoveType } from './CustomMoveType'
@@ -28,9 +27,7 @@ export class PlantingProtectiveTreeRule extends ActionRule {
       }
     }
 
-    // Only can pass if at least one tree was planted
-    const elementsHelper = new ElementsHelper(this.game)
-    if (this.action.value < elementsHelper.getElementValue(Element.Plant, !this.action.bonus)) {
+    if (this.canPass()) {
       moves.push(this.customMove(CustomMoveType.Pass))
     }
 

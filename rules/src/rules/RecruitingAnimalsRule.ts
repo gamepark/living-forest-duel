@@ -2,24 +2,12 @@ import { CustomMove, isMoveItemType, ItemMove, MaterialMove } from '@gamepark/ru
 import { Animal, animalProperties, getAnimalSeason } from '../material/Animal'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { Element } from '../Season'
 import { ActionRule } from './ActionRule'
 import { CustomMoveType } from './CustomMoveType'
-import { AnimalsHelper } from './helpers/AnimalsHelper'
-import { ElementsHelper } from './helpers/ElementsHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
 export class RecruitingAnimalsRule extends ActionRule {
-  elementsHelper = new ElementsHelper(this.game)
-
-  onRuleStart() {
-    if (!new AnimalsHelper(this.game).canAnimalsBeRecruited(this.action.value)) {
-      return [this.startRule(RuleId.RefillRecruitmentLine)]
-    }
-
-    return []
-  }
 
   getPlayerMoves() {
     const moves: MaterialMove[] = []
@@ -34,8 +22,7 @@ export class RecruitingAnimalsRule extends ActionRule {
       })
     )
 
-    // Only can pass if at least one animal was taken
-    if (this.action.value < this.elementsHelper.getElementValue(Element.Sun, !this.action.bonus)) {
+    if (this.canPass()) {
       moves.push(this.customMove(CustomMoveType.Pass))
     }
 
