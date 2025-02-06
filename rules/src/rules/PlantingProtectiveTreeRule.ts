@@ -21,7 +21,7 @@ export class PlantingProtectiveTreeRule extends ActionRule {
     const availableTrees = treesHelper.getAvailableTrees(this.action.value)
 
     for (const [index, tree] of availableTrees.entries) {
-      const availableSpacesForTree = new TreesHelper(this.game).getAvailableSpacesForTree(tree.id.front)
+      const availableSpacesForTree = treesHelper.getAvailableSpacesForTree(tree.id.front)
       for (const { x, y } of availableSpacesForTree) {
         moves.push(availableTrees.index(index).moveItem({ type: LocationType.PlayerForest, player: this.player, x, y }))
       }

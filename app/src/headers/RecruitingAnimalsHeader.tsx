@@ -14,12 +14,19 @@ export const RecruitingAnimalsHeader = () => {
   const player = usePlayerName(activePlayer)
   const recruitingAnimalsRule = new RecruitingAnimalsRule(rules.game)
   const cost = recruitingAnimalsRule.action.value
+  const canRecruit = recruitingAnimalsRule.availableAnimals.length > 0
   const pass = useLegalMove(isCustomMoveType(CustomMoveType.Pass))
 
   if (itsMe) {
-    return <Trans defaults="header.recruiting-animals.you" values={{ cost }} components={{
-      pass: <PlayMoveButton move={pass}/>
-    }}/>
+    if (canRecruit) {
+      return <Trans defaults="header.recruiting-animals.you" values={{ cost }} components={{
+        pass: <PlayMoveButton move={pass}/>
+      }}/>
+    } else {
+      return <Trans defaults="header.recruiting-animals.pass" values={{ cost }} components={{
+        pass: <PlayMoveButton move={pass} auto={10}/>
+      }}/>
+    }
   } else {
     return <Trans defaults="header.recruiting-animals.player" values={{ player, cost }}/>
   }

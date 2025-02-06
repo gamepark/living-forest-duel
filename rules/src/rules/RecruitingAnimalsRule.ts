@@ -9,26 +9,23 @@ import { RuleId } from './RuleId'
 
 export class RecruitingAnimalsRule extends ActionRule {
 
+  get availableAnimals() {
+    return this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
+      .id<Animal>(animal => this.action.value >= animalProperties[animal].cost!)
+  }
+
   getPlayerMoves() {
     const moves: MaterialMove[] = []
 
-    const playerCards = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
-      .id<Animal>(animal => getAnimalSeason(animal) === this.player && this.action.value >= animalProperties[animal].cost!)
-    moves.push(
-      ...playerCards.getItems().flatMap((card) => {
-        return [
-          ...playerCards.id(card.id).moveItems({ type: LocationType.PlayerHelpLine, player: getAnimalSeason(card.id) })
-        ]
-      })
-    )
+    const availableAnimals = this.availableAnimals
+    const playerCards = availableAnimals.id<Animal>(animal => getAnimalSeason(animal) === this.player)
+    moves.push(...playerCards.moveItems({ type: LocationType.PlayerHelpLine, player: this.player }))
+    const restOfCards = availableAnimals.id<Animal>(animal => getAnimalSeason(animal) !== this.player)
+    moves.push(...restOfCards.moveItems({ type: LocationType.SharedDiscardPile }))
 
     if (this.canPass()) {
       moves.push(this.customMove(CustomMoveType.Pass))
     }
-
-    const restOfCards = this.material(MaterialType.AnimalCard).location(LocationType.RecruitmentLine)
-      .id<Animal>(animal => getAnimalSeason(animal) !== this.player && this.action.value >= animalProperties[animal].cost!)
-    moves.push(...restOfCards.moveItems({ type: LocationType.SharedDiscardPile }))
 
     return moves
   }
