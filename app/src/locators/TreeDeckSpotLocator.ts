@@ -11,6 +11,8 @@ class TreeDeckSpotLocator extends DeckLocator {
       y: clearingLineLocator.coordinates.y - 10
     }
   }
+
+  navigationSorts = []
 }
 
 export const treeDeckSpotLocator = new TreeDeckSpotLocator()
