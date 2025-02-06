@@ -16,7 +16,7 @@ export class TutorialSetup extends LivingForestDuelSetup {
 
   setupTreeDecks() {
     super.setupTreeDecks()
-    this.material(MaterialType.TreeCard).id<TreeId>(id => id.front === Tree.SunTree5).moveItem({ type: LocationType.TreeDeckSpot, id: Element.Sun })
+    this.material(MaterialType.TreeCard).id<TreeId>(id => id.front === Tree.SunTree5).moveItem({ type: LocationType.TreeDeckSpot, id: Element.Sun, rotation: false })
   }
 
   setupPlayerRecruitmentLine(season: Season) {
