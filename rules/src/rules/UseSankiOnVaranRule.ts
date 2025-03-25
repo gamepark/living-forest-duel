@@ -9,12 +9,16 @@ export class UseSankiOnVaranRule extends UseSankiRule {
   onPass() {
     const moves: MaterialMove[] = []
     moves.push(this.varan.moveItem({ type: LocationType.PlayerHelpLine, player: this.player }))
-    if (this.player === this.remind(Memory.CurrentPlayer)) {
+    if (this.player === this.remind(Memory.CurrentPlayer) || !this.hasAvailableActionToken()) {
       moves.push(this.startPlayerTurn(RuleId.PlayerAction, this.nextPlayer))
     } else {
       moves.push(this.startRule(RuleId.PlayerAction))
     }
     return moves
+  }
+
+  hasAvailableActionToken() {
+    return this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(this.player).length > 0
   }
 
   onUseSanki(): MaterialMove[] {
