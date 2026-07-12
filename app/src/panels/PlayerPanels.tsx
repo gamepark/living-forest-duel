@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { Season } from '@gamepark/living-forest-duel/Season'
 import { usePlayers } from '@gamepark/react-game'
 import { createPortal } from 'react-dom'

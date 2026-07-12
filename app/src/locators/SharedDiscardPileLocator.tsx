@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { LivingForestDuelRules } from '@gamepark/living-forest-duel/LivingForestDuelRules'
 import { MaterialType } from '@gamepark/living-forest-duel/material/MaterialType'

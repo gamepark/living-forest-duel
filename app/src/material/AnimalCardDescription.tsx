@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -154,7 +153,7 @@ class AnimalCardDescription extends CardDescription {
     if (draw) {
       return <>
         <ItemMenuButton move={draw} x={-1.8}
-                        label={<Trans defaults="button.draw"/>}>
+                        label={<Trans i18nKey="button.draw"/>}>
           <FontAwesomeIcon icon={faArrowRight}/>
         </ItemMenuButton>
       </>

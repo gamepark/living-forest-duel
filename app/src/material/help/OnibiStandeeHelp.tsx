@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { MaterialType } from '@gamepark/living-forest-duel/material/MaterialType'
 import { SpiritType } from '@gamepark/living-forest-duel/material/SpiritType'
@@ -13,17 +12,17 @@ export const OnibiStandeeHelp = () => {
   const { t } = useTranslation()
   return <>
     <h2>{t('onibi')}</h2>
-    <p><Trans defaults="onibi.action" components={{
+    <p><Trans i18nKey="onibi.action" components={{
       bold: <strong/>,
       wind: <Picture css={iconCss} src={Wind}/>
     }}/></p>
-    <p><Trans defaults="onibi.rule" components={{
+    <p><Trans i18nKey="onibi.rule" components={{
       bold: <strong/>,
       card: <PlayMoveButton css={linkButtonCss} move={displayMaterialHelp(MaterialType.SpiritCard, { id: SpiritType.Onibi })} local/>
     }}/></p>
     <h3>{t('end-turn')}</h3>
     <p>{t('end-turn.trigger')}</p>
-    <p><Trans defaults="end-turn.varan" components={{
+    <p><Trans i18nKey="end-turn.varan" components={{
       water: <Picture css={iconCss} src={Water}/>
     }}/></p>
     <p>{t('end-turn.onibi')}</p>

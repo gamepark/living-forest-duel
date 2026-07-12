@@ -1,5 +1,5 @@
 import { CustomMove, directions, isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
-import { range, sumBy } from 'lodash'
+import { range, sumBy } from 'es-toolkit'
 import { Bonus, getBonusElement } from '../material/Bonus'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'

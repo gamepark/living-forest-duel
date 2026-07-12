@@ -58,7 +58,7 @@ class ClearingCardDescription extends CardDescription {
     return <>
       {moveToThisCard.map(move =>
         <ItemMenuButton key={move.data} move={move} x={-2} y={-2.5 * Math.floor(move.data / 7) - 3}
-                        label={<Trans defaults="button.steps" values={{ steps: move.data }}/>}>
+                        label={<Trans i18nKey="button.steps" values={{ steps: move.data }}/>}>
           <FontAwesomeIcon icon={move.data < 7 ? faChevronRight : faAnglesRight}/>
         </ItemMenuButton>
       )}

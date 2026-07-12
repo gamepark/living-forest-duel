@@ -1,5 +1,5 @@
 import { MaterialRulesPart } from '@gamepark/rules-api'
-import { countBy, minBy } from 'lodash'
+import { countBy, minBy } from 'es-toolkit/compat'
 import { Animal, animalProperties, AnimalType, CardPattern, isVaran } from '../../material/Animal'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'

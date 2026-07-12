@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { LocationType } from '@gamepark/living-forest-duel/material/LocationType'
 import { MaterialType } from '@gamepark/living-forest-duel/material/MaterialType'

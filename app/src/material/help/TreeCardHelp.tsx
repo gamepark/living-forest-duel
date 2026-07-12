@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { getTreeElement, isStartingTree, Tree, treeProperties } from '@gamepark/living-forest-duel/material/Tree'
 import { MaterialHelpProps, Picture } from '@gamepark/react-game'
@@ -16,18 +15,18 @@ export const TreeCardHelp = ({ item }: MaterialHelpProps) => {
   return <>
     <h2>{t('tree')}</h2>
     <p>
-      <Trans defaults="tree.cost" values={{ cost: properties.cost }} components={{
+      <Trans i18nKey="tree.cost" values={{ cost: properties.cost }} components={{
         plant: <Picture css={iconCss} src={Plant}/>
       }}/>
     </p>
     <p>
-      <Trans defaults="tree.element" components={{
+      <Trans i18nKey="tree.element" components={{
         element: <Picture css={iconCss} src={elementIcon[getTreeElement(tree)!]}/>
       }}/>
     </p>
     <p>{t('bonus', { bonus: getBonusLabel(properties.bonus, t) })}</p>
     <p>
-      <Trans defaults="tree.rule" components={{
+      <Trans i18nKey="tree.rule" components={{
         bold: <strong/>
       }}/>
     </p>

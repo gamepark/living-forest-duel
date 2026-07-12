@@ -1,5 +1,5 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
-import { sumBy } from 'lodash'
+import { sumBy } from 'es-toolkit'
 import { LivingForestDuelOptions } from './LivingForestDuelOptions'
 import { LivingForestDuelRules } from './LivingForestDuelRules'
 import { Animal, animalProperties, commonAnimals, getAnimalSeason, summerAnimals, winterAnimals } from './material/Animal'

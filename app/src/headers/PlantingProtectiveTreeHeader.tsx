@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LivingForestDuelRules } from '@gamepark/living-forest-duel/LivingForestDuelRules'
 import { CustomMoveType } from '@gamepark/living-forest-duel/rules/CustomMoveType'
 import { TreesHelper } from '@gamepark/living-forest-duel/rules/helpers/TreesHelper'
@@ -20,15 +19,15 @@ export const PlantingProtectiveTreeHeader = () => {
 
   if (itsMe) {
     if (hasAvailableTrees) {
-      return <Trans defaults="header.planting-protective-tree.you" values={{ cost }} components={{
+      return <Trans i18nKey="header.planting-protective-tree.you" values={{ cost }} components={{
         pass: <PlayMoveButton move={pass}/>
       }}/>
     } else {
-      return <Trans defaults="header.planting-protective-tree.pass" components={{
+      return <Trans i18nKey="header.planting-protective-tree.pass" components={{
         pass: <PlayMoveButton move={pass} auto={10}/>
       }}/>
     }
   } else {
-    return <Trans defaults="header.planting-protective-tree.player" values={{ player, cost }}/>
+    return <Trans i18nKey="header.planting-protective-tree.player" values={{ player, cost }}/>
   }
 }

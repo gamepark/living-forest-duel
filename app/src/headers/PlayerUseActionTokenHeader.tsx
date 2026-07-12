@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 
 import { LivingForestDuelRules } from "@gamepark/living-forest-duel/LivingForestDuelRules"
 import { useRules, usePlayerId, usePlayerName } from "@gamepark/react-game"

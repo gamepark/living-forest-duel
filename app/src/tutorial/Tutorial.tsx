@@ -46,12 +46,12 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
   steps: TutorialStep[] = [
     {
       popup: {
-        text: () => <Trans defaults="tuto.welcome" components={{ bold: <strong/> }}/>
+        text: () => <Trans i18nKey="tuto.welcome" components={{ bold: <strong/> }}/>
       }
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.seasons" components={{ bold: <strong/> }}/>
+        text: () => <Trans i18nKey="tuto.seasons" components={{ bold: <strong/> }}/>
       },
       focus: () => ({
         staticItems: { [MaterialType.TreeToken]: treeTokenDescription.staticItems }
@@ -59,7 +59,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.turn" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.turn" components={{ bold: <strong/> }}/>,
         position: { x: 20, y: 20 }
       },
       focus: (game: MaterialGame) => ({
@@ -72,7 +72,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.animals" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.animals" components={{ bold: <strong/> }}/>,
         position: { x: 20, y: 20 }
       },
       focus: (game: MaterialGame) => ({
@@ -85,7 +85,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.line.common" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.line.common" components={{ bold: <strong/> }}/>,
         position: { x: 20, y: 20 }
       },
       focus: (game: MaterialGame) => ({
@@ -97,7 +97,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.opponent.turn" components={{ bold: <strong/> }}/>
+        text: () => <Trans i18nKey="tuto.opponent.turn" components={{ bold: <strong/> }}/>
       }
     },
     {
@@ -105,7 +105,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.draw" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.draw" components={{ bold: <strong/> }}/>,
         position: { y: 20 }
       },
       focus: (game: MaterialGame) => ({
@@ -117,7 +117,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.tokens" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.tokens" components={{ bold: <strong/> }}/>,
         position: { x: 20 }
       },
       focus: (game: MaterialGame) => ({
@@ -129,7 +129,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.action" components={{
+        text: () => <Trans i18nKey="tuto.action" components={{
           bold: <strong/>,
           sun: <Picture css={iconCss} src={Sun}/>,
           water: <Picture css={iconCss} src={Water}/>,
@@ -147,7 +147,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.sun" components={{
+        text: () => <Trans i18nKey="tuto.sun" components={{
           bold: <strong/>,
           sun: <Picture css={iconCss} src={Sun}/>
         }}/>,
@@ -163,7 +163,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.action.recruit" components={{
+        text: () => <Trans i18nKey="tuto.action.recruit" components={{
           bold: <strong/>,
           sun: <Picture css={iconCss} src={Sun}/>
         }}/>,
@@ -178,7 +178,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.animal.cost" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.animal.cost" components={{ bold: <strong/> }}/>,
         position: { y: 20 }
       },
       focus: (game: MaterialGame) => ({
@@ -190,7 +190,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.recruit" components={{
+        text: () => <Trans i18nKey="tuto.recruit" components={{
           bold: <strong/>,
           sun: <Picture css={iconCss} src={Sun}/>
         }}/>,
@@ -209,7 +209,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.animal.season" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.animal.season" components={{ bold: <strong/> }}/>,
         position: { x: 10, y: 10 }
       },
       focus: (game: MaterialGame) => ({
@@ -222,7 +222,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.neutral" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.neutral" components={{ bold: <strong/> }}/>,
         position: { y: 20 }
       },
       focus: (game: MaterialGame) => ({
@@ -236,7 +236,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.line.mine" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.line.mine" components={{ bold: <strong/> }}/>,
         position: { x: 35 }
       },
       focus: (game: MaterialGame) => ({
@@ -249,7 +249,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.recruit.ram" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.recruit.ram" components={{ bold: <strong/> }}/>,
         position: { x: 20, y: 10 }
       },
       focus: (game: MaterialGame) => ({
@@ -265,7 +265,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.action.pass" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.action.pass" components={{ bold: <strong/> }}/>,
         position: { y: 20 }
       },
       move: {
@@ -274,13 +274,13 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.replace" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.replace" components={{ bold: <strong/> }}/>,
         position: { y: 20 }
       }
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.sun.win" components={{
+        text: () => <Trans i18nKey="tuto.sun.win" components={{
           bold: <strong/>,
           sun: <Picture css={iconCss} src={Sun}/>,
           italic: <em/>
@@ -296,7 +296,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.opponent.turn" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.opponent.turn" components={{ bold: <strong/> }}/>,
         position: { y: -20 }
       }
     },
@@ -305,7 +305,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.solitary" components={{
+        text: () => <Trans i18nKey="tuto.solitary" components={{
           bold: <strong/>,
           solitary: <Picture css={iconCss} src={Solitary}/>,
           italic: <em/>
@@ -321,7 +321,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.draw.you" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.draw.you" components={{ bold: <strong/> }}/>,
         position: { y: 20 }
       },
       focus: (game: MaterialGame) => ({
@@ -334,7 +334,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.solitary.2" components={{
+        text: () => <Trans i18nKey="tuto.solitary.2" components={{
           bold: <strong/>,
           solitary: <Picture css={iconCss} src={Solitary}/>,
           italic: <em/>
@@ -350,7 +350,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.opponent.turn" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.opponent.turn" components={{ bold: <strong/> }}/>,
         position: { y: -20 }
       }
     },
@@ -362,7 +362,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.extinguish" components={{
+        text: () => <Trans i18nKey="tuto.extinguish" components={{
           bold: <strong/>,
           water: <Picture css={iconCss} src={Water}/>
         }}/>,
@@ -378,7 +378,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.fire" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.fire" components={{ bold: <strong/> }}/>,
         position: { y: 20 }
       },
       focus: (game: MaterialGame) => ({
@@ -390,7 +390,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.fire.cost" components={{
+        text: () => <Trans i18nKey="tuto.fire.cost" components={{
           bold: <strong/>,
           water: <Picture css={iconCss} src={Water}/>
         }}/>,
@@ -424,7 +424,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.water.win" components={{
+        text: () => <Trans i18nKey="tuto.water.win" components={{
           bold: <strong/>,
           water: <Picture css={iconCss} src={Water}/>
         }}/>,
@@ -439,7 +439,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.action.plant" components={{
+        text: () => <Trans i18nKey="tuto.action.plant" components={{
           bold: <strong/>,
           plant: <Picture css={iconCss} src={Plant}/>
         }}/>,
@@ -456,7 +456,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.trees" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.trees" components={{ bold: <strong/> }}/>,
         position: { y: 20 }
       },
       focus: (game: MaterialGame) => ({
@@ -468,7 +468,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.tree.cost" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.tree.cost" components={{ bold: <strong/> }}/>,
         position: { y: 20 }
       },
       focus: (game: MaterialGame) => ({
@@ -480,7 +480,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.tree.start" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.tree.start" components={{ bold: <strong/> }}/>,
         position: { x: 20 }
       },
       focus: (game: MaterialGame) => ({
@@ -490,7 +490,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.plant" components={{
+        text: () => <Trans i18nKey="tuto.plant" components={{
           bold: <strong/>,
           plant: <Picture css={iconCss} src={Plant}/>,
           italic: <em/>
@@ -512,7 +512,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.tree.element" components={{
+        text: () => <Trans i18nKey="tuto.tree.element" components={{
           bold: <strong/>,
           sun: <Picture css={iconCss} src={Sun}/>,
           italic: <em/>
@@ -529,7 +529,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.tree.bonus" components={{
+        text: () => <Trans i18nKey="tuto.tree.bonus" components={{
           bold: <strong/>,
           water: <Picture css={iconCss} src={Water}/>
         }}/>,
@@ -544,7 +544,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.plant.win" components={{
+        text: () => <Trans i18nKey="tuto.plant.win" components={{
           bold: <strong/>,
           plant: <Picture css={iconCss} src={Plant}/>
         }}/>,
@@ -559,18 +559,18 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.action.pass" components={{ bold: <strong/> }}/>
+        text: () => <Trans i18nKey="tuto.action.pass" components={{ bold: <strong/> }}/>
       },
       move: { filter: isCustomMoveType(CustomMoveType.Pass) }
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.turn.over" components={{ bold: <strong/> }}/>
+        text: () => <Trans i18nKey="tuto.turn.over" components={{ bold: <strong/> }}/>
       }
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.solitary.3" components={{
+        text: () => <Trans i18nKey="tuto.solitary.3" components={{
           bold: <strong/>,
           solitary: <Picture css={iconCss} src={Solitary}/>
         }}/>,
@@ -591,7 +591,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.action.wind" components={{
+        text: () => <Trans i18nKey="tuto.action.wind" components={{
           bold: <strong/>,
           wind: <Picture css={iconCss} src={Wind}/>
         }}/>,
@@ -606,7 +606,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.onibi" components={{
+        text: () => <Trans i18nKey="tuto.onibi" components={{
           bold: <strong/>,
           wind: <Picture css={iconCss} src={Wind}/>
         }}/>,
@@ -628,7 +628,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.wind.bonus" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.wind.bonus" components={{ bold: <strong/> }}/>,
         position: { y: 20 }
       },
       focus: () => ({
@@ -638,7 +638,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.bonus.sanki" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.bonus.sanki" components={{ bold: <strong/> }}/>,
         position: { y: 10 }
       },
       focus: (game: MaterialGame) => ({
@@ -652,7 +652,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.onibi.card" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.onibi.card" components={{ bold: <strong/> }}/>,
         position: { y: 20 }
       },
       focus: (game: MaterialGame) => ({
@@ -666,7 +666,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.wind.win" components={{
+        text: () => <Trans i18nKey="tuto.wind.win" components={{
           bold: <strong/>,
           wind: <Picture css={iconCss} src={Wind}/>
         }}/>
@@ -674,7 +674,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.varan" components={{ bold: <strong/> }}/>
+        text: () => <Trans i18nKey="tuto.varan" components={{ bold: <strong/> }}/>
       },
       focus: (game: MaterialGame) => ({
         materials: [
@@ -685,7 +685,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.fire.value" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.fire.value" components={{ bold: <strong/> }}/>,
         position: { y: 20 }
       },
       focus: (game: MaterialGame) => ({
@@ -698,7 +698,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.water.value" components={{
+        text: () => <Trans i18nKey="tuto.water.value" components={{
           bold: <strong/>,
           water: <Picture css={iconCss} src={Water}/>
         }}/>,
@@ -716,7 +716,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.varan.get" components={{
+        text: () => <Trans i18nKey="tuto.varan.get" components={{
           bold: <strong/>,
           water: <Picture css={iconCss} src={Water}/>
         }}/>
@@ -727,7 +727,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.varan.detail" components={{
+        text: () => <Trans i18nKey="tuto.varan.detail" components={{
           bold: <strong/>,
           solitary: <Picture css={iconCss} src={Solitary}/>
         }}/>,
@@ -742,7 +742,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.sanki.varan" components={{ bold: <strong/> }}/>
+        text: () => <Trans i18nKey="tuto.sanki.varan" components={{ bold: <strong/> }}/>
       },
       focus: (game: MaterialGame) => ({
         materials: [
@@ -753,7 +753,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.sanki.replay" components={{ bold: <strong/> }}/>
+        text: () => <Trans i18nKey="tuto.sanki.replay" components={{ bold: <strong/> }}/>
       },
       focus: (game: MaterialGame) => ({
         materials: [
@@ -764,7 +764,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.fire.put" components={{ bold: <strong/> }}/>,
+        text: () => <Trans i18nKey="tuto.fire.put" components={{ bold: <strong/> }}/>,
         position: { y: 20 }
       },
       focus: (game: MaterialGame) => ({
@@ -781,13 +781,13 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.turn.new" components={{ bold: <strong/> }}/>
+        text: () => <Trans i18nKey="tuto.turn.new" components={{ bold: <strong/> }}/>
       },
       move: {}
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.win.conditions" components={{
+        text: () => <Trans i18nKey="tuto.win.conditions" components={{
           bold: <strong/>,
           sun: <Picture css={iconCss} src={Sun}/>,
           water: <Picture css={iconCss} src={Water}/>,
@@ -798,7 +798,7 @@ export class Tutorial extends MaterialTutorial<Season, MaterialType, LocationTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.remind" components={{ bold: <strong/> }}/>
+        text: () => <Trans i18nKey="tuto.remind" components={{ bold: <strong/> }}/>
       }
     }
   ]

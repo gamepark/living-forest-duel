@@ -7,7 +7,7 @@ import { RuleId } from '@gamepark/living-forest-duel/rules/RuleId'
 import { Element, Season } from '@gamepark/living-forest-duel/Season'
 import { GameAI } from '@gamepark/react-game'
 import { isCustomMoveType, isMoveItem, MaterialGame } from '@gamepark/rules-api'
-import { maxBy, sample } from 'lodash'
+import { maxBy, sample } from 'es-toolkit'
 
 export const TutorialAI: GameAI = (game: MaterialGame, player: Season) => {
   let legalMoves = new LivingForestDuelRules(game).getLegalMoves(player)

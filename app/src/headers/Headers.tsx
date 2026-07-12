@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { RuleId } from '@gamepark/living-forest-duel/rules/RuleId'
 import { ComponentType } from 'react'
 import { AdvancingOnibiHeader } from './AdvancingOnibiHeader'

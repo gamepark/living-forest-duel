@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { LivingForestDuelRules } from '@gamepark/living-forest-duel/LivingForestDuelRules'
 import { Bonus } from '@gamepark/living-forest-duel/material/Bonus'
@@ -24,12 +23,12 @@ export const ClearingCardHelp = ({ item, closeDialog }: MaterialHelpProps) => {
     <h2>{t('clearing')}</h2>
     <p>{t('fire-value', { fire: getClearingFireValue(clearing) })}</p>
     <p>{t('bonus', { bonus: getBonusLabel(getClearingBonus(clearing), t) })}</p>
-    <p><Trans defaults="clearing.onibi" components={{
+    <p><Trans i18nKey="clearing.onibi" components={{
       onibi: <PlayMoveButton css={linkButtonCss} move={displayMaterialHelp(MaterialType.OnibiStandee)} local/>
     }}/></p>
     {onFire && <p>{t('clearing.fire')}</p>}
     {fire.length > 0 && <p>
-      <Trans defaults="clearing.extinguish" components={{
+      <Trans i18nKey="clearing.extinguish" components={{
         extinguish: extinguish ? <PlayMoveButton move={extinguish} onPlay={closeDialog}/> : <strong/>,
         water: <Picture css={iconCss} src={Water}/>
       }}/>

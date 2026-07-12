@@ -7,6 +7,7 @@ import { OnibiStandeeHelp } from './help/OnibiStandeeHelp'
 class OnibiStandeeDescription extends TokenDescription {
   width = 3.9
   height = 5.6
+  transparency = true
 
   image = Onibi
 

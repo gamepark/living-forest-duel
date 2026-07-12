@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LivingForestDuelRules } from "@gamepark/living-forest-duel/LivingForestDuelRules"
 import { MaterialType } from "@gamepark/living-forest-duel/material/MaterialType"
 import { CustomMoveType } from "@gamepark/living-forest-duel/rules/CustomMoveType"
@@ -18,12 +17,12 @@ export const UseSankiCardHeader = () => {
   if (itsMe) {
     if (!useSanki) return null
     return (
-      <Trans defaults="header.use-sanki-card.you" components={{
+      <Trans i18nKey="header.use-sanki-card.you" components={{
         useSanki: <PlayMoveButton move={useSanki} />,
         pass: <PlayMoveButton move={pass} auto={rules.game.rule?.id === RuleId.UseSankiPlayAction ? 10 : undefined}/>
       }} />
     )
   } else {
-    return <Trans defaults="header.use-sanki-card.player" values={{ player }} />
+    return <Trans i18nKey="header.use-sanki-card.player" values={{ player }} />
   }
 }

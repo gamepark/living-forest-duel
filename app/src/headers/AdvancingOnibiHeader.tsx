@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LivingForestDuelRules } from '@gamepark/living-forest-duel/LivingForestDuelRules'
 import { AdvancingOnibiRule } from '@gamepark/living-forest-duel/rules/AdvancingOnibiRule'
 import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
@@ -14,8 +13,8 @@ export const AdvancingOnibiHeader = () => {
   const steps = advancingOnibiRule.action?.value ?? 0
 
   if (itsMe) {
-    return <Trans defaults="header.advancing-onibi.you" values={{ steps }}/>
+    return <Trans i18nKey="header.advancing-onibi.you" values={{ steps }}/>
   } else {
-    return <Trans defaults="header.advancing-onibi.player" values={{ player, steps }}/>
+    return <Trans i18nKey="header.advancing-onibi.player" values={{ player, steps }}/>
   }
 }

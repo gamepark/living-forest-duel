@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LivingForestDuelRules } from '@gamepark/living-forest-duel/LivingForestDuelRules'
 import { CustomMoveType } from '@gamepark/living-forest-duel/rules/CustomMoveType'
 import { RecruitingAnimalsRule } from '@gamepark/living-forest-duel/rules/RecruitingAnimalsRule'
@@ -19,15 +18,15 @@ export const RecruitingAnimalsHeader = () => {
 
   if (itsMe) {
     if (canRecruit) {
-      return <Trans defaults="header.recruiting-animals.you" values={{ cost }} components={{
+      return <Trans i18nKey="header.recruiting-animals.you" values={{ cost }} components={{
         pass: <PlayMoveButton move={pass}/>
       }}/>
     } else {
-      return <Trans defaults="header.recruiting-animals.pass" values={{ cost }} components={{
+      return <Trans i18nKey="header.recruiting-animals.pass" values={{ cost }} components={{
         pass: <PlayMoveButton move={pass} auto={10}/>
       }}/>
     }
   } else {
-    return <Trans defaults="header.recruiting-animals.player" values={{ player, cost }}/>
+    return <Trans i18nKey="header.recruiting-animals.player" values={{ player, cost }}/>
   }
 }

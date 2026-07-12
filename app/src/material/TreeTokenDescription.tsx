@@ -10,6 +10,7 @@ import WinterTreeToken from '../images/winter.png'
 class TreeTokenDescription extends FlatMaterialDescription {
   width = 9
   height = 9
+  transparency = true
 
   images = {
     [Season.Summer]: SummerTreeToken,

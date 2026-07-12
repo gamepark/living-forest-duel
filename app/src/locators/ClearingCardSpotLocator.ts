@@ -3,7 +3,7 @@ import { CustomMoveType } from '@gamepark/living-forest-duel/rules/CustomMoveTyp
 import { Season } from '@gamepark/living-forest-duel/Season'
 import { DropAreaDescription, Locator, MaterialContext } from '@gamepark/react-game'
 import { CustomMove, isCustomMoveType, Location, MaterialItem, MaterialMove } from '@gamepark/rules-api'
-import { maxBy } from 'lodash'
+import { maxBy } from 'es-toolkit'
 import { clearingCardDescription, positiveModulo } from '../material/ClearingCardDescription'
 
 class ClearingCardSpotLocator extends Locator {

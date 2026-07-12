@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { MaterialType } from '@gamepark/living-forest-duel/material/MaterialType'
 import { SpiritType } from '@gamepark/living-forest-duel/material/SpiritType'
 import { linkButtonCss, MaterialHelpProps, PlayMoveButton } from '@gamepark/react-game'
@@ -18,10 +17,10 @@ const OnibiCardHelp = () => {
   const { t } = useTranslation()
   return <>
     <h2>{t('onibi.card')}</h2>
-    <p><Trans defaults="onibi.card.rule" components={{
+    <p><Trans i18nKey="onibi.card.rule" components={{
       bold: <strong/>
     }}/></p>
-    <p><Trans defaults="onibi.card.give" components={{
+    <p><Trans i18nKey="onibi.card.give" components={{
       onibi: <PlayMoveButton css={linkButtonCss} move={displayMaterialHelp(MaterialType.OnibiStandee)} local/>
     }}/></p>
   </>
@@ -32,10 +31,10 @@ const SankiCardHelp = () => {
   return <>
     <h2>{t('sanki.card')}</h2>
     <p>{t('sanki.get')}</p>
-    <p><Trans defaults="sanki.rule" components={{
+    <p><Trans i18nKey="sanki.rule" components={{
       bold: <strong/>
     }}/></p>
-    <p><Trans defaults="sanki.use" components={{
+    <p><Trans i18nKey="sanki.use" components={{
       bold: <strong/>
     }}/></p>
   </>

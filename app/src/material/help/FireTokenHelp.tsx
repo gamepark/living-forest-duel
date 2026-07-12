@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { LocationType } from '@gamepark/living-forest-duel/material/LocationType'
 import { MaterialType } from '@gamepark/living-forest-duel/material/MaterialType'
@@ -22,12 +21,12 @@ export const FireTokenHelp = ({ item, itemIndex, closeDialog }: MaterialHelpProp
     }</p>}
     <p>{t('fire.win')}</p>
     {item.location?.type === LocationType.ClearingCardSpot && <p>
-      <Trans defaults="fire.take" components={{
+      <Trans i18nKey="fire.take" components={{
         take: take ? <PlayMoveButton move={take} onPlay={closeDialog}/> : <strong/>,
         water: <Picture css={iconCss} src={Water}/>
       }}/>
     </p>}
-    <p><Trans defaults="fire.onibi" components={{
+    <p><Trans i18nKey="fire.onibi" components={{
       onibi: <PlayMoveButton css={linkButtonCss} move={displayMaterialHelp(MaterialType.OnibiStandee)} local/>
     }}/></p>
   </>

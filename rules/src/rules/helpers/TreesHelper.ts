@@ -1,5 +1,5 @@
 import { Direction, directions, getSquareInDirection, Material, MaterialGame, MaterialItem, MaterialRulesPart, XYCoordinates } from '@gamepark/rules-api'
-import { cloneDeep, range } from 'lodash'
+import { cloneDeep, range } from 'es-toolkit'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { isStartingTree, Tree, TreeId, treeProperties } from '../../material/Tree'

@@ -5,6 +5,7 @@ import { FireTokenHelp } from './help/FireTokenHelp'
 class FireTokenDescription extends TokenDescription {
   width = 2
   height = 2.6
+  transparency = true
 
   image = Fire
 

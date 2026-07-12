@@ -1,5 +1,5 @@
 import { CustomMove, isMoveItemType, ItemMove } from '@gamepark/rules-api'
-import { range } from 'lodash'
+import { range } from 'es-toolkit'
 import { Bonus, getBonusElement } from '../material/Bonus'
 import { Clearing, getClearingBonus } from '../material/Clearing'
 import { LocationType } from '../material/LocationType'

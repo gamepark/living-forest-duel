@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LivingForestDuelRules } from '@gamepark/living-forest-duel/LivingForestDuelRules'
 import { CustomMoveType } from '@gamepark/living-forest-duel/rules/CustomMoveType'
 import { ExtinguishingFireRule } from '@gamepark/living-forest-duel/rules/ExtinguishingFireRule'
@@ -20,15 +19,15 @@ export const ExtinguishingFireHeader = () => {
 
   if (itsMe) {
     if (canExtinguish) {
-      return <Trans defaults="header.extinguishing-fire.you" values={{ cost }} components={{
+      return <Trans i18nKey="header.extinguishing-fire.you" values={{ cost }} components={{
         pass: <PlayMoveButton move={pass}/>
       }}/>
     } else {
-      return <Trans defaults="header.extinguishing-fire.pass" components={{
+      return <Trans i18nKey="header.extinguishing-fire.pass" components={{
         pass: <PlayMoveButton move={pass} auto={10}/>
       }}/>
     }
   } else {
-    return <Trans defaults="header.extinguishing-fire.player" values={{ player, cost }}/>
+    return <Trans i18nKey="header.extinguishing-fire.player" values={{ player, cost }}/>
   }
 }

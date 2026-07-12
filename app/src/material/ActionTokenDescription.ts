@@ -12,6 +12,7 @@ class ActionTokenDescription extends TokenDescription {
   width = 2.7
   height = 2.3
   borderRadius = 0.5
+  transparency = true
 
   images = {
     [Season.Summer]: SummerArrow,
