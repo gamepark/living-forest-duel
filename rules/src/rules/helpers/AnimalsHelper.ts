@@ -1,4 +1,4 @@
-import { MaterialRulesPart } from '@gamepark/rules-api'
+import { MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
 import { countBy, minBy } from 'es-toolkit/compat'
 import { Animal, animalProperties, AnimalType, CardPattern, isVaran } from '../../material/Animal'
 import { LocationType } from '../../material/LocationType'
@@ -38,10 +38,26 @@ export class AnimalsHelper extends MaterialRulesPart {
     return totalSolitary - totalGregarious
   }
 
-  checkTooManySolitaryAnimals(season: Season) {
+  /**
+   * Reconcile the number of Action tokens a player has lost with their current solitary count:
+   * 3rd solitary symbol => 1 token lost, 4th solitary symbol => 2nd token lost.
+   * Returns the moves needed to lose the missing tokens (never gives tokens back, so a gregarious
+   * symbol cancelling a symbol does not restore an already-lost action). Safe to call from any code
+   * path that adds a card to a help line, regardless of how many symbols were added since the last check.
+   */
+  getSolitaryPenaltyMoves(season: Season): MaterialMove[] {
     const solitary = this.countSolitary(season)
-    // To avoid losing another action after getting a grearious animal
-    return solitary > 3 || (solitary === 3 && !this.material(MaterialType.ActionToken).location(LocationType.PlayerActionLost).player(season).length)
+    const targetLost = solitary >= 4 ? 2 : solitary >= 3 ? 1 : 0
+    const alreadyLost = this.material(MaterialType.ActionToken).location(LocationType.PlayerActionLost).player(season).getQuantity()
+    const supply = this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(season)
+    const tokensToLose = Math.min(targetLost - alreadyLost, supply.getQuantity())
+
+    const moves: MaterialMove[] = []
+    for (let i = 0; i < tokensToLose; i++) {
+      // Move one unit at a time so each lost token is a distinct item (PositiveSequenceStrategy)
+      moves.push(supply.moveItem({ type: LocationType.PlayerActionLost, player: season }, 1))
+    }
+    return moves
   }
 
   canAnimalsBeRecruited(sunValue: number) {

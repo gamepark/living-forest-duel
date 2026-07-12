@@ -78,15 +78,10 @@ export class PlayerActionRule extends PlayerUseActionTokenRule {
   afterAnimalMovedAtFinalDestination(animal: Animal) {
     const moves: MaterialMove[] = []
     if (animalProperties[animal].type === AnimalType.Solitary) {
-      // Check number of solitary symbols
+      // A solitary symbol may have been added to the common help line, affecting both players
+      const animalsHelper = new AnimalsHelper(this.game)
       for (const season of seasons) {
-        if (this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(season).getQuantity() > 0
-          && new AnimalsHelper(this.game).checkTooManySolitaryAnimals(season)) {
-          moves.push(this.material(MaterialType.ActionToken).location(LocationType.PlayerActionSupply).player(season).moveItem({
-            type: LocationType.PlayerActionLost,
-            player: season
-          }))
-        }
+        moves.push(...animalsHelper.getSolitaryPenaltyMoves(season))
       }
     }
     if (!isVaran(animal) && this.playerHasSankiCard(this.player) && this.opponentHasActionToken) {
