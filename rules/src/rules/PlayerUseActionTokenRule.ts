@@ -66,7 +66,7 @@ export class PlayerUseActionTokenRule extends PlayerTurnRule {
               type: LocationType.PointElement,
               parent: elementCardIndex,
               id: element
-            })
+            }, 1) // The supply is one item with a quantity: only one token is placed on the element
           )
         }
       }

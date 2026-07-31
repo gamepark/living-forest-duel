@@ -25,7 +25,8 @@ export class EndTurnRule extends PlayerTurnRule {
         x = x < -3 ? 3 : -3
       }
       if (this.material(MaterialType.FireToken).location(l => l.type === LocationType.ClearingCardSpot && l.x === x).getQuantity() === 0) {
-        moves.push(this.material(MaterialType.FireToken).location(LocationType.FireStock).moveItem({ type: LocationType.ClearingCardSpot, x }))
+        // The fire stock is one item with a quantity: only one token is added on the clearing spot
+        moves.push(this.material(MaterialType.FireToken).location(LocationType.FireStock).moveItem({ type: LocationType.ClearingCardSpot, x }, 1))
       }
     }
     for (const season of seasons) {

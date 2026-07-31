@@ -7,11 +7,15 @@ import { getOpponentSeason } from '../../Season'
 export class SankiHelper extends PlayerTurnRule {
   takeSankiCards(quantity = 1) {
     const moves: MaterialMove[] = []
-    const sankiDeck = this.material(MaterialType.SpiritCard).location(LocationType.SankiDeck).deck()
-    if (sankiDeck.length > 0) {
-      const deal = Math.min(quantity, sankiDeck.length)
+    // The Sanki deck is a single item with a quantity, so the cards must be taken one unit at a time
+    const sankiDeck = this.material(MaterialType.SpiritCard).location(LocationType.SankiDeck)
+    const sankiDeckQuantity = sankiDeck.getQuantity()
+    if (sankiDeckQuantity > 0) {
+      const deal = Math.min(quantity, sankiDeckQuantity)
       quantity -= deal
-      moves.push(...sankiDeck.deal({ type: LocationType.PlayerSpiritLine, player: this.player }, deal))
+      for (let i = 0; i < deal; i++) {
+        moves.push(sankiDeck.moveItem({ type: LocationType.PlayerSpiritLine, player: this.player }, 1))
+      }
     }
     if (quantity > 0) {
       const opponentSanki = this.material(MaterialType.SpiritCard).location(LocationType.PlayerSpiritLine)
