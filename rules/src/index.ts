@@ -1,3 +1,3 @@
 export { LivingForestDuelRules } from './LivingForestDuelRules'
-export { LivingForestDuelOptionsSpec } from './LivingForestDuelOptions'
+export { LivingForestDuelOptionsSpecV2 } from './LivingForestDuelOptions'
 export { LivingForestDuelSetup } from './LivingForestDuelSetup'

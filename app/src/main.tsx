@@ -1,4 +1,4 @@
-import { LivingForestDuelOptionsSpec } from '@gamepark/living-forest-duel/LivingForestDuelOptions'
+import { LivingForestDuelOptionsSpecV2 } from '@gamepark/living-forest-duel/LivingForestDuelOptions'
 import { LivingForestDuelRules } from '@gamepark/living-forest-duel/LivingForestDuelRules'
 import { LivingForestDuelSetup } from '@gamepark/living-forest-duel/LivingForestDuelSetup'
 import { GameProvider } from '@gamepark/react-game'
@@ -16,7 +16,7 @@ createRoot(document.getElementById('root')!).render(
     <GameProvider
       game="living-forest-duel"
       Rules={LivingForestDuelRules}
-      optionsSpec={LivingForestDuelOptionsSpec}
+      optionsSpec={LivingForestDuelOptionsSpecV2}
       GameSetup={LivingForestDuelSetup}
       material={Material}
       locators={Locators}
