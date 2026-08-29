@@ -5,6 +5,6 @@ import { isMoveItemType } from '@gamepark/rules-api'
 
 export const gameAnimations = new MaterialGameAnimations()
 
-gameAnimations.when()
-  .move(move => isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.PlayerActionSupply)
-  .duration(0.5)
+gameAnimations
+  .configure(move => isMoveItemType(MaterialType.ActionToken)(move) && move.location.type === LocationType.PlayerActionSupply)
+  .duration(500)
