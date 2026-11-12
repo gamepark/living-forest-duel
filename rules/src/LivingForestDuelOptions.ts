@@ -1,4 +1,4 @@
-import { TFunction, OptionsSpecV2 } from '@gamepark/rules-api'
+import { OptionsSpecV2 } from '@gamepark/rules-api'
 import { Season, seasons } from './Season'
 
 /**
@@ -27,7 +27,7 @@ export const LivingForestDuelOptionsSpecV2: OptionsSpecV2 = {
   identities: { values: seasons }
 }
 
-export function getPlayerName(playerId: Season, t: TFunction) {
+export function getPlayerName(playerId: Season, t: (key: string) => string) {
   switch (playerId) {
     case Season.Summer:
       return t('Summer')
